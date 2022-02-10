@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CardOne extends StatefulWidget {
-  CardOne({Key? key}) : super(key: key);
+class DeviceGroup extends StatefulWidget {
+  DeviceGroup({Key? key}) : super(key: key);
 
   @override
-  State<CardOne> createState() => _CardOneState();
+  State<DeviceGroup> createState() => _DeviceGroupState();
 }
 
-class _CardOneState extends State<CardOne> {
+class _DeviceGroupState extends State<DeviceGroup> {
   @override
   Widget build(BuildContext context) {
     return Container(

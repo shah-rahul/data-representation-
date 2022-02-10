@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nudron/widgets/level1/card_one.dart';
-import 'package:nudron/widgets/level1/card_two.dart';
+import 'package:nudron/widgets/level1/device_group.dart';
+import 'package:nudron/widgets/level1/device_history.dart';
 import 'package:nudron/widgets/primary_card.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
 
@@ -37,16 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   physics: const PageScrollPhysics(),
                   children: [
                     PrimaryCard(
-                      childone: CardOne(),
-                      childtwo: CardTwo(),
+                      childone: DeviceGroup(),
+                      childtwo: DeviceHistory(),
                     ),
                     PrimaryCard(
-                      childone: CardOne(),
-                      childtwo: CardTwo(),
+                      childone: DeviceGroup(),
+                      childtwo: DeviceHistory(),
                     ),
                     PrimaryCard(
-                      childone: CardOne(),
-                      childtwo: CardTwo(),
+                      childone: DeviceGroup(),
+                      childtwo: DeviceHistory(),
                     ),
                   ],
                 ),

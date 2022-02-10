@@ -29,11 +29,17 @@ class CustomTheme {
       primaryColorDark: Colors.black,
       // ignore: deprecated_member_use
       accentColor: accentColor,
-      highlightColor: const Color.fromARGB(255, 215, 240, 248),
+      highlightColor: Colors.grey[600],
       scaffoldBackgroundColor: const Color.fromARGB(255, 212, 238, 222),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textTheme: textTheme,
       primaryTextTheme: TextTheme(
+        headline2: GoogleFonts.roboto(
+          height: 1.2,
+          fontSize: 14,
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
         headline1: GoogleFonts.roboto(
           height: 1.2,
           fontSize: 24,
@@ -42,8 +48,8 @@ class CustomTheme {
         ),
         bodyText1: GoogleFonts.roboto(
           height: 1.2,
-          fontSize: 18,
-          color: const Color(0xff000000),
+          fontSize: 13,
+          color: Color.fromARGB(255, 0, 0, 0),
           fontWeight: FontWeight.w500,
         ),
       ),
