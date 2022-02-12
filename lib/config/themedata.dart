@@ -29,6 +29,7 @@ class CustomTheme {
       primaryColorDark: Colors.black,
       // ignore: deprecated_member_use
       accentColor: accentColor,
+      cardColor: Colors.white,
       highlightColor: Colors.grey[600],
       scaffoldBackgroundColor: const Color.fromARGB(255, 212, 238, 222),
       visualDensity: VisualDensity.adaptivePlatformDensity,

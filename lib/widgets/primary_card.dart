@@ -22,9 +22,6 @@ class _PrimaryCardState extends State<PrimaryCard> {
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Container(
-            decoration: BoxDecoration(boxShadow: const [
-              BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
-            ], color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [widget.childone, widget.childtwo],

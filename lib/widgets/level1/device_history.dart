@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/widgets/nudron_table.dart';
 
 class DeviceHistory extends StatefulWidget {
   DeviceHistory({Key? key}) : super(key: key);
@@ -7,6 +8,24 @@ class DeviceHistory extends StatefulWidget {
   State<DeviceHistory> createState() => _DeviceHistoryState();
 }
 
+final _rowsCells = [
+  [7, 8, 8, 7],
+  [10, 9, 6, 6],
+  [5, 4, 7, 5],
+  [9, 4, 7, 8],
+  [7, 8, 8, 7],
+  [10, 10, 6, 6],
+  [5, 4, 5, 5],
+  [9, 4, 7, 8],
+  [7, 8, 8, 7],
+  [10, 9, 6, 6],
+  [5, 4, 7, 5],
+  [9, 4, 7, 8],
+  [7, 8, 8, 7],
+  [10, 10, 6, 6],
+  [5, 4, 5, 5],
+  [9, 4, 1, 8]
+];
 const dataTitle = [
   "Date",
   "Alerts",
@@ -18,9 +37,25 @@ class _DeviceHistoryState extends State<DeviceHistory> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
+      child: Column(
         children: [
-          _createDataTable(context),
+          Container(
+            height: 10,
+            decoration: BoxDecoration(
+                color: Colors.yellow[700],
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+          ),
+          Expanded(
+            flex: 1,
+            child: CustomDataTable(
+              fixedRowCells: dataTitle,
+              rowsCells: _rowsCells,
+              cellBuilder: (data) {
+                return Text('$data', style: TextStyle(color: Colors.black));
+              },
+            ),
+          ),
         ],
       ),
       height: MediaQuery.of(context).size.height * 0.4 -
@@ -32,75 +67,8 @@ class _DeviceHistoryState extends State<DeviceHistory> {
           boxShadow: const [
             BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
           ],
-          color: Theme.of(context).highlightColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(8.0)),
     );
   }
-}
-
-DataTable _createDataTable(context) {
-  return DataTable(
-      dataRowHeight: 50,
-      horizontalMargin: 10,
-      headingTextStyle: Theme.of(context).primaryTextTheme.headline2,
-      dataTextStyle: Theme.of(context).primaryTextTheme.headline2,
-      border: TableBorder(borderRadius: BorderRadius.circular(8.0)),
-      dataRowColor: MaterialStateProperty.all(Colors.grey[500]),
-      columnSpacing: 5,
-      showBottomBorder: true,
-      headingRowColor: MaterialStateProperty.all(Colors.grey[600]),
-      columns: _createColumns(),
-      rows: _createRows());
-}
-
-List<DataColumn> _createColumns() {
-  List<DataColumn> colList = [];
-
-  dataTitle.forEach((element) {
-    colList.add(DataColumn(label: Text(element)));
-    print(element);
-  });
-
-  return colList;
-}
-
-List<DataRow> _createRows() {
-  return [
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-    DataRow(cells: [
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-      DataCell(Text("hardCoded")),
-    ]),
-  ];
 }
