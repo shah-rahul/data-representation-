@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PrimaryCard extends StatefulWidget {
   const PrimaryCard({Key? key, required this.childone, required this.childtwo})

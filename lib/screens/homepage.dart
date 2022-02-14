@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:nudron/screens/sample_chartrenderer.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/level1/device_history.dart';
 import 'package:nudron/widgets/primary_card.dart';
@@ -56,7 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => ChartContainer()));
+        },
         child: Icon(Icons.add_chart),
         backgroundColor: Theme.of(context).primaryColor,
       ),
