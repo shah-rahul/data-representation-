@@ -41,6 +41,12 @@ class CustomTheme {
           color: Colors.white,
           fontWeight: FontWeight.w500,
         ),
+        headline3: GoogleFonts.roboto(
+          height: 1.2,
+          fontSize: 18,
+          color: const Color(0xff000000),
+          fontWeight: FontWeight.w400,
+        ),
         headline1: GoogleFonts.roboto(
           height: 1.2,
           fontSize: 24,

@@ -15,16 +15,13 @@ class _PrimaryCardState extends State<PrimaryCard> {
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.8,
+            maxHeight: MediaQuery.of(context).size.height,
             minWidth: MediaQuery.of(context).size.width -
                 (MediaQuery.of(context).size.width * 0.04)),
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [widget.childone, widget.childtwo],
-            ),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [widget.childone, widget.childtwo],
           ),
         ),
       ),

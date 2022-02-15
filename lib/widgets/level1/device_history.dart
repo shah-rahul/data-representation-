@@ -39,11 +39,20 @@ class _DeviceHistoryState extends State<DeviceHistory> {
     return Container(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                "Device history",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+          ),
           Container(
             height: 10,
             decoration: BoxDecoration(
                 color: Colors.yellow[700],
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ),
           Expanded(
@@ -58,8 +67,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
           ),
         ],
       ),
-      height: MediaQuery.of(context).size.height * 0.4 -
-          (MediaQuery.of(context).size.height * 0.05),
+      height: MediaQuery.of(context).size.height * 0.4,
       width: MediaQuery.of(context).size.width * 0.9,
       margin: const EdgeInsets.only(left: 7, right: 7, top: 10),
       padding: const EdgeInsets.fromLTRB(15, 12, 12, 15),

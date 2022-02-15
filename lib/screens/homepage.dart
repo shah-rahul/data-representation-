@@ -29,10 +29,12 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.8,
-                    minWidth: MediaQuery.of(context).size.width -
-                        (MediaQuery.of(context).size.width * 0.04)),
-                child: ListView(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  minWidth: MediaQuery.of(context).size.width -
+                      (MediaQuery.of(context).size.width * 0.04),
+                ),
+                child: PageView(
+                  controller: PageController(viewportFraction: 0.9),
                   scrollDirection: Axis.horizontal,
                   physics: const PageScrollPhysics(),
                   children: [
