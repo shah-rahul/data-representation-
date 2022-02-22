@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/models/chart_data.dart';
+import 'package:nudron/screens/new_page.dart';
 import 'package:nudron/screens/sample_chartrenderer.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/level1/device_history.dart';
@@ -33,24 +35,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   minWidth: MediaQuery.of(context).size.width -
                       (MediaQuery.of(context).size.width * 0.04),
                 ),
-                child: PageView(
+                child: PrimaryScrollController(
                   controller: PageController(viewportFraction: 0.9),
-                  scrollDirection: Axis.horizontal,
-                  physics: const PageScrollPhysics(),
-                  children: [
-                    PrimaryCard(
-                      childone: DeviceGroup(),
-                      childtwo: DeviceHistory(),
-                    ),
-                    PrimaryCard(
-                      childone: DeviceGroup(),
-                      childtwo: DeviceHistory(),
-                    ),
-                    PrimaryCard(
-                      childone: DeviceGroup(),
-                      childtwo: DeviceHistory(),
-                    ),
-                  ],
+                  child: PageView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const PageScrollPhysics(),
+                    children: [
+                      PrimaryCard(
+                        childone: DeviceGroup(),
+                        childtwo: DeviceHistory(),
+                      ),
+                      PrimaryCard(
+                        childone: DeviceGroup(),
+                        childtwo: DeviceHistory(),
+                      ),
+                      PrimaryCard(
+                        childone: DeviceGroup(),
+                        childtwo: DeviceHistory(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

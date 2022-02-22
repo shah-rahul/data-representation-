@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/models/sample_data.dart';
 import 'package:nudron/widgets/nudron_table.dart';
+import 'package:nudron/widgets/utils/header_builder.dart';
 
 class DeviceHistory extends StatefulWidget {
   DeviceHistory({Key? key}) : super(key: key);
@@ -8,32 +10,45 @@ class DeviceHistory extends StatefulWidget {
   State<DeviceHistory> createState() => _DeviceHistoryState();
 }
 
-final _rowsCells = [
-  [7, 8, 8, 7],
-  [10, 9, 6, 6],
-  [5, 4, 7, 5],
-  [9, 4, 7, 8],
-  [7, 8, 8, 7],
-  [10, 10, 6, 6],
-  [5, 4, 5, 5],
-  [9, 4, 7, 8],
-  [7, 8, 8, 7],
-  [10, 9, 6, 6],
-  [5, 4, 7, 5],
-  [9, 4, 7, 8],
-  [7, 8, 8, 7],
-  [10, 10, 6, 6],
-  [5, 4, 5, 5],
-  [9, 4, 1, 8]
-];
+List<CellData> dataList = [];
+ScrollController _scrollController = ScrollController();
+int _currentMax = 10;
+
 const dataTitle = [
   "Date",
   "Alerts",
   "Status",
   "Comments",
 ];
+double offset = 0.0;
 
 class _DeviceHistoryState extends State<DeviceHistory> {
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+      }
+    });
+    dataList = List.generate(10,
+        (i) => CellData(data1: i, data2: i + 1, data3: i + 2, data4: i + 3));
+
+    super.initState();
+  }
+
+  _getMoreData() {
+    print("called");
+    for (int i = _currentMax; i < _currentMax + 10; i++) {
+      dataList
+          .add(CellData(data1: i, data2: i + 1, data3: i + 2, data4: i + 3));
+    }
+
+    _currentMax = _currentMax + 10;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,16 +70,21 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ),
+          const TableHeader(dataList: dataTitle),
           Expanded(
-            flex: 1,
-            child: CustomDataTable(
-              fixedRowCells: dataTitle,
-              rowsCells: _rowsCells,
-              cellBuilder: (data) {
-                return Text('$data', style: TextStyle(color: Colors.black));
-              },
-            ),
-          ),
+              flex: 1,
+              child: ListView.builder(
+                primary: false,
+                itemCount: dataList.length + 1,
+                controller: _scrollController,
+                itemExtent: 30,
+                itemBuilder: (context, index) {
+                  if (index == dataList.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return NudronTable(data: dataList[index], index: index);
+                },
+              )),
         ],
       ),
       height: MediaQuery.of(context).size.height * 0.4,
