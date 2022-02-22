@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nudron/models/chart_data.dart';
 import 'package:nudron/screens/new_page.dart';
 import 'package:nudron/screens/sample_chartrenderer.dart';
@@ -16,6 +17,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
