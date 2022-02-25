@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nudron/screens/sample_chartrenderer.dart';
+import 'package:nudron/screens/chart_page.dart';
+import 'package:nudron/screens/map_page.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/level1/device_history.dart';
 import 'package:nudron/widgets/primary_card.dart';
@@ -15,11 +16,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late PageController _firstController;
   @override
   void initState() {
+    _firstController = PageController(initialPage: 1);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     super.initState();
   }
 
@@ -48,9 +52,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     scrollDirection: Axis.horizontal,
                     physics: const PageScrollPhysics(),
                     children: [
-                      PrimaryCard(
-                        childone:const DeviceGroup(),
-                        childtwo: DeviceHistory(),
+                      PageView(
+                        scrollDirection: Axis.vertical,
+                        controller: _firstController,
+                        children: [
+                          SizedBox(child: MapPage()),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: PrimaryCard(
+                              childone: const DeviceGroup(),
+                              childtwo: DeviceHistory(),
+                            ),
+                          ),
+                          SizedBox(child: SampleMap())
+                        ],
                       ),
                       PrimaryCard(
                         childone: DeviceGroup(),
@@ -67,14 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const ChartContainer()));
-        },
-        child: const Icon(Icons.add_chart),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

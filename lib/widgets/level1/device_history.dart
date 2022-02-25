@@ -37,6 +37,13 @@ class _DeviceHistoryState extends State<DeviceHistory> {
     super.initState();
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   _getMoreData() {
     print("called");
     for (int i = _currentMax; i < _currentMax + 10; i++) {
