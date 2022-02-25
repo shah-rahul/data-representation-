@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:nudron/widgets/sample_chart.dart';
 
 class ChartContainer extends StatefulWidget {
-  ChartContainer({Key? key}) : super(key: key);
+  const ChartContainer({Key? key}) : super(key: key);
 
   @override
   State<ChartContainer> createState() => _ChartContainerState();
@@ -35,14 +35,28 @@ class _ChartContainerState extends State<ChartContainer> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Nudron"),
-          backgroundColor: Color.fromARGB(255, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           elevation: 0,
         ),
-        body: Center(
-            child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.9,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: CustombarChart(),
-        )));
+        body: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.9,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Container(
+                    decoration: const BoxDecoration(color: Colors.white),
+                    child: const CustombarChart()),
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              height: MediaQuery.of(context).size.height * 0.9,
+              width: (MediaQuery.of(context).size.width * 0.2 -
+                  MediaQuery.of(context).size.width * 0.05),
+            )
+          ],
+        ));
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nudron/models/chart_data.dart';
-import 'package:nudron/screens/new_page.dart';
 import 'package:nudron/screens/sample_chartrenderer.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/level1/device_history.dart';
@@ -51,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     physics: const PageScrollPhysics(),
                     children: [
                       PrimaryCard(
-                        childone: DeviceGroup(),
+                        childone:const DeviceGroup(),
                         childtwo: DeviceHistory(),
                       ),
                       PrimaryCard(
@@ -73,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => ChartContainer()));
+              .push(MaterialPageRoute(builder: (_) => const ChartContainer()));
         },
-        child: Icon(Icons.add_chart),
+        child: const Icon(Icons.add_chart),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );

@@ -54,6 +54,13 @@ class _DeviceHistoryState extends State<DeviceHistory> {
     return Container(
       child: Column(
         children: [
+          Container(
+            height: 10,
+            decoration: BoxDecoration(
+                color: Colors.yellow[700],
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
@@ -62,13 +69,6 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
-          ),
-          Container(
-            height: 10,
-            decoration: BoxDecoration(
-                color: Colors.yellow[700],
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ),
           const TableHeader(dataList: dataTitle),
           Expanded(
@@ -90,7 +90,6 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       height: MediaQuery.of(context).size.height * 0.4,
       width: MediaQuery.of(context).size.width * 0.9,
       margin: const EdgeInsets.only(left: 7, right: 7, top: 10),
-      padding: const EdgeInsets.fromLTRB(15, 12, 12, 15),
       decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))

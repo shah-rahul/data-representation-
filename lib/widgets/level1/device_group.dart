@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DeviceGroup extends StatefulWidget {
-  DeviceGroup({Key? key}) : super(key: key);
+  const DeviceGroup({Key? key}) : super(key: key);
 
   @override
   State<DeviceGroup> createState() => _DeviceGroupState();

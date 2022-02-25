@@ -11,7 +11,7 @@ class NudronTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: index % 2 == 0 ? Colors.white : Colors.grey[100],
+        color: index % 2 == 0 ? Colors.grey[100] : Colors.white,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

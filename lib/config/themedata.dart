@@ -31,7 +31,7 @@ class CustomTheme {
       accentColor: accentColor,
       cardColor: Colors.white,
       highlightColor: Colors.grey[600],
-      scaffoldBackgroundColor: const Color.fromARGB(255, 212, 238, 222),
+      scaffoldBackgroundColor: Colors.grey[100],
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textTheme: textTheme,
       primaryTextTheme: TextTheme(
@@ -51,7 +51,7 @@ class CustomTheme {
           height: 1.2,
           fontSize: 16,
           color: const Color(0xff000000),
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
         ),
         headline1: GoogleFonts.roboto(
           height: 1.2,
@@ -62,7 +62,7 @@ class CustomTheme {
         bodyText1: GoogleFonts.roboto(
           height: 1.2,
           fontSize: 13,
-          color: Color.fromARGB(255, 0, 0, 0),
+          color: const Color.fromARGB(255, 0, 0, 0),
           fontWeight: FontWeight.w500,
         ),
       ),

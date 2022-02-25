@@ -3,7 +3,7 @@ import 'package:nudron/models/chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class CustombarChart extends StatefulWidget {
-  CustombarChart({
+  const CustombarChart({
     Key? key,
   }) : super(key: key);
   @override
@@ -25,14 +25,14 @@ class _CustombarChartState extends State<CustombarChart> {
     return [
       charts.Series<SampleChartData, int>(
         id: 'yearrange1',
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
         domainFn: (SampleChartData sales, _) => sales.data1,
         measureFn: (SampleChartData sales, _) => sales.data2,
         data: SampleChartData.dataset1,
       ),
       charts.Series<SampleChartData, int>(
         id: 'yearrange2',
-        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (SampleChartData sales, _) => sales.data1,
         measureFn: (SampleChartData sales, _) => sales.data2,
         data: SampleChartData.dataset2,
@@ -69,7 +69,7 @@ class _CustombarChartState extends State<CustombarChart> {
           colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
           domainFn: (SampleChartData sales, _) => sales.data1,
           measureFn: (SampleChartData sales, _) => sales.data2,
-          data: SampleChartData.dataset4),
+          data: SampleChartData.dataset6),
     ];
   }
 }
