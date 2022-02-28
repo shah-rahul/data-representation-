@@ -11,14 +11,37 @@ class CustombarChart extends StatefulWidget {
 }
 
 class _CustombarChartState extends State<CustombarChart> {
+  bool isMonthData = true;
   @override
   Widget build(BuildContext context) {
-    return charts.NumericComboChart(_createSampleData(),
-        animate: false,
-        defaultRenderer: charts.LineRendererConfig(),
-        customSeriesRenderers: [
-          charts.BarRendererConfig(customRendererId: 'customBar')
-        ]);
+    return GestureDetector(
+      onDoubleTap: () {
+        setState(() {
+          isMonthData = !isMonthData;
+        });
+      },
+      child: charts.NumericComboChart(
+          isMonthData ? _createSampleData() : _createDataForMonth(),
+          animate: true,
+          defaultRenderer: charts.LineRendererConfig(),
+          animationDuration: const Duration(milliseconds: 100),
+          defaultInteractions: true,
+          customSeriesRenderers: [
+            charts.BarRendererConfig(customRendererId: 'customBar')
+          ]),
+    );
+  }
+
+  static List<charts.Series<SampleChartData, int>> _createDataForMonth() {
+    return [
+      charts.Series<SampleChartData, int>(
+        id: 'yearrange1',
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+        domainFn: (SampleChartData sales, _) => sales.data1,
+        measureFn: (SampleChartData sales, _) => sales.data2,
+        data: SampleChartData.dataset1,
+      )..setAttribute(charts.rendererIdKey, 'customBar'),
+    ];
   }
 
   static List<charts.Series<SampleChartData, int>> _createSampleData() {

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PrimaryCard extends StatefulWidget {
-  const PrimaryCard({Key? key, required this.childone, required this.childtwo})
+  const PrimaryCard(
+      {Key? key,
+      required this.childone,
+      required this.childtwo,
+      this.button1 = const SizedBox.shrink()})
       : super(key: key);
   final Widget childone;
   final Widget childtwo;
+  final Widget button1;
   @override
   State<PrimaryCard> createState() => _PrimaryCardState();
 }
@@ -20,8 +25,8 @@ class _PrimaryCardState extends State<PrimaryCard> {
                 (MediaQuery.of(context).size.width * 0.04)),
         child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [widget.childone, widget.childtwo],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [widget.button1, widget.childone, widget.childtwo],
           ),
         ),
       ),

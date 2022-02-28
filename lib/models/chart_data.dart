@@ -72,4 +72,15 @@ class SampleChartData {
     SampleChartData(data1: 7, data2: 0),
     SampleChartData(data1: 8, data2: 0),
   ];
+  static final List<SampleChartData> dataset7 = [
+    SampleChartData(data1: 0, data2: 0),
+    SampleChartData(data1: 1, data2: 0),
+    SampleChartData(data1: 2, data2: 0),
+    SampleChartData(data1: 3, data2: 0),
+    SampleChartData(data1: 4, data2: 0),
+    SampleChartData(data1: 5, data2: 0),
+    SampleChartData(data1: 6, data2: 0),
+    SampleChartData(data1: 7, data2: 0),
+    SampleChartData(data1: 8, data2: 0),
+  ];
 }

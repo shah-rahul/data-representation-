@@ -14,8 +14,7 @@ class _DeviceGroupState extends State<DeviceGroup> {
       height: MediaQuery.of(context).size.height * 0.4 -
           (MediaQuery.of(context).size.height * 0.05),
       width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.only(left: 7, right: 7, top: 10),
-      padding: const EdgeInsets.fromLTRB(15, 12, 12, 15),
+      margin: const EdgeInsets.only(left: 7, right: 7, top: 0),
       decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))

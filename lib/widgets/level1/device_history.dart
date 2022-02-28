@@ -96,7 +96,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       ),
       height: MediaQuery.of(context).size.height * 0.4,
       width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.only(left: 7, right: 7, top: 10),
+      margin: const EdgeInsets.only(left: 7, right: 7, top: 0),
       decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))

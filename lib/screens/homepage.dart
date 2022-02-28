@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late PageController _firstController;
   @override
   void initState() {
-    _firstController = PageController(initialPage: 1);
+    _firstController = PageController(initialPage: 0);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -29,6 +29,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var itemList = [
+      // SizedBox(child: MapPage()),
+
+      SizedBox(
+        child: PrimaryCard(
+          button1: TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => MapPage()));
+              },
+              child: const Icon(Icons.arrow_upward),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    const Color.fromRGBO(138, 117, 206, 1)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+              )),
+          childone: const DeviceGroup(),
+          childtwo: DeviceHistory(),
+        ),
+      ),
+
+      SizedBox(child: SampleMap())
+    ];
     return Scaffold(
       drawer: const NudronDrawer(),
       appBar: AppBar(
@@ -42,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxHeight: MediaQuery.of(context).size.height * 0.9 -
+                      (MediaQuery.of(context).size.height * 0.04),
                   minWidth: MediaQuery.of(context).size.width -
                       (MediaQuery.of(context).size.width * 0.04),
                 ),
@@ -52,20 +76,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     scrollDirection: Axis.horizontal,
                     physics: const PageScrollPhysics(),
                     children: [
-                      PageView(
+                      PageView.builder(
                         scrollDirection: Axis.vertical,
+                        itemCount: 2,
                         controller: _firstController,
-                        children: [
-                          SizedBox(child: MapPage()),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: PrimaryCard(
-                              childone: const DeviceGroup(),
-                              childtwo: DeviceHistory(),
-                            ),
-                          ),
-                          SizedBox(child: SampleMap())
-                        ],
+                        itemBuilder: (context, index) {
+                          return itemList[index];
+                        },
                       ),
                       PrimaryCard(
                         childone: DeviceGroup(),
