@@ -59,6 +59,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(0),
       child: Column(
         children: [
           Container(
@@ -96,13 +97,12 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       ),
       height: MediaQuery.of(context).size.height * 0.4,
       width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.only(left: 7, right: 7, top: 0),
       decoration: BoxDecoration(
-          boxShadow: const [
-            BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
-          ],
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(8.0)),
+        boxShadow: const [
+          BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
+        ],
+        color: Theme.of(context).cardColor,
+      ),
     );
   }
 }

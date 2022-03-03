@@ -5,6 +5,7 @@ import 'package:nudron/screens/map_page.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/level1/device_history.dart';
 import 'package:nudron/widgets/primary_card.dart';
+import 'package:nudron/widgets/sample_chart.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,43 +16,23 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+late TabController tabController;
+
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   late PageController _firstController;
   @override
   void initState() {
+    tabController = TabController(length: 2, vsync: this);
     _firstController = PageController(initialPage: 0);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var itemList = [
-      // SizedBox(child: MapPage()),
-
-      SizedBox(
-        child: PrimaryCard(
-          button1: TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => MapPage()));
-              },
-              child: const Icon(Icons.arrow_upward),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    const Color.fromRGBO(138, 117, 206, 1)),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-              )),
-          childone: const DeviceGroup(),
-          childtwo: DeviceHistory(),
-        ),
-      ),
-
-      SizedBox(child: SampleMap())
-    ];
     return Scaffold(
       drawer: const NudronDrawer(),
       appBar: AppBar(
@@ -76,14 +57,83 @@ class _MyHomePageState extends State<MyHomePage> {
                     scrollDirection: Axis.horizontal,
                     physics: const PageScrollPhysics(),
                     children: [
-                      PageView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: 2,
-                        controller: _firstController,
-                        itemBuilder: (context, index) {
-                          return itemList[index];
-                        },
-                      ),
+                      SizedBox(
+                          child: PrimaryCard(
+                        childone: const DeviceGroup(),
+                        childtwo: DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                decoration: BoxDecoration(
+                                    color: Colors.black87,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TabBar(
+                                      unselectedLabelColor: Colors.white,
+                                      indicatorPadding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      indicator: BoxDecoration(
+                                          color: Colors.grey[600],
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      tabs: const [
+                                        Tab(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("Device history"),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("Chart"),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("Map"),
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                child: TabBarView(children: [
+                                  SizedBox(
+                                      child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: DeviceHistory())),
+                                  const Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: CustombarChart(),
+                                  ),
+                                  MapPage(),
+                                ]),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      "See On Map",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
                       PrimaryCard(
                         childone: DeviceGroup(),
                         childtwo: DeviceHistory(),
