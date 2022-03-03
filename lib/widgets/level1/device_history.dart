@@ -62,13 +62,6 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       padding: EdgeInsets.all(0),
       child: Column(
         children: [
-          Container(
-            height: 10,
-            decoration: BoxDecoration(
-                color: Colors.yellow[700],
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
@@ -85,9 +78,9 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                 primary: false,
                 itemCount: dataList.length + 1,
                 controller: _scrollController,
-                itemExtent: 30,
+                itemExtent: 35,
                 itemBuilder: (context, index) {
-                  if (index == dataList.length) {
+                  if (index == (dataList.length)) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   return NudronTable(data: dataList[index], index: index);

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/widgets/bottom_card.dart';
 
 class PrimaryCard extends StatefulWidget {
-  const PrimaryCard(
-      {Key? key,
-      required this.childone,
-      required this.childtwo,
-      this.button1 = const SizedBox.shrink()})
-      : super(key: key);
+  const PrimaryCard({
+    Key? key,
+    required this.childone,
+  }) : super(key: key);
   final Widget childone;
-  final Widget childtwo;
-  final Widget button1;
   @override
   State<PrimaryCard> createState() => _PrimaryCardState();
 }
@@ -20,13 +17,13 @@ class _PrimaryCardState extends State<PrimaryCard> {
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
+            minHeight: MediaQuery.of(context).size.height * 0.4,
             minWidth: MediaQuery.of(context).size.width -
                 (MediaQuery.of(context).size.width * 0.04)),
         child: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [widget.button1, widget.childone, widget.childtwo],
+            children: [widget.childone],
           ),
         ),
       ),

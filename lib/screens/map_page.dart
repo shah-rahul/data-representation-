@@ -28,12 +28,22 @@ class _MapPageState extends State<MapPage> {
         child: Stack(
           children: [
             GoogleMap(
+              zoomControlsEnabled: false,
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: _center,
                 zoom: 10.0,
               ),
             ),
+            Positioned(
+              right: 10,
+              bottom: 10,
+              child: FloatingActionButton(
+                backgroundColor: Colors.black,
+                onPressed: () {},
+                child: const Icon(Icons.add, color: Colors.white),
+              ),
+            )
           ],
         ),
       ),
