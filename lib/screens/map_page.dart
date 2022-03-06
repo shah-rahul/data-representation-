@@ -25,26 +25,13 @@ class _MapPageState extends State<MapPage> {
         decoration: BoxDecoration(boxShadow: const [
           BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
         ], color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
-        child: Stack(
-          children: [
-            GoogleMap(
-              zoomControlsEnabled: false,
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 10.0,
-              ),
-            ),
-            Positioned(
-              right: 10,
-              bottom: 10,
-              child: FloatingActionButton(
-                backgroundColor: Colors.black,
-                onPressed: () {},
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            )
-          ],
+        child: GoogleMap(
+          zoomControlsEnabled: false,
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 10.0,
+          ),
         ),
       ),
     ));

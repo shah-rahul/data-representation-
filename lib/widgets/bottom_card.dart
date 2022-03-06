@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/screens/chart_page.dart';
+import 'package:nudron/widgets/map_display.dart';
 import 'package:nudron/widgets/sample_chart.dart';
 
 import '../screens/map_page.dart';
@@ -68,14 +70,28 @@ class BottomCard extends StatelessWidget {
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: DeviceHistory()),
-                    const Padding(
+                    FittedBox(fit: BoxFit.scaleDown, child: DeviceHistory()),
+                    Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: CustombarChart(),
+                      child: Stack(
+                        children: [
+                          const CustombarChart(),
+                          Positioned(
+                            right: 10,
+                            bottom: 10,
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.black,
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ChartPage()));
+                              },
+                              child: const Icon(Icons.add, color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    MapPage(),
+                    MapContainer(),
                   ]),
             ),
           ],

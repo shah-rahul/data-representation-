@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 
 import '../widgets/sample_chart.dart';
 
-class SampleMap extends StatefulWidget {
-  SampleMap({Key? key}) : super(key: key);
+class ChartPage extends StatefulWidget {
+  ChartPage({Key? key}) : super(key: key);
 
   @override
-  State<SampleMap> createState() => _SampleMapState();
+  State<ChartPage> createState() => _SampleMapState();
 }
 
-class _SampleMapState extends State<SampleMap> {
+class _SampleMapState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
