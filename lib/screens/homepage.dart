@@ -56,6 +56,10 @@ class _MyHomePageState extends State<MyHomePage>
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: Column(
                     children: [
+                      // Text(
+                      //   "header/header2",
+                      //   style: Theme.of(context).primaryTextTheme.headline1,
+                      // ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.4,
                         child: PageView(

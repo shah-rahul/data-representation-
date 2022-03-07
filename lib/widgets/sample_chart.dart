@@ -12,34 +12,58 @@ class CustombarChart extends StatefulWidget {
 
 class _CustombarChartState extends State<CustombarChart> {
   bool isMonthData = true;
+  List<SampleChartData> monthlyData = [];
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onDoubleTap: () {
-        setState(() {
-          isMonthData = !isMonthData;
-        });
-      },
-      child: charts.NumericComboChart(
-          isMonthData ? _createSampleData() : _createDataForMonth(),
-          animate: true,
-          defaultRenderer: charts.LineRendererConfig(),
-          animationDuration: const Duration(milliseconds: 100),
-          defaultInteractions: true,
-          customSeriesRenderers: [
-            charts.BarRendererConfig(customRendererId: 'customBar')
-          ]),
-    );
+    return
+
+        // GestureDetector(
+        //   onDoubleTap: () {
+        //     setState(() {
+        //       isMonthData = !isMonthData;
+        //     });
+        //   },
+        //   child:
+
+        charts.NumericComboChart(
+            isMonthData
+                ? _createSampleData()
+                : _createDataForMonth(monthlyData),
+            animate: true,
+            defaultRenderer: charts.LineRendererConfig(),
+            animationDuration: const Duration(milliseconds: 100),
+            defaultInteractions: true,
+            selectionModels: [
+          charts.SelectionModelConfig(
+              changedListener: (charts.SelectionModel model) => {
+                    model.selectedDatum.forEach((element) {
+                      var data = element.datum as SampleChartData;
+                      SampleChartData extracted =
+                          SampleChartData(data1: data.data1, data2: data.data2);
+                      monthlyData.add(extracted);
+                    }),
+                    setState(() {
+                      isMonthData = !isMonthData;
+                      _createDataForMonth(monthlyData);
+                    })
+                  })
+        ],
+            customSeriesRenderers: [
+          charts.BarRendererConfig(customRendererId: 'customBar')
+        ]
+
+            //  )
+            );
   }
 
-  static List<charts.Series<SampleChartData, int>> _createDataForMonth() {
+  static List<charts.Series<SampleChartData, int>> _createDataForMonth(list) {
     return [
       charts.Series<SampleChartData, int>(
         id: 'yearrange1',
         colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
         domainFn: (SampleChartData sales, _) => sales.data1,
         measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset1,
+        data: list,
       )..setAttribute(charts.rendererIdKey, 'customBar'),
     ];
   }
