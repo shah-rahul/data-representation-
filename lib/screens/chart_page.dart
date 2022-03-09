@@ -32,7 +32,7 @@ class _SampleMapState extends State<ChartPage> {
                       width: MediaQuery.of(context).size.width * 1.35,
                       child: Container(
                           decoration: const BoxDecoration(color: Colors.white),
-                          child: const CustombarChart()),
+                          child: CustombarChart()),
                     ),
                   ),
                 ),

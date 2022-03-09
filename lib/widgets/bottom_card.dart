@@ -75,7 +75,7 @@ class BottomCard extends StatelessWidget {
                       padding: const EdgeInsets.all(20.0),
                       child: Stack(
                         children: [
-                          const CustombarChart(),
+                           CustombarChart(),
                           Positioned(
                             right: 10,
                             bottom: 10,

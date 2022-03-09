@@ -1,6 +1,13 @@
+import 'dart:math';
+
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/src/text_element.dart' as ChartText;
+import 'package:charts_flutter/src/text_style.dart' as ChartStyle;
 import 'package:nudron/models/chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+
+int prev = DateTime.now().millisecondsSinceEpoch;
 
 class CustombarChart extends StatefulWidget {
   const CustombarChart({
@@ -12,9 +19,15 @@ class CustombarChart extends StatefulWidget {
 
 class _CustombarChartState extends State<CustombarChart> {
   bool isMonthData = true;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   List<SampleChartData> monthlyData = [];
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return
 
         // GestureDetector(
@@ -33,20 +46,38 @@ class _CustombarChartState extends State<CustombarChart> {
             defaultRenderer: charts.LineRendererConfig(),
             animationDuration: const Duration(milliseconds: 100),
             defaultInteractions: true,
+            behaviors: [
+          charts.SeriesLegend(
+              position: charts.BehaviorPosition.top,
+              horizontalFirst: false,
+              desiredMaxRows: 2,
+              entryTextStyle: const TextStyleSpec(
+                  fontSize: 15, color: charts.MaterialPalette.black),
+              cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
+              // showMeasures: true,
+              insideJustification: InsideJustification.topStart),
+          charts.SelectNearest(
+              eventTrigger: charts.SelectionTrigger.tapAndDrag),
+          charts.LinePointHighlighter(
+            symbolRenderer: CustomCircleSymbolRenderer(size: size),
+          ),
+        ],
             selectionModels: [
           charts.SelectionModelConfig(
-              changedListener: (charts.SelectionModel model) => {
-                    model.selectedDatum.forEach((element) {
-                      var data = element.datum as SampleChartData;
-                      SampleChartData extracted =
-                          SampleChartData(data1: data.data1, data2: data.data2);
-                      monthlyData.add(extracted);
-                    }),
-                    setState(() {
-                      isMonthData = !isMonthData;
-                      _createDataForMonth(monthlyData);
-                    })
-                  })
+              type: charts.SelectionModelType.info,
+              changedListener: (charts.SelectionModel model) {
+                if (model.hasDatumSelection) {
+                  selectedDatum = [];
+                  model.selectedDatum.forEach((charts.SeriesDatum datumPair) {
+                    var data = datumPair.datum as SampleChartData;
+                    print(data.data2);
+                    selectedDatum.add({
+                      'color': datumPair.series.colorFn!(0),
+                      'text': '${data.data1} : ${data.data2}'
+                    });
+                  });
+                }
+              })
         ],
             customSeriesRenderers: [
           charts.BarRendererConfig(customRendererId: 'customBar')
@@ -68,6 +99,8 @@ class _CustombarChartState extends State<CustombarChart> {
     ];
   }
 
+  static List selectedDatum = [];
+  static String unit = "6";
   static List<charts.Series<SampleChartData, int>> _createSampleData() {
     return [
       charts.Series<SampleChartData, int>(
@@ -118,5 +151,59 @@ class _CustombarChartState extends State<CustombarChart> {
           measureFn: (SampleChartData sales, _) => sales.data2,
           data: SampleChartData.dataset6),
     ];
+  }
+}
+
+//---
+class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
+  final size;
+
+  CustomCircleSymbolRenderer({this.size});
+
+  @override
+  void paint(charts.ChartCanvas canvas, Rectangle bounds,
+      {List<int>? dashPattern,
+      charts.Color? fillColor,
+      charts.FillPatternType? fillPattern,
+      charts.Color? strokeColor,
+      double? strokeWidthPx}) {
+    super.paint(canvas, bounds,
+        dashPattern: dashPattern,
+        fillColor: fillColor,
+        strokeColor: strokeColor,
+        strokeWidthPx: strokeWidthPx);
+
+    List tooltips = _CustombarChartState.selectedDatum;
+    String unit = _CustombarChartState.unit;
+    if (tooltips != null && tooltips.length > 0) {
+      num tipTextLen = (tooltips[0]['text'] + unit).length;
+      num rectWidth = bounds.width + tipTextLen * 8.3;
+      num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
+      num left = bounds.left > (size?.width ?? 300) / 2
+          ? (bounds.left > size?.width / 4
+              ? bounds.left - rectWidth
+              : bounds.left - rectWidth / 2)
+          : bounds.left - 40;
+
+      canvas.drawRect(Rectangle(left, 0, rectWidth, rectHeight),
+          fill: charts.Color.fromHex(code: '#666666'));
+
+      for (int i = 0; i < tooltips.length; i++) {
+        canvas.drawPoint(
+          point: Point(left.round() + 6, (i + 1) * 15),
+          radius: 3,
+          fill: tooltips[i]['color'],
+          stroke: charts.Color.white,
+          strokeWidthPx: 1,
+        );
+        ChartStyle.TextStyle textStyle = ChartStyle.TextStyle();
+        textStyle.color = charts.Color.white;
+        textStyle.fontSize = 13;
+        canvas.drawText(
+            ChartText.TextElement(tooltips[i]['text'], style: textStyle),
+            left.round() + 15,
+            i * 15 + 8);
+      }
+    }
   }
 }
