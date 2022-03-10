@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/src/text_element.dart' as ChartText;
 import 'package:charts_flutter/src/text_style.dart' as ChartStyle;
@@ -28,70 +27,83 @@ class _CustombarChartState extends State<CustombarChart> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 1.5,
+        child: GestureDetector(
+            onDoubleTap: () {
+              setState(() {
+                isMonthData = !isMonthData;
+              });
+            },
+            child: charts.NumericComboChart(
+                isMonthData
+                    ? _createSampleData()
+                    : _createDataForMonth(monthlyData),
+                animate: true,
+                defaultRenderer: charts.LineRendererConfig(),
+                animationDuration: const Duration(milliseconds: 100),
+                defaultInteractions: true,
+                behaviors: [
+                  // charts.SlidingViewport(),
+                  // charts.PanAndZoomBehavior(),
 
-        // GestureDetector(
-        //   onDoubleTap: () {
-        //     setState(() {
-        //       isMonthData = !isMonthData;
-        //     });
-        //   },
-        //   child:
+                  // charts.SeriesLegend(
+                  //     position: charts.BehaviorPosition.top,
+                  //     horizontalFirst: false,
+                  //     desiredMaxRows: 2,
+                  //     entryTextStyle: const TextStyleSpec(
+                  //         fontSize: 15, color: charts.MaterialPalette.black),
+                  //     cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
+                  //     // showMeasures: true,
+                  //     insideJustification: InsideJustification.topStart),
+                  charts.SelectNearest(
+                      eventTrigger: charts.SelectionTrigger.tapAndDrag),
+                  charts.LinePointHighlighter(
+                    symbolRenderer: CustomCircleSymbolRenderer(size: size),
+                  ),
+                ],
+                selectionModels: [
+                  charts.SelectionModelConfig(
+                      type: charts.SelectionModelType.info,
+                      changedListener: (charts.SelectionModel model) {
+                        int curr = DateTime.now().millisecondsSinceEpoch;
+                        if (model.hasDatumSelection) {
+                          monthlyData = [];
+                          // model.selectedDatum
+                          //     .forEach((charts.SeriesDatum datumPair) {
+                          //   var data = datumPair.datum as SampleChartData;
+                          // });
+                          monthlyData = SampleChartData.dataset5;
+                          selectedDatum = [];
+                          model.selectedDatum
+                              .forEach((charts.SeriesDatum datumPair) {
+                            var data = datumPair.datum as SampleChartData;
 
-        charts.NumericComboChart(
-            isMonthData
-                ? _createSampleData()
-                : _createDataForMonth(monthlyData),
-            animate: true,
-            defaultRenderer: charts.LineRendererConfig(),
-            animationDuration: const Duration(milliseconds: 100),
-            defaultInteractions: true,
-            behaviors: [
-          charts.SeriesLegend(
-              position: charts.BehaviorPosition.top,
-              horizontalFirst: false,
-              desiredMaxRows: 2,
-              entryTextStyle: const TextStyleSpec(
-                  fontSize: 15, color: charts.MaterialPalette.black),
-              cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
-              // showMeasures: true,
-              insideJustification: InsideJustification.topStart),
-          charts.SelectNearest(
-              eventTrigger: charts.SelectionTrigger.tapAndDrag),
-          charts.LinePointHighlighter(
-            symbolRenderer: CustomCircleSymbolRenderer(size: size),
-          ),
-        ],
-            selectionModels: [
-          charts.SelectionModelConfig(
-              type: charts.SelectionModelType.info,
-              changedListener: (charts.SelectionModel model) {
-                if (model.hasDatumSelection) {
-                  selectedDatum = [];
-                  model.selectedDatum.forEach((charts.SeriesDatum datumPair) {
-                    var data = datumPair.datum as SampleChartData;
-                    print(data.data2);
-                    selectedDatum.add({
-                      'color': datumPair.series.colorFn!(0),
-                      'text': '${data.data1} : ${data.data2}'
-                    });
-                  });
-                }
-              })
-        ],
-            customSeriesRenderers: [
-          charts.BarRendererConfig(customRendererId: 'customBar')
-        ]
-
-            //  )
-            );
+                            selectedDatum.add({
+                              'color': datumPair.series.colorFn!(0),
+                              'text': '${data.data1} : ${data.data2}'
+                            });
+                          });
+                        }
+                      })
+                ],
+                customSeriesRenderers: [
+                  charts.BarRendererConfig(
+                    maxBarWidthPx: 4000000,
+                    strokeWidthPx: 10000,
+                    customRendererId: 'customBar')
+                ])),
+      ),
+    );
   }
 
   static List<charts.Series<SampleChartData, int>> _createDataForMonth(list) {
     return [
       charts.Series<SampleChartData, int>(
-        id: 'yearrange1',
-        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+        id: 'monthRange1',
+        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
         domainFn: (SampleChartData sales, _) => sales.data1,
         measureFn: (SampleChartData sales, _) => sales.data2,
         data: list,
