@@ -29,72 +29,72 @@ class _CustombarChartState extends State<CustombarChart> {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 1.5,
-        child: GestureDetector(
-            onDoubleTap: () {
-              setState(() {
-                isMonthData = !isMonthData;
-              });
-            },
+      child: GestureDetector(
+        onDoubleTap: () {
+          if (monthlyData.isEmpty == false) {
+            setState(() {
+              isMonthData = !isMonthData;
+            });
+          }
+        },
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width * 1.5,
             child: charts.NumericComboChart(
-                isMonthData
-                    ? _createSampleData()
-                    : _createDataForMonth(monthlyData),
-                animate: true,
-                defaultRenderer: charts.LineRendererConfig(),
-                animationDuration: const Duration(milliseconds: 100),
-                defaultInteractions: true,
-                behaviors: [
-                  // charts.SlidingViewport(),
-                  // charts.PanAndZoomBehavior(),
+              isMonthData
+                  ? _createSampleData()
+                  : _createDataForMonth(monthlyData),
+              animate: true,
+              defaultRenderer: charts.LineRendererConfig(),
+              animationDuration: const Duration(milliseconds: 100),
+              defaultInteractions: true,
+              behaviors: [
+                // charts.SlidingViewport(),
+                // charts.PanAndZoomBehavior(),
 
-                  // charts.SeriesLegend(
-                  //     position: charts.BehaviorPosition.top,
-                  //     horizontalFirst: false,
-                  //     desiredMaxRows: 2,
-                  //     entryTextStyle: const TextStyleSpec(
-                  //         fontSize: 15, color: charts.MaterialPalette.black),
-                  //     cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
-                  //     // showMeasures: true,
-                  //     insideJustification: InsideJustification.topStart),
-                  charts.SelectNearest(
-                      eventTrigger: charts.SelectionTrigger.tapAndDrag),
-                  charts.LinePointHighlighter(
-                    symbolRenderer: CustomCircleSymbolRenderer(size: size),
-                  ),
-                ],
-                selectionModels: [
-                  charts.SelectionModelConfig(
-                      type: charts.SelectionModelType.info,
-                      changedListener: (charts.SelectionModel model) {
-                        int curr = DateTime.now().millisecondsSinceEpoch;
-                        if (model.hasDatumSelection) {
-                          monthlyData = [];
-                          // model.selectedDatum
-                          //     .forEach((charts.SeriesDatum datumPair) {
-                          //   var data = datumPair.datum as SampleChartData;
-                          // });
-                          monthlyData = SampleChartData.dataset5;
-                          selectedDatum = [];
-                          model.selectedDatum
-                              .forEach((charts.SeriesDatum datumPair) {
-                            var data = datumPair.datum as SampleChartData;
+                // charts.SeriesLegend(
+                //     position: charts.BehaviorPosition.top,
+                //     horizontalFirst: false,
+                //     desiredMaxRows: 2,
+                //     entryTextStyle: const TextStyleSpec(
+                //         fontSize: 15, color: charts.MaterialPalette.black),
+                //     cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
+                //     // showMeasures: true,
+                //     insideJustification: InsideJustification.topStart),
 
-                            selectedDatum.add({
-                              'color': datumPair.series.colorFn!(0),
-                              'text': '${data.data1} : ${data.data2}'
-                            });
+                charts.SelectNearest(eventTrigger: charts.SelectionTrigger.tap),
+                charts.LinePointHighlighter(
+                  symbolRenderer: CustomCircleSymbolRenderer(size: size),
+                ),
+              ],
+              selectionModels: [
+                charts.SelectionModelConfig(
+                    type: charts.SelectionModelType.info,
+                    changedListener: (charts.SelectionModel model) {
+                      int curr = DateTime.now().millisecondsSinceEpoch;
+                      if (model.hasDatumSelection) {
+                        monthlyData = [];
+
+                        monthlyData = SampleChartData.dataset5;
+                        selectedDatum = [];
+                        model.selectedDatum
+                            .forEach((charts.SeriesDatum datumPair) {
+                          var data = datumPair.datum as SampleChartData;
+
+                          selectedDatum.add({
+                            'color': datumPair.series.colorFn!(0),
+                            'text': '${data.data1} : ${data.data2}'
                           });
-                        }
-                      })
-                ],
-                customSeriesRenderers: [
-                  charts.BarRendererConfig(
+                        });
+                      }
+                    }),
+              ],
+              customSeriesRenderers: [
+                charts.BarRendererConfig(
                     maxBarWidthPx: 4000000,
                     strokeWidthPx: 10000,
                     customRendererId: 'customBar')
-                ])),
+              ],
+            )),
       ),
     );
   }
@@ -197,7 +197,13 @@ class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
               : bounds.left - rectWidth / 2)
           : bounds.left - 40;
 
-      canvas.drawRect(Rectangle(left, 0, rectWidth, rectHeight),
+      canvas.drawRect(
+          Rectangle(
+            left,
+            0,
+            rectWidth,
+            rectHeight,
+          ),
           fill: charts.Color.fromHex(code: '#666666'));
 
       for (int i = 0; i < tooltips.length; i++) {
