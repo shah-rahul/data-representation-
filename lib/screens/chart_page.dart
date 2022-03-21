@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../widgets/sample_chart.dart';
 
 class ChartPage extends StatefulWidget {
-  ChartPage({Key? key}) : super(key: key);
+  const ChartPage({Key? key}) : super(key: key);
 
   @override
   State<ChartPage> createState() => _SampleMapState();
@@ -32,7 +31,7 @@ class _SampleMapState extends State<ChartPage> {
                       width: MediaQuery.of(context).size.width * 1.35,
                       child: Container(
                           decoration: const BoxDecoration(color: Colors.white),
-                          child: CustombarChart()),
+                          child: const CustombarChart()),
                     ),
                   ),
                 ),

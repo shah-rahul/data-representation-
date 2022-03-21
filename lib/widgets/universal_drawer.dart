@@ -26,8 +26,8 @@ class _NudronDrawerState extends State<NudronDrawer> {
           ListTile(
             title: Row(
               children: [
-                Icon(Icons.person),
-                SizedBox(width: 10),
+                const Icon(Icons.person),
+                const SizedBox(width: 10),
                 Text(
                   "userName",
                   style: Theme.of(context).primaryTextTheme.bodyText1,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nudron/widgets/bottom_card.dart';
 
 class PrimaryCard extends StatefulWidget {
   const PrimaryCard({
@@ -20,11 +19,9 @@ class _PrimaryCardState extends State<PrimaryCard> {
             minHeight: MediaQuery.of(context).size.height * 0.4,
             minWidth: MediaQuery.of(context).size.width -
                 (MediaQuery.of(context).size.width * 0.04)),
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [widget.childone],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [widget.childone],
         ),
       ),
     );

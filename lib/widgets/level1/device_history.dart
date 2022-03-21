@@ -4,7 +4,7 @@ import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 
 class DeviceHistory extends StatefulWidget {
-  DeviceHistory({Key? key}) : super(key: key);
+  const DeviceHistory({Key? key}) : super(key: key);
 
   @override
   State<DeviceHistory> createState() => _DeviceHistoryState();
@@ -45,7 +45,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
   }
 
   _getMoreData() {
-    print("called");
+    // print("called");
     for (int i = _currentMax; i < _currentMax + 10; i++) {
       dataList
           .add(CellData(data1: i, data2: i + 1, data3: i + 2, data4: i + 3));
@@ -59,7 +59,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: Column(
         children: [
           Padding(

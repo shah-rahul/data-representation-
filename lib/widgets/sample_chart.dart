@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/src/text_element.dart' as ChartText;
-import 'package:charts_flutter/src/text_style.dart' as ChartStyle;
-import 'package:nudron/models/chart_data.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:nudron/widgets/utils/legend_builder.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../models/chart_data.dart';
 
 int prev = DateTime.now().millisecondsSinceEpoch;
 
@@ -16,212 +14,153 @@ class CustombarChart extends StatefulWidget {
   State<CustombarChart> createState() => _CustombarChartState();
 }
 
+bool isMonthData = false;
+String tappedItem = "india";
+late List<ChartData> monthData;
+late ZoomPanBehavior _zoomPanBehavior;
+late TooltipBehavior _tooltipBehavior;
+
 class _CustombarChartState extends State<CustombarChart> {
-  bool isMonthData = true;
   @override
   void initState() {
     super.initState();
-  }
+    monthData = ChartData.dataset5;
 
-  List<SampleChartData> monthlyData = [];
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: GestureDetector(
-        onDoubleTap: () {
-          if (monthlyData.isEmpty == false) {
-            setState(() {
-              isMonthData = !isMonthData;
-            });
-          }
-        },
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width * 1.5,
-            child: charts.NumericComboChart(
-              isMonthData
-                  ? _createSampleData()
-                  : _createDataForMonth(monthlyData),
-              animate: true,
-              defaultRenderer: charts.LineRendererConfig(),
-              animationDuration: const Duration(milliseconds: 100),
-              defaultInteractions: true,
-              behaviors: [
-                // charts.SlidingViewport(),
-                // charts.PanAndZoomBehavior(),
-
-                // charts.SeriesLegend(
-                //     position: charts.BehaviorPosition.top,
-                //     horizontalFirst: false,
-                //     desiredMaxRows: 2,
-                //     entryTextStyle: const TextStyleSpec(
-                //         fontSize: 15, color: charts.MaterialPalette.black),
-                //     cellPadding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
-                //     // showMeasures: true,
-                //     insideJustification: InsideJustification.topStart),
-
-                charts.SelectNearest(eventTrigger: charts.SelectionTrigger.tap),
-                charts.LinePointHighlighter(
-                  symbolRenderer: CustomCircleSymbolRenderer(size: size),
-                ),
-              ],
-              selectionModels: [
-                charts.SelectionModelConfig(
-                    type: charts.SelectionModelType.info,
-                    changedListener: (charts.SelectionModel model) {
-                      int curr = DateTime.now().millisecondsSinceEpoch;
-                      if (model.hasDatumSelection) {
-                        monthlyData = [];
-
-                        monthlyData = SampleChartData.dataset5;
-                        selectedDatum = [];
-                        model.selectedDatum
-                            .forEach((charts.SeriesDatum datumPair) {
-                          var data = datumPair.datum as SampleChartData;
-
-                          selectedDatum.add({
-                            'color': datumPair.series.colorFn!(0),
-                            'text': '${data.data1} : ${data.data2}'
-                          });
-                        });
-                      }
-                    }),
-              ],
-              customSeriesRenderers: [
-                charts.BarRendererConfig(
-                    maxBarWidthPx: 4000000,
-                    strokeWidthPx: 10000,
-                    customRendererId: 'customBar')
-              ],
-            )),
-      ),
+    _zoomPanBehavior = ZoomPanBehavior(
+      enablePinching: true,
+      enablePanning: true,
+    );
+    _tooltipBehavior = TooltipBehavior(
+      enable: true,
     );
   }
 
-  static List<charts.Series<SampleChartData, int>> _createDataForMonth(list) {
-    return [
-      charts.Series<SampleChartData, int>(
-        id: 'monthRange1',
-        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: list,
-      )..setAttribute(charts.rendererIdKey, 'customBar'),
-    ];
+  void notifyParent(int x) {
+    // print('called');
+    isMonthData = !isMonthData;
+    var tappedData = ChartData(data1: x, data2: 78);
+    monthData[0] = tappedData;
+    setState(() {});
   }
 
-  static List selectedDatum = [];
-  static String unit = "6";
-  static List<charts.Series<SampleChartData, int>> _createSampleData() {
-    return [
-      charts.Series<SampleChartData, int>(
-        id: 'yearrange1',
-        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset1,
-      ),
-      charts.Series<SampleChartData, int>(
-        id: 'yearrange2',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset2,
-      ),
-      charts.Series<SampleChartData, int>(
-        id: 'yearrange3',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset3,
-      )
-        // Configure our custom bar renderer for this series.
-        ..setAttribute(charts.rendererIdKey, 'customBar'),
-      charts.Series<SampleChartData, int>(
-        id: 'yearrange4',
-        colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset4,
-      )
-        // Configure our custom bar renderer for this series.
-        ..setAttribute(charts.rendererIdKey, 'customBar'),
-      charts.Series<SampleChartData, int>(
-        id: 'yearrange5',
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (SampleChartData sales, _) => sales.data1,
-        measureFn: (SampleChartData sales, _) => sales.data2,
-        data: SampleChartData.dataset5,
-      )
-        // Configure our custom bar renderer for this series.
-        ..setAttribute(charts.rendererIdKey, 'customBar'),
-      charts.Series<SampleChartData, int>(
-          id: 'yearrange6',
-          colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-          domainFn: (SampleChartData sales, _) => sales.data1,
-          measureFn: (SampleChartData sales, _) => sales.data2,
-          data: SampleChartData.dataset6),
-    ];
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 2.5,
+      child: isMonthData ? monthlyChart() : yearlyChart(notifyParent, context),
+    );
   }
 }
 
-//---
-class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
-  final size;
+Widget monthlyChart() {
+  return SfCartesianChart(
+    primaryXAxis: CategoryAxis(),
+    series: <CartesianSeries>[
+      ColumnSeries<ChartData, String>(
+          dataSource: monthData,
+          xValueMapper: (ChartData data, _) => data.data1.toString(),
+          yValueMapper: (ChartData data, _) => data.data2),
+    ],
+  );
+}
 
-  CustomCircleSymbolRenderer({this.size});
+Widget yearlyChart(fun, ctx) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      const Text(
+        "Mumbai trends",
+        style: TextStyle(
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          LegendBuilder(text: "Alerts 20", color: Colors.red[900]),
+          const LegendBuilder(text: "Alerts 21", color: Colors.redAccent),
+          const LegendBuilder(text: "Alerts 22", color: Colors.orange)
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: const [
+          LegendBuilder(text: "Usage 20", color: Colors.blue),
+          LegendBuilder(text: "Usage 21", color: Colors.yellow),
+          LegendBuilder(text: "Usage 22", color: Colors.green)
+        ],
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: SizedBox(
+          child: SfCartesianChart(
+              tooltipBehavior: _tooltipBehavior,
+              primaryXAxis: CategoryAxis(
+                visibleMaximum: 8,
+                majorGridLines: const MajorGridLines(width: 0),
+              ),
+              margin: EdgeInsets.zero,
+              zoomPanBehavior: _zoomPanBehavior,
+              series: <CartesianSeries>[
+                ColumnSeries<ChartData, String>(
+                    dataSource: ChartData.dataset1,
+                    name: "one",
+                    color: Colors.red[900],
+                    enableTooltip: true,
+                    width: 1,
+                    spacing: 0,
+                    borderWidth: 300,
+                    onPointDoubleTap: (ChartPointDetails details) {
+                      // print(details.pointIndex);
+                      int index = details.pointIndex ?? 0;
 
-  @override
-  void paint(charts.ChartCanvas canvas, Rectangle bounds,
-      {List<int>? dashPattern,
-      charts.Color? fillColor,
-      charts.FillPatternType? fillPattern,
-      charts.Color? strokeColor,
-      double? strokeWidthPx}) {
-    super.paint(canvas, bounds,
-        dashPattern: dashPattern,
-        fillColor: fillColor,
-        strokeColor: strokeColor,
-        strokeWidthPx: strokeWidthPx);
-
-    List tooltips = _CustombarChartState.selectedDatum;
-    String unit = _CustombarChartState.unit;
-    if (tooltips != null && tooltips.length > 0) {
-      num tipTextLen = (tooltips[0]['text'] + unit).length;
-      num rectWidth = bounds.width + tipTextLen * 8.3;
-      num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
-      num left = bounds.left > (size?.width ?? 300) / 2
-          ? (bounds.left > size?.width / 4
-              ? bounds.left - rectWidth
-              : bounds.left - rectWidth / 2)
-          : bounds.left - 40;
-
-      canvas.drawRect(
-          Rectangle(
-            left,
-            0,
-            rectWidth,
-            rectHeight,
-          ),
-          fill: charts.Color.fromHex(code: '#666666'));
-
-      for (int i = 0; i < tooltips.length; i++) {
-        canvas.drawPoint(
-          point: Point(left.round() + 6, (i + 1) * 15),
-          radius: 3,
-          fill: tooltips[i]['color'],
-          stroke: charts.Color.white,
-          strokeWidthPx: 1,
-        );
-        ChartStyle.TextStyle textStyle = ChartStyle.TextStyle();
-        textStyle.color = charts.Color.white;
-        textStyle.fontSize = 13;
-        canvas.drawText(
-            ChartText.TextElement(tooltips[i]['text'], style: textStyle),
-            left.round() + 15,
-            i * 15 + 8);
-      }
-    }
-  }
+                      fun(index);
+                    },
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+                ColumnSeries<ChartData, String>(
+                    width: 1,
+                    isVisibleInLegend: true,
+                    name: 'two',
+                    spacing: 0,
+                    enableTooltip: true,
+                    color: Colors.redAccent,
+                    dataSource: ChartData.dataset2,
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+                LineSeries<ChartData, String>(
+                    dataSource: ChartData.dataset3,
+                    color: Colors.teal,
+                    name: "three",
+                    enableTooltip: true,
+                    isVisibleInLegend: true,
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+                LineSeries<ChartData, String>(
+                    dataSource: ChartData.dataset7,
+                    isVisibleInLegend: true,
+                    color: Colors.yellow,
+                    name: "four",
+                    enableTooltip: true,
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+                LineSeries<ChartData, String>(
+                    dataSource: ChartData.dataset4,
+                    isVisibleInLegend: true,
+                    enableTooltip: true,
+                    color: Colors.blue,
+                    name: "five",
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+                ColumnSeries<ChartData, String>(
+                    dataSource: ChartData.dataset7,
+                    isVisibleInLegend: true,
+                    name: "six",
+                    enableTooltip: true,
+                    xValueMapper: (ChartData data, _) => data.data1.toString(),
+                    yValueMapper: (ChartData data, _) => data.data2),
+              ]),
+        ),
+      ),
+    ],
+  );
 }

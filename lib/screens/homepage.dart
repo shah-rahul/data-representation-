@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nudron/screens/chart_page.dart';
-import 'package:nudron/screens/map_page.dart';
 import 'package:nudron/widgets/bottom_card.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
-import 'package:nudron/widgets/level1/device_history.dart';
 import 'package:nudron/widgets/primary_card.dart';
-import 'package:nudron/widgets/sample_chart.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,6 +17,7 @@ late TabController tabController;
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
+  // ignore: unused_field
   late PageController _firstController;
   @override
   void initState() {

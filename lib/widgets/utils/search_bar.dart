@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
-  SearchBar({Key? key}) : super(key: key);
+  const SearchBar({Key? key}) : super(key: key);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -42,7 +42,7 @@ class _SearchBarState extends State<SearchBar> {
         },
         displayStringForOption: _displayStringForOption,
         onSelected: (selection) {
-          print("selection");
+          // print("selection");
         },
       ),
     );

@@ -36,7 +36,7 @@ class _MapContainerState extends State<MapContainer> {
             backgroundColor: Colors.black,
             onPressed: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => MapPage()));
+                  .push(MaterialPageRoute(builder: (context) => const MapPage()));
             },
             child: const Icon(Icons.add, color: Colors.white),
           ),

@@ -3,7 +3,6 @@ import 'package:nudron/screens/chart_page.dart';
 import 'package:nudron/widgets/map_display.dart';
 import 'package:nudron/widgets/sample_chart.dart';
 
-import '../screens/map_page.dart';
 import 'level1/device_history.dart';
 
 class BottomCard extends StatelessWidget {
@@ -70,12 +69,13 @@ class BottomCard extends StatelessWidget {
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    FittedBox(fit: BoxFit.scaleDown, child: DeviceHistory()),
+                    const FittedBox(fit: BoxFit.scaleDown, child: DeviceHistory()),
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding:
+                          const EdgeInsets.only(top: 10.0, left: 5, right: 5),
                       child: Stack(
                         children: [
-                           CustombarChart(),
+                          const CustombarChart(),
                           Positioned(
                             right: 10,
                             bottom: 10,
@@ -83,7 +83,7 @@ class BottomCard extends StatelessWidget {
                               backgroundColor: Colors.black,
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ChartPage()));
+                                    builder: (context) => const ChartPage()));
                               },
                               child: const Icon(Icons.add, color: Colors.white),
                             ),
@@ -91,7 +91,7 @@ class BottomCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    MapContainer(),
+             const       MapContainer(),
                   ]),
             ),
           ],
