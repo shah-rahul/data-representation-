@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/config/themedata.dart';
+import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/screens/homepage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,13 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Nudron',
-      theme: CustomTheme().theme,
-      home: const MyHomePage(),
-      routes: {
-        MyHomePage.routeName: (ctx) => const MyHomePage(),
-      },
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ChartDataProvider())],
+      child: MaterialApp(
+        title: 'Nudron',
+        theme: CustomTheme().theme,
+        home: const MyHomePage(),
+        routes: {
+          MyHomePage.routeName: (ctx) => const MyHomePage(),
+        },
+      ),
     );
   }
 }

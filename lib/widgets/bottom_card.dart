@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
 import 'package:nudron/widgets/map_display.dart';
 import 'package:nudron/widgets/sample_chart.dart';
+import 'package:provider/provider.dart';
 
 import 'level1/device_history.dart';
 
-class BottomCard extends StatelessWidget {
+class BottomCard extends StatefulWidget {
   const BottomCard({Key? key}) : super(key: key);
+
+  @override
+  State<BottomCard> createState() => _BottomCardState();
+}
+
+class _BottomCardState extends State<BottomCard> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<ChartDataProvider>(context).initCall();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +82,8 @@ class BottomCard extends StatelessWidget {
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    const FittedBox(fit: BoxFit.scaleDown, child: DeviceHistory()),
+                    const FittedBox(
+                        fit: BoxFit.scaleDown, child: DeviceHistory()),
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 10.0, left: 5, right: 5),
@@ -91,7 +105,7 @@ class BottomCard extends StatelessWidget {
                         ],
                       ),
                     ),
-             const       MapContainer(),
+                    const MapContainer(),
                   ]),
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/widgets/utils/legend_builder.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../models/chart_data.dart';
@@ -38,7 +40,7 @@ class _CustombarChartState extends State<CustombarChart> {
   void notifyParent(int x) {
     // print('called');
     isMonthData = !isMonthData;
-    var tappedData = ChartData(data1: x, data2: 78);
+    var tappedData = ChartData(month: x.toString(), data: 78);
     monthData[0] = tappedData;
     setState(() {});
   }
@@ -58,8 +60,8 @@ Widget monthlyChart() {
     series: <CartesianSeries>[
       ColumnSeries<ChartData, String>(
           dataSource: monthData,
-          xValueMapper: (ChartData data, _) => data.data1.toString(),
-          yValueMapper: (ChartData data, _) => data.data2),
+          xValueMapper: (ChartData data, _) => data.month.toString(),
+          yValueMapper: (ChartData data, _) => data.data),
     ],
   );
 }
@@ -102,8 +104,8 @@ Widget yearlyChart(fun, ctx) {
               zoomPanBehavior: _zoomPanBehavior,
               series: <CartesianSeries>[
                 ColumnSeries<ChartData, String>(
-                    dataSource: ChartData.dataset1,
-                    name: "one",
+                    dataSource: Provider.of<ChartDataProvider>(ctx).alerts2020,
+                    name: "usage2020",
                     color: Colors.red[900],
                     enableTooltip: true,
                     width: 1,
@@ -115,49 +117,50 @@ Widget yearlyChart(fun, ctx) {
 
                       fun(index);
                     },
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
                 ColumnSeries<ChartData, String>(
                     width: 1,
                     isVisibleInLegend: true,
-                    name: 'two',
+                    name: 'usage2021',
                     spacing: 0,
                     enableTooltip: true,
-                    color: Colors.redAccent,
-                    dataSource: ChartData.dataset2,
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
+                    color: Colors.red,
+                    dataSource: Provider.of<ChartDataProvider>(ctx).alerts2021,
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
+                ColumnSeries<ChartData, String>(
+                    dataSource: Provider.of<ChartDataProvider>(ctx).alerts2022,
+                    isVisibleInLegend: true,
+                    color: Colors.orange,
+                    name: "usage2022",
+                    enableTooltip: true,
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
                 LineSeries<ChartData, String>(
-                    dataSource: ChartData.dataset3,
-                    color: Colors.teal,
-                    name: "three",
+                    dataSource: Provider.of<ChartDataProvider>(ctx).usage2020,
+                    color: Colors.blue[900],
+                    name: "alerts2020",
                     enableTooltip: true,
                     isVisibleInLegend: true,
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
                 LineSeries<ChartData, String>(
-                    dataSource: ChartData.dataset7,
+                    dataSource: Provider.of<ChartDataProvider>(ctx).usage2021,
                     isVisibleInLegend: true,
                     color: Colors.yellow,
-                    name: "four",
+                    name: "alerts2021",
                     enableTooltip: true,
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
                 LineSeries<ChartData, String>(
-                    dataSource: ChartData.dataset4,
+                    dataSource: Provider.of<ChartDataProvider>(ctx).usage2022,
                     isVisibleInLegend: true,
                     enableTooltip: true,
                     color: Colors.blue,
-                    name: "five",
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
-                ColumnSeries<ChartData, String>(
-                    dataSource: ChartData.dataset7,
-                    isVisibleInLegend: true,
-                    name: "six",
-                    enableTooltip: true,
-                    xValueMapper: (ChartData data, _) => data.data1.toString(),
-                    yValueMapper: (ChartData data, _) => data.data2),
+                    name: "alerts2022",
+                    xValueMapper: (ChartData data, _) => data.month.toString(),
+                    yValueMapper: (ChartData data, _) => data.data),
               ]),
         ),
       ),
