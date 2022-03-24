@@ -2,14 +2,64 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:nudron/models/chart_data.dart';
+import 'package:nudron/models/monthly_data_model.dart';
 
 class ChartDataProvider extends ChangeNotifier {
+  String selectedMonth = "Unknown";
   List<ChartData> alerts2020 = [];
   List<ChartData> alerts2021 = [];
   List<ChartData> alerts2022 = [];
   List<ChartData> usage2020 = [];
   List<ChartData> usage2021 = [];
   List<ChartData> usage2022 = [];
+  List<List<MonthylData>> monthlyDataList = [[], [], [], [], [], []];
+  List<String> monthArr = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+  void cleanData(String month) async {
+    monthlyDataList = [[], [], [], [], [], []];
+    selectedMonth = month;
+    int x = monthArr.indexOf(month);
+    final String response =
+        await rootBundle.loadString('assets/yearlyData.json');
+    final data = await json.decode(response) as List;
+    data.forEach((element) {
+      var ts = element[0] * 86400000;
+      var date = DateTime.fromMillisecondsSinceEpoch(ts);
+      if (date.month == x) {
+        if (date.year == 2020) {
+          monthlyDataList[0].add(MonthylData(date: date, data: element[1]));
+          monthlyDataList[3].add(MonthylData(date: date, data: element[2]));
+        }
+        if (date.year == 2021) {
+          monthlyDataList[1].add(MonthylData(date: date, data: element[1]));
+          monthlyDataList[4].add(MonthylData(date: date, data: element[2]));
+        }
+        if (date.year == 2022) {
+          monthlyDataList[2].add(MonthylData(date: date, data: element[1]));
+          monthlyDataList[5].add(MonthylData(date: date, data: element[2]));
+        }
+      }
+    });
+    monthlyDataList.forEach(((element) => element.sort(
+          (a, b) {
+            return a.date.compareTo(b.date);
+          },
+        )));
+    notifyListeners();
+  }
 
   void initCall() {
     readYear2020();
@@ -130,30 +180,30 @@ class ChartDataProvider extends ChangeNotifier {
         }
       }
     });
-    usage2020.add(ChartData(month: "janaury", data: jan));
-    usage2020.add(ChartData(month: "February", data: feb));
-    usage2020.add(ChartData(month: "March", data: march));
-    usage2020.add(ChartData(month: "April", data: april));
-    usage2020.add(ChartData(month: "May", data: may));
-    usage2020.add(ChartData(month: "June", data: june));
-    usage2020.add(ChartData(month: "July", data: july));
-    usage2020.add(ChartData(month: "August", data: august));
-    usage2020.add(ChartData(month: "Sptember", data: september));
-    usage2020.add(ChartData(month: "October", data: october));
-    usage2020.add(ChartData(month: "November", data: november));
-    usage2020.add(ChartData(month: "December", data: december));
-    alerts2020.add(ChartData(month: "janaury", data: jan1));
-    alerts2020.add(ChartData(month: "February", data: feb1));
-    alerts2020.add(ChartData(month: "March", data: march1));
-    alerts2020.add(ChartData(month: "April", data: april1));
-    alerts2020.add(ChartData(month: "May", data: may1));
-    alerts2020.add(ChartData(month: "June", data: june1));
-    alerts2020.add(ChartData(month: "July", data: july1));
-    alerts2020.add(ChartData(month: "August", data: august1));
-    alerts2020.add(ChartData(month: "Sptember", data: september1));
-    alerts2020.add(ChartData(month: "October", data: october1));
-    alerts2020.add(ChartData(month: "November", data: november1));
-    alerts2020.add(ChartData(month: "December", data: december1));
+    usage2020.add(ChartData(month: monthArr[0], data: jan));
+    usage2020.add(ChartData(month: monthArr[1], data: feb));
+    usage2020.add(ChartData(month: monthArr[2], data: march));
+    usage2020.add(ChartData(month: monthArr[3], data: april));
+    usage2020.add(ChartData(month: monthArr[4], data: may));
+    usage2020.add(ChartData(month: monthArr[5], data: june));
+    usage2020.add(ChartData(month: monthArr[6], data: july));
+    usage2020.add(ChartData(month: monthArr[7], data: august));
+    usage2020.add(ChartData(month: monthArr[8], data: september));
+    usage2020.add(ChartData(month: monthArr[9], data: october));
+    usage2020.add(ChartData(month: monthArr[10], data: november));
+    usage2020.add(ChartData(month: monthArr[11], data: december));
+    alerts2020.add(ChartData(month: monthArr[0], data: jan1));
+    alerts2020.add(ChartData(month: monthArr[1], data: feb1));
+    alerts2020.add(ChartData(month: monthArr[2], data: march1));
+    alerts2020.add(ChartData(month: monthArr[3], data: april1));
+    alerts2020.add(ChartData(month: monthArr[4], data: may1));
+    alerts2020.add(ChartData(month: monthArr[5], data: june1));
+    alerts2020.add(ChartData(month: monthArr[6], data: july1));
+    alerts2020.add(ChartData(month: monthArr[7], data: august1));
+    alerts2020.add(ChartData(month: monthArr[8], data: september1));
+    alerts2020.add(ChartData(month: monthArr[9], data: october1));
+    alerts2020.add(ChartData(month: monthArr[10], data: november1));
+    alerts2020.add(ChartData(month: monthArr[11], data: december1));
   }
 
   Future<void> readYear2021() async {
@@ -269,30 +319,30 @@ class ChartDataProvider extends ChangeNotifier {
         }
       }
     });
-    usage2021.add(ChartData(month: "janaury", data: jan));
-    usage2021.add(ChartData(month: "February", data: feb));
-    usage2021.add(ChartData(month: "March", data: march));
-    usage2021.add(ChartData(month: "April", data: april));
-    usage2021.add(ChartData(month: "May", data: may));
-    usage2021.add(ChartData(month: "June", data: june));
-    usage2021.add(ChartData(month: "July", data: july));
-    usage2021.add(ChartData(month: "August", data: august));
-    usage2021.add(ChartData(month: "Sptember", data: september));
-    usage2021.add(ChartData(month: "October", data: october));
-    usage2021.add(ChartData(month: "November", data: november));
-    usage2021.add(ChartData(month: "December", data: december));
-    alerts2021.add(ChartData(month: "janaury", data: jan1));
-    alerts2021.add(ChartData(month: "February", data: feb1));
-    alerts2021.add(ChartData(month: "March", data: march1));
-    alerts2021.add(ChartData(month: "April", data: april1));
-    alerts2021.add(ChartData(month: "May", data: may1));
-    alerts2021.add(ChartData(month: "June", data: june1));
-    alerts2021.add(ChartData(month: "July", data: july1));
-    alerts2021.add(ChartData(month: "August", data: august1));
-    alerts2021.add(ChartData(month: "Sptember", data: september1));
-    alerts2021.add(ChartData(month: "October", data: october1));
-    alerts2021.add(ChartData(month: "November", data: november1));
-    alerts2021.add(ChartData(month: "December", data: december1));
+    usage2021.add(ChartData(month: monthArr[0], data: jan));
+    usage2021.add(ChartData(month: monthArr[1], data: feb));
+    usage2021.add(ChartData(month: monthArr[2], data: march));
+    usage2021.add(ChartData(month: monthArr[3], data: april));
+    usage2021.add(ChartData(month: monthArr[4], data: may));
+    usage2021.add(ChartData(month: monthArr[5], data: june));
+    usage2021.add(ChartData(month: monthArr[6], data: july));
+    usage2021.add(ChartData(month: monthArr[7], data: august));
+    usage2021.add(ChartData(month: monthArr[8], data: september));
+    usage2021.add(ChartData(month: monthArr[9], data: october));
+    usage2021.add(ChartData(month: monthArr[10], data: november));
+    usage2021.add(ChartData(month: monthArr[11], data: december));
+    alerts2021.add(ChartData(month: monthArr[0], data: jan1));
+    alerts2021.add(ChartData(month: monthArr[1], data: feb1));
+    alerts2021.add(ChartData(month: monthArr[2], data: march1));
+    alerts2021.add(ChartData(month: monthArr[3], data: april1));
+    alerts2021.add(ChartData(month: monthArr[4], data: may1));
+    alerts2021.add(ChartData(month: monthArr[5], data: june1));
+    alerts2021.add(ChartData(month: monthArr[6], data: july1));
+    alerts2021.add(ChartData(month: monthArr[7], data: august1));
+    alerts2021.add(ChartData(month: monthArr[8], data: september1));
+    alerts2021.add(ChartData(month: monthArr[9], data: october1));
+    alerts2021.add(ChartData(month: monthArr[10], data: november1));
+    alerts2021.add(ChartData(month: monthArr[11], data: december1));
   }
 
   Future<void> readYear2022() async {
@@ -408,29 +458,29 @@ class ChartDataProvider extends ChangeNotifier {
         }
       }
     });
-    usage2022.add(ChartData(month: "janaury", data: jan));
-    usage2022.add(ChartData(month: "February", data: feb));
-    usage2022.add(ChartData(month: "March", data: march));
-    usage2022.add(ChartData(month: "April", data: april));
-    usage2022.add(ChartData(month: "May", data: may));
-    usage2022.add(ChartData(month: "June", data: june));
-    usage2022.add(ChartData(month: "July", data: july));
-    usage2022.add(ChartData(month: "August", data: august));
-    usage2022.add(ChartData(month: "Sptember", data: september));
-    usage2022.add(ChartData(month: "October", data: october));
-    usage2022.add(ChartData(month: "November", data: november));
-    usage2022.add(ChartData(month: "December", data: december));
-    alerts2022.add(ChartData(month: "janaury", data: jan1));
-    alerts2022.add(ChartData(month: "February", data: feb1));
-    alerts2022.add(ChartData(month: "March", data: march1));
-    alerts2022.add(ChartData(month: "April", data: april1));
-    alerts2022.add(ChartData(month: "May", data: may1));
-    alerts2022.add(ChartData(month: "June", data: june1));
-    alerts2022.add(ChartData(month: "July", data: july1));
-    alerts2022.add(ChartData(month: "August", data: august1));
-    alerts2022.add(ChartData(month: "Sptember", data: september1));
-    alerts2022.add(ChartData(month: "October", data: october1));
-    alerts2022.add(ChartData(month: "November", data: november1));
-    alerts2022.add(ChartData(month: "December", data: december1));
+    usage2022.add(ChartData(month: monthArr[0], data: jan));
+    usage2022.add(ChartData(month: monthArr[1], data: feb));
+    usage2022.add(ChartData(month: monthArr[2], data: march));
+    usage2022.add(ChartData(month: monthArr[3], data: april));
+    usage2022.add(ChartData(month: monthArr[4], data: may));
+    usage2022.add(ChartData(month: monthArr[5], data: june));
+    usage2022.add(ChartData(month: monthArr[6], data: july));
+    usage2022.add(ChartData(month: monthArr[7], data: august));
+    usage2022.add(ChartData(month: monthArr[8], data: september));
+    usage2022.add(ChartData(month: monthArr[9], data: october));
+    usage2022.add(ChartData(month: monthArr[10], data: november));
+    usage2022.add(ChartData(month: monthArr[11], data: december));
+    alerts2022.add(ChartData(month: monthArr[0], data: jan1));
+    alerts2022.add(ChartData(month: monthArr[1], data: feb1));
+    alerts2022.add(ChartData(month: monthArr[2], data: march1));
+    alerts2022.add(ChartData(month: monthArr[3], data: april1));
+    alerts2022.add(ChartData(month: monthArr[4], data: may1));
+    alerts2022.add(ChartData(month: monthArr[5], data: june1));
+    alerts2022.add(ChartData(month: monthArr[6], data: july1));
+    alerts2022.add(ChartData(month: monthArr[7], data: august1));
+    alerts2022.add(ChartData(month: monthArr[8], data: september1));
+    alerts2022.add(ChartData(month: monthArr[9], data: october1));
+    alerts2022.add(ChartData(month: monthArr[10], data: november1));
+    alerts2022.add(ChartData(month: monthArr[11], data: december1));
   }
 }
