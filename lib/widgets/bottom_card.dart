@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
 import 'package:nudron/widgets/map_display.dart';
@@ -20,6 +21,8 @@ class _BottomCardState extends State<BottomCard> {
     super.didChangeDependencies();
     Provider.of<ChartDataProvider>(context).initCall();
   }
+
+  GeoHasher geoHasher = GeoHasher();
 
   @override
   Widget build(BuildContext context) {

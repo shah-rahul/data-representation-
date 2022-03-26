@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nudron/providers/mapDataProdiver.dart';
 import 'package:nudron/widgets/bottom_card.dart';
 import 'package:nudron/widgets/level1/device_group.dart';
 import 'package:nudron/widgets/primary_card.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -27,6 +29,13 @@ class _MyHomePageState extends State<MyHomePage>
       DeviceOrientation.portraitUp,
     ]);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider.of<MapDataProvider>(context).mapLoader();
   }
 
   @override

@@ -19,7 +19,6 @@ class CustombarChart extends StatefulWidget {
 
 bool isMonthData = false;
 String tappedItem = "india";
-late List<ChartData> monthData;
 late ZoomPanBehavior _zoomPanBehavior;
 late TooltipBehavior _tooltipBehavior;
 
@@ -27,7 +26,6 @@ class _CustombarChartState extends State<CustombarChart> {
   @override
   void initState() {
     super.initState();
-    monthData = ChartData.dataset1;
 
     _zoomPanBehavior = ZoomPanBehavior(
       enablePinching: true,
