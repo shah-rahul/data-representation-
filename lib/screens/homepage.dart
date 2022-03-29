@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nudron/providers/mapDataProdiver.dart';
+import 'package:nudron/providers/tableDataProvider.dart';
 import 'package:nudron/widgets/bottom_card.dart';
-import 'package:nudron/widgets/level1/device_group.dart';
+import 'package:nudron/widgets/level1/device_list.dart';
+import 'package:nudron/widgets/level2/billing_history.dart';
+import 'package:nudron/widgets/level3/billing_group.dart';
 import 'package:nudron/widgets/primary_card.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +17,8 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
+bool loaded = false;
 
 late TabController tabController;
 
@@ -31,11 +36,23 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
   }
 
+  void initLoader() {
+    if (!loaded) {
+      Provider.of<MapDataProvider>(context).mapLoader();
+      Provider.of<TableDataProvider>(context).billingHistoryDataLoader();
+      Provider.of<TableDataProvider>(context).historyDataLoader();
+      Provider.of<TableDataProvider>(context).deviceListLoader();
+      Provider.of<TableDataProvider>(context).bllingDataLoader();
+      
+    }
+    loaded = true;
+  }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    Provider.of<MapDataProvider>(context).mapLoader();
+    initLoader();
   }
 
   @override
@@ -71,16 +88,16 @@ class _MyHomePageState extends State<MyHomePage>
                         child: PageView(
                           scrollDirection: Axis.horizontal,
                           physics: const PageScrollPhysics(),
-                          controller: PageController(viewportFraction: 0.9),
+                          controller: PageController(viewportFraction: 0.92),
                           children: const [
                             PrimaryCard(
-                              childone: DeviceGroup(),
+                              childone: BillingGroup(),
                             ),
                             PrimaryCard(
-                              childone: DeviceGroup(),
+                              childone: BillingHistory(),
                             ),
                             PrimaryCard(
-                              childone: DeviceGroup(),
+                              childone: DeviceList(),
                             ),
                           ],
                         ),

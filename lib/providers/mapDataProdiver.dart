@@ -10,6 +10,7 @@ class MapDataProvider extends ChangeNotifier {
   GeoHasher hasher = GeoHasher();
   Set<Marker> mapDataList = {};
   void mapLoader() async {
+    print("map data provide called");
     final String response = await rootBundle.loadString('assets/mapData.json');
     final data = await json.decode(response) as List;
     data.forEach((element) {

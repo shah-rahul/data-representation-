@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nudron/models/sample_data.dart';
+import 'package:nudron/models/history_cell_model.dart';
+import 'package:nudron/providers/tableDataProvider.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
+import 'package:provider/provider.dart';
 
 class DeviceHistory extends StatefulWidget {
   const DeviceHistory({Key? key}) : super(key: key);
@@ -10,7 +12,6 @@ class DeviceHistory extends StatefulWidget {
   State<DeviceHistory> createState() => _DeviceHistoryState();
 }
 
-List<CellData> dataList = [];
 ScrollController _scrollController = ScrollController();
 int _currentMax = 10;
 
@@ -31,33 +32,18 @@ class _DeviceHistoryState extends State<DeviceHistory> {
         _getMoreData();
       }
     });
-    dataList = List.generate(10,
-        (i) => CellData(data1: i, data2: i + 1, data3: i + 2, data4: i + 3));
-
-    super.initState();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
   }
 
   _getMoreData() {
-    // print("called");
-    for (int i = _currentMax; i < _currentMax + 10; i++) {
-      dataList
-          .add(CellData(data1: i, data2: i + 1, data3: i + 2, data4: i + 3));
-    }
-
-    _currentMax = _currentMax + 10;
-
-    setState(() {});
+    print("CALLED");
+    Provider.of<TableDataProvider>(context, listen: false)
+        .historyDataRefresher();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<HistoryCellData> dataList =
+        Provider.of<TableDataProvider>(context).historyDataList;
     return Container(
       padding: const EdgeInsets.all(0),
       child: Column(
@@ -83,7 +69,11 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                   if (index == (dataList.length)) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  return NudronTable(data: dataList[index], index: index);
+                  return NudronTable(
+                    data: dataList[index],
+                    index: index,
+                    isBillingData: false,
+                  );
                 },
               )),
         ],

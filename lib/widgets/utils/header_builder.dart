@@ -10,10 +10,10 @@ class TableHeader extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 6),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
                 dataList[0],
                 style: Theme.of(context).primaryTextTheme.headline4,
@@ -27,19 +27,23 @@ class TableHeader extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 6),
+              padding: dataList.length == 4
+                  ? const EdgeInsets.only(left: 6)
+                  : const EdgeInsets.only(right: 0, left: 60),
               child: Text(
                 dataList[2],
                 style: Theme.of(context).primaryTextTheme.headline4,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 6),
-              child: Text(
-                dataList[3],
-                style: Theme.of(context).primaryTextTheme.headline4,
-              ),
-            ),
+            dataList.length == 4
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Text(
+                      dataList[3],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

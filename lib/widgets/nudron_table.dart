@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nudron/models/sample_data.dart';
+import 'package:nudron/models/history_cell_model.dart';
 
 class NudronTable extends StatelessWidget {
-  const NudronTable({Key? key, required this.data, required this.index})
+  const NudronTable(
+      {Key? key,
+      required this.isBillingData,
+      required this.data,
+      required this.index})
       : super(key: key);
-  final CellData data;
+  final HistoryCellData data;
+  final bool isBillingData;
   final int index;
 
   @override
@@ -14,27 +19,50 @@ class NudronTable extends StatelessWidget {
         color: index % 2 == 0 ? Colors.grey[100] : Colors.white,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: isBillingData
+            ? MainAxisAlignment.values[4]
+            : MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
-            data.data1.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Text(
+              data.date.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).primaryTextTheme.bodyLarge,
+            ),
           ),
-          Text(
-            data.data2.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
+          Container(
+            padding:
+                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Text(
+              data.alerts.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).primaryTextTheme.bodyLarge,
+            ),
           ),
-          Text(
-            data.data3.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
+          Container(
+            padding:
+                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Text(
+              data.status.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).primaryTextTheme.bodyLarge,
+            ),
           ),
-          Text(
-            data.data4.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
-          ),
+          Container(
+            padding:
+                isBillingData ? EdgeInsets.only(left: 16) : EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Text(
+              data.comments.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).primaryTextTheme.bodyLarge,
+            ),
+          )
         ],
       ),
     );
-    
   }
 }

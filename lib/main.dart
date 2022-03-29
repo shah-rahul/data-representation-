@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nudron/config/themedata.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/providers/mapDataProdiver.dart';
+import 'package:nudron/providers/tableDataProvider.dart';
 import 'package:nudron/screens/homepage.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ChartDataProvider()),
-        ChangeNotifierProvider(create: (_) => MapDataProvider())
+        ChangeNotifierProvider(create: (_) => MapDataProvider()),
+        ChangeNotifierProvider(create: (_) => TableDataProvider())
       ],
       child: MaterialApp(
         title: 'Nudron',
