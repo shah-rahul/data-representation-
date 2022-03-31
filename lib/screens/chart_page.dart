@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/sample_chart.dart';
+import '../widgets/nudron_primary_chart.dart';
 
 class ChartPage extends StatefulWidget {
   const ChartPage({Key? key}) : super(key: key);

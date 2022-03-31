@@ -43,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage>
       Provider.of<TableDataProvider>(context).historyDataLoader();
       Provider.of<TableDataProvider>(context).deviceListLoader();
       Provider.of<TableDataProvider>(context).bllingDataLoader();
-      
     }
     loaded = true;
   }
@@ -104,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage>
                       ),
                       Expanded(
                         child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height * 0.4,
                             child: const BottomCard()),
                       )

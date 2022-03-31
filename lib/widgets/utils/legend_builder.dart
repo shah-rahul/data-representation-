@@ -9,23 +9,26 @@ class LegendBuilder extends StatelessWidget {
   final color;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: 10,
-          height: 10,
-          color: color,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.black),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 15,
+            height: 15,
+            color: color,
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.black),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

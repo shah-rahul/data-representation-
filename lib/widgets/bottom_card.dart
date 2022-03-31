@@ -3,7 +3,7 @@ import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
 import 'package:nudron/widgets/map_display.dart';
-import 'package:nudron/widgets/sample_chart.dart';
+import 'package:nudron/widgets/nudron_primary_chart.dart';
 import 'package:provider/provider.dart';
 
 import 'level1/device_history.dart';
@@ -88,8 +88,7 @@ class _BottomCardState extends State<BottomCard> {
                     const FittedBox(
                         fit: BoxFit.scaleDown, child: DeviceHistory()),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10.0, left: 5, right: 5),
+                      padding: const EdgeInsets.only(left: 5, right: 5),
                       child: Stack(
                         children: [
                           const CustombarChart(),
@@ -108,7 +107,19 @@ class _BottomCardState extends State<BottomCard> {
                         ],
                       ),
                     ),
-                    const MapContainer(),
+                    Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10.0,
+                                  color: Color.fromRGBO(0, 0, 0, 0.1))
+                            ],
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(5),
+                                bottomRight: Radius.circular(5))),
+                        child: MapContainer()),
                   ]),
             ),
           ],
