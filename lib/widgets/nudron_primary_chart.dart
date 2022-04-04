@@ -4,7 +4,7 @@ import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/widgets/utils/legend_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:intl/intl.dart';
 import '../models/chart_data.dart';
 
 int prev = DateTime.now().millisecondsSinceEpoch;
@@ -192,6 +192,7 @@ Widget monthlyChart(ctx, fun, setStatus) {
         Padding(
           padding: const EdgeInsets.only(top: 1),
           child: SfCartesianChart(
+            margin: EdgeInsets.all(0),
             tooltipBehavior: TooltipBehavior(enable: true),
             zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
             axes: <ChartAxis>[
@@ -411,16 +412,22 @@ Widget yearlyChart(fun, ctx, setStatus) {
               tooltipBehavior: _tooltipBehavior,
               primaryXAxis: CategoryAxis(
                 name: "",
-                labelRotation: 45,
+                labelsExtent: 100,
+                labelRotation: 15,
                 visibleMaximum: 6,
                 majorGridLines: const MajorGridLines(width: 0),
               ),
-              primaryYAxis: CategoryAxis(labelRotation: 45),
+              primaryYAxis: NumericAxis(
+                labelsExtent: 30,
+                numberFormat: NumberFormat.compact(),
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
+              ),
               zoomPanBehavior: _zoomPanBehavior,
+              margin: EdgeInsets.all(0),
               axes: <ChartAxis>[
                 NumericAxis(
                   name: "yAxis",
-                  labelRotation: 45,
+                  numberFormat: NumberFormat.compact(),
                   opposedPosition: true,
                   interval: 5000,
                 )

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/config/themedata.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
+import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/mapDataProdiver.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
+import 'package:nudron/providers/userDataProvider.dart';
+import 'package:nudron/screens/SidebarScreens/account.dart';
+import 'package:nudron/screens/SidebarScreens/profile.dart';
+import 'package:nudron/screens/SidebarScreens/settings.dart';
 import 'package:nudron/screens/homepage.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +25,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ChartDataProvider()),
         ChangeNotifierProvider(create: (_) => MapDataProvider()),
-        ChangeNotifierProvider(create: (_) => TableDataProvider())
+        ChangeNotifierProvider(create: (_) => TableDataProvider()),
+        ChangeNotifierProvider(create: (_) => UserDataProvider()),
+        ChangeNotifierProvider(create: (_) => GlobalConfigProvider()),
       ],
       child: MaterialApp(
         title: 'Nudron',
@@ -28,6 +35,9 @@ class MyApp extends StatelessWidget {
         home: const MyHomePage(),
         routes: {
           MyHomePage.routeName: (ctx) => const MyHomePage(),
+          ProfilePage.routeName: (ctx) => const ProfilePage(),
+          AccountPage.routeName: (ctx) => const AccountPage(),
+          SettingsPage.routeName: (ctx) => const SettingsPage(),
         },
       ),
     );

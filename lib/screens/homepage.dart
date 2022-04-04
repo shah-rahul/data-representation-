@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/mapDataProdiver.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
+import 'package:nudron/providers/userDataProvider.dart';
 import 'package:nudron/widgets/bottom_card.dart';
 import 'package:nudron/widgets/level1/device_list.dart';
 import 'package:nudron/widgets/level2/billing_history.dart';
 import 'package:nudron/widgets/level3/billing_group.dart';
+import 'package:nudron/widgets/level4/levelFourBottomCard.dart';
+import 'package:nudron/widgets/level4/zonalCard.dart';
 import 'package:nudron/widgets/primary_card.dart';
 import 'package:nudron/widgets/universal_drawer.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage>
       Provider.of<TableDataProvider>(context).historyDataLoader();
       Provider.of<TableDataProvider>(context).deviceListLoader();
       Provider.of<TableDataProvider>(context).bllingDataLoader();
+      Provider.of<UserDataProvider>(context).userDataLoader();
     }
     loaded = true;
   }
@@ -82,30 +87,66 @@ class _MyHomePageState extends State<MyHomePage>
                       //   "header/header2",
                       //   style: Theme.of(context).primaryTextTheme.headline1,
                       // ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: PageView(
-                          scrollDirection: Axis.horizontal,
-                          physics: const PageScrollPhysics(),
-                          controller: PageController(viewportFraction: 0.92),
-                          children: const [
-                            PrimaryCard(
-                              childone: BillingGroup(),
+                      Provider.of<GlobalConfigProvider>(context).isLevelFour
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: PageView(
+                                onPageChanged: (index) {
+                                  Provider.of<GlobalConfigProvider>(context,
+                                          listen: false)
+                                      .changeSelectedPage(index);
+                                },
+                                scrollDirection: Axis.horizontal,
+                                physics: const PageScrollPhysics(),
+                                controller:
+                                    PageController(viewportFraction: 0.92),
+                                children: const [
+                                  PrimaryCard(
+                                    childone: ZonalCard(),
+                                  ),
+                                  PrimaryCard(
+                                    childone: BillingHistory(),
+                                  ),
+                                  PrimaryCard(
+                                    childone: DeviceList(),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: PageView(
+                                onPageChanged: (index) {
+                                  Provider.of<GlobalConfigProvider>(context,
+                                          listen: false)
+                                      .changeSelectedPage(index);
+                                },
+                                scrollDirection: Axis.horizontal,
+                                physics: const PageScrollPhysics(),
+                                controller:
+                                    PageController(viewportFraction: 0.92),
+                                children: const [
+                                  PrimaryCard(
+                                    childone: BillingHistory(),
+                                  ),
+                                  PrimaryCard(
+                                    childone: DeviceList(),
+                                  ),
+                                ],
+                              ),
                             ),
-                            PrimaryCard(
-                              childone: BillingHistory(),
-                            ),
-                            PrimaryCard(
-                              childone: DeviceList(),
-                            ),
-                          ],
-                        ),
-                      ),
                       Expanded(
                         child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height * 0.4,
-                            child: const BottomCard()),
+                            child: Provider.of<GlobalConfigProvider>(context)
+                                            .selectedPage ==
+                                        0 &&
+                                    Provider.of<GlobalConfigProvider>(context,
+                                            listen: false)
+                                        .isLevelFour
+                                ? LevelFourBottomCard()
+                                : BottomCard()),
                       )
                     ],
                   ),

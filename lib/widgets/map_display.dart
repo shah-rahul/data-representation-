@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nudron/config/map_helper.dart';
 import 'package:nudron/models/map_marker.dart';
@@ -25,6 +26,7 @@ class _MapContainerState extends State<MapContainer> {
   final int _maxClusterZoom = 19;
   Fluster<MapMarker>? _clusterManager;
   double _currentZoom = 15;
+
   bool _isMapLoading = true;
   bool _areMarkersLoading = true;
   final Color _clusterColor = Colors.orange;
@@ -37,7 +39,9 @@ class _MapContainerState extends State<MapContainer> {
   );
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController.complete(controller);
+    controller
+        .setMapStyle(_mapStyle)
+        .then((value) => _mapController.complete(controller));
 
     setState(() {
       _isMapLoading = false;
@@ -110,11 +114,22 @@ class _MapContainerState extends State<MapContainer> {
     });
   }
 
+  String _mapStyle = '';
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     setLatLngList();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    rootBundle.loadString('assets/map_style.txt').then((string) {
+      _mapStyle = string;
+    });
   }
 
   @override

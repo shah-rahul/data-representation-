@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
+import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
 import 'package:nudron/widgets/map_display.dart';
 import 'package:nudron/widgets/nudron_primary_chart.dart';
@@ -58,11 +59,22 @@ class _BottomCardState extends State<BottomCard> {
                     indicator: BoxDecoration(
                         color: Colors.grey[600],
                         borderRadius: BorderRadius.circular(8)),
-                    tabs: const [
+                    tabs: [
                       Tab(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Device history"),
+                          child: Provider.of<GlobalConfigProvider>(context)
+                                          .isLevelFour &&
+                                      Provider.of<GlobalConfigProvider>(context)
+                                              .selectedPage ==
+                                          1 ||
+                                  !Provider.of<GlobalConfigProvider>(context)
+                                          .isLevelFour &&
+                                      Provider.of<GlobalConfigProvider>(context)
+                                              .selectedPage ==
+                                          0
+                              ? Text("Device history")
+                              : Text("Billing history"),
                         ),
                       ),
                       Tab(
