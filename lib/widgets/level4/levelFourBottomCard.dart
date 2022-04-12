@@ -25,16 +25,16 @@ class _BottomCardState extends State<LevelFourBottomCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5),
-      child: DefaultTabController(
+    return 
+      
+       DefaultTabController(
         length: 2,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height: 10,
-              width: MediaQuery.of(context).size.width * 0.9,
+              height: 5,
+              width: MediaQuery.of(context).size.width ,
               decoration: BoxDecoration(
                   color: Colors.yellow[700],
                   borderRadius: const BorderRadius.only(
@@ -42,39 +42,39 @@ class _BottomCardState extends State<LevelFourBottomCard> {
                       topRight: Radius.circular(5))),
             ),
             Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.9,
+              height: 30,
+              width: MediaQuery.of(context).size.width ,
               decoration: const BoxDecoration(
                   color: Colors.black87,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(5),
                       bottomRight: Radius.circular(5))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+    
                 child: TabBar(
                     unselectedLabelColor: Colors.white,
                     indicatorPadding: const EdgeInsets.only(left: 5, right: 5),
                     indicator: BoxDecoration(
                         color: Colors.grey[600],
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(0)),
                     tabs: const [
-                      Tab(
+                     Tab(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Chart"),
+                          
+                          child: Text("Chart",style:TextStyle(fontSize: 11) ,overflow:TextOverflow.fade,),
                         ),
                       ),
                       Tab(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Map"),
+                          child: Text("Map", style:TextStyle(fontSize: 11) ),
                         ),
                       ),
                     ]),
-              ),
+              
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.37,
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
@@ -99,7 +99,8 @@ class _BottomCardState extends State<LevelFourBottomCard> {
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.45,
+                        width: MediaQuery.of(context).size.width ,
                         decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
@@ -115,7 +116,7 @@ class _BottomCardState extends State<LevelFourBottomCard> {
             ),
           ],
         ),
-      ),
+      
     );
   }
 }

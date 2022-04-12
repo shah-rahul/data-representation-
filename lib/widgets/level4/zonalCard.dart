@@ -14,6 +14,8 @@ class ZonalCard extends StatefulWidget {
   State<ZonalCard> createState() => _DeviceGroupState();
 }
 
+var SearchField = TextEditingController();
+
 ScrollController _scrollController = ScrollController();
 const dataTitle = ["Label", "Devices", "Alerts", "Dues"];
 
@@ -21,30 +23,66 @@ class _DeviceGroupState extends State<ZonalCard> {
   @override
   Widget build(BuildContext context) {
     List<HistoryCellData> dataList =
-        Provider.of<TableDataProvider>(context).billingGroupList;
+        Provider.of<TableDataProvider>(context).zonalDataList;
     return Flexible(
       child: Column(
         children: [
           Container(
-            height: 10,
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: 5,
+            width: MediaQuery.of(context).size.width * 0.97 ,
             decoration: const BoxDecoration(
-                color: Colors.teal,
+                color: Colors.lightBlueAccent,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ),
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      "Zonal Card",
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          "Zone",
+                          style: Theme.of(context).primaryTextTheme.headline3,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: TextFormField(
+                        cursorHeight: 15,
+                          style: TextStyle(color: Colors.black),
+                          controller: SearchField,
+                          decoration: InputDecoration(
+                                  hintText: "Search",
+                          contentPadding:EdgeInsets.all(0),
+                          hintStyle: TextStyle(color: Colors.grey , fontSize: 15),
+                            prefixIcon: Icon(Icons.search, size: 20),
+                            labelStyle:
+                                Theme.of(context).primaryTextTheme.bodyText1,
+                            border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.grey, width: 01),
+                                borderRadius: BorderRadius.circular(5)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Name is required to continue';
+                            } else {
+                              return (null);
+                            }
+                          }),
+                    ),
+                  ],
                 ),
                 const TableHeader(dataList: dataTitle),
                 Expanded(
@@ -68,8 +106,8 @@ class _DeviceGroupState extends State<ZonalCard> {
                     )),
               ],
             ),
-            height: MediaQuery.of(context).size.height * 0.38,
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.39,
+            width: MediaQuery.of(context).size.width ,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(5),

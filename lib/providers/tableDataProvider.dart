@@ -9,12 +9,14 @@ import 'package:intl/intl.dart';
 class TableDataProvider extends ChangeNotifier {
   List<HistoryCellData> historyDataList = [];
   List<HistoryCellData> billingGroupList = [];
+  List<HistoryCellData> zonalDataList = [];
   List<BillingCellData> billingDatalist = [];
   List<BillingCellData> devicelist = [];
 
+
   int currentMax = 10;
 
-  void historyDataRefresher() async {
+  void deviceHistoryDataRefresher() async {
     print('called');
     final String response =
         await rootBundle.loadString('assets/historyData.json');
@@ -23,11 +25,14 @@ class TableDataProvider extends ChangeNotifier {
       var givenDate =
           DateTime.fromMillisecondsSinceEpoch(data[i][0] * 86400000);
       String formattedDate = DateFormat("dd-MM-yy").format(givenDate);
+            var givenDate2 =
+          DateTime.fromMillisecondsSinceEpoch(data[i][2]);
+      String formattedDate2= DateFormat("dd-MM-yy").format(givenDate2);
       historyDataList.add(
         HistoryCellData(
           date: formattedDate.toString(),
           alerts: data[i][1],
-          status: data[i][2],
+          status: formattedDate2,
           comments: data[i][3],
         ),
       );
@@ -65,7 +70,7 @@ class TableDataProvider extends ChangeNotifier {
         HistoryCellData(
           date: list[i][1].toString(),
           alerts: list[i][2],
-          status: list[i][3],
+          status: list[i][3].toString(),
           comments: list[i][4].toString(),
         ),
       );
@@ -91,8 +96,26 @@ class TableDataProvider extends ChangeNotifier {
       );
     }
   }
+  
+  void zonalDataLoader()async { 
+    print("init zonal Loader called");
+    final String response = await rootBundle.loadString('assets/data.json');
+    final data = await json.decode(response) as Map;
+    var list = data['data'][9];
+    for (int i = 0; i < list.length; i++) {
+      
+      zonalDataList.add(
+        HistoryCellData(
+          date: list[i][1],
+          alerts: list[i][2],
+          status: list[i][3].toString(),
+          comments: list[i][4].toString(),
+        ),
+      );
+    }}
 
-  void historyDataLoader() async {
+
+  void deviceHistoryDataLoader() async {
     print("init history Loader called");
     final String response =
         await rootBundle.loadString('assets/historyData.json');
@@ -101,11 +124,14 @@ class TableDataProvider extends ChangeNotifier {
       var givenDate =
           DateTime.fromMillisecondsSinceEpoch(data[i][0] * 86400000);
       String formattedDate = DateFormat("dd-MM-yy").format(givenDate);
+          var givenDate2 =
+          DateTime.fromMillisecondsSinceEpoch(data[i][2]);
+      String formattedDate2 = DateFormat("dd-MM-yy").format(givenDate2);
       historyDataList.add(
         HistoryCellData(
           date: formattedDate.toString(),
           alerts: data[i][1],
-          status: data[i][2],
+          status: formattedDate2,
           comments: data[i][3],
         ),
       );

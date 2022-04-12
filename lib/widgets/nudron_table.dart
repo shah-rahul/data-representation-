@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/models/history_cell_model.dart';
+import 'package:nudron/widgets/level1/alertBarBuilder.dart';
 
 class NudronTable extends StatelessWidget {
   const NudronTable(
@@ -20,8 +21,8 @@ class NudronTable extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: isBillingData
-            ? MainAxisAlignment.values[4]
-            : MainAxisAlignment.spaceEvenly,
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.spaceAround,
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 0.15,
@@ -33,9 +34,9 @@ class NudronTable extends StatelessWidget {
           ),
           Container(
             padding:
-                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.all(0),
+                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.only(),
             width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
+            child: !isBillingData ? Alertbar(alert:data.alerts) : Text(
               data.alerts.toString(),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).primaryTextTheme.bodyLarge,
@@ -54,7 +55,7 @@ class NudronTable extends StatelessWidget {
           Container(
             padding:
                 isBillingData ? EdgeInsets.only(left: 16) : EdgeInsets.all(0),
-            width: MediaQuery.of(context).size.width * 0.15,
+            width:isBillingData ? MediaQuery.of(context).size.width * 0.15 : MediaQuery.of(context).size.width * 0.4,
             child: Text(
               data.comments.toString(),
               overflow: TextOverflow.ellipsis,

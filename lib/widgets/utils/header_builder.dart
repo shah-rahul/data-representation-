@@ -20,7 +20,7 @@ class TableHeader extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 6),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
                 dataList[1],
                 style: Theme.of(context).primaryTextTheme.headline4,

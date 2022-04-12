@@ -15,7 +15,7 @@ class BillingHistoryTable extends StatelessWidget {
         color: index % 2 == 0 ? Colors.grey[100] : Colors.white,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 0.15,

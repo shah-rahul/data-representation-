@@ -37,7 +37,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
   _getMoreData() {
     print("CALLED");
     Provider.of<TableDataProvider>(context, listen: false)
-        .historyDataRefresher();
+        .deviceHistoryDataRefresher();
   }
 
   @override
@@ -57,7 +57,45 @@ class _DeviceHistoryState extends State<DeviceHistory> {
               ),
             ),
           ),
-          const TableHeader(dataList: dataTitle),
+          Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(),
+                    child: Text(
+                      dataTitle[0],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 35),
+                    child: Text(
+                      dataTitle[1],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      dataTitle[2],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      dataTitle[3],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
           Expanded(
               flex: 1,
               child: ListView.builder(
@@ -78,8 +116,8 @@ class _DeviceHistoryState extends State<DeviceHistory> {
               )),
         ],
       ),
-      height: MediaQuery.of(context).size.height * 0.4,
-      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.38,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))

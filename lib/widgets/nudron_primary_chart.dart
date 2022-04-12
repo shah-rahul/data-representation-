@@ -84,6 +84,7 @@ class _CustombarChartState extends State<CustombarChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * 1,
       width: MediaQuery.of(context).size.width * 2.5,
       child: isMonthData
           ? monthlyChart(context, changeGraph, setSelectionStatus)
@@ -103,6 +104,7 @@ Widget monthlyChart(ctx, fun, setStatus) {
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5))),
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           Provider.of<ChartDataProvider>(ctx).selectedMonth,
@@ -191,139 +193,142 @@ Widget monthlyChart(ctx, fun, setStatus) {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 1),
-          child: SfCartesianChart(
-            margin: EdgeInsets.all(0),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
-            axes: <ChartAxis>[
-              NumericAxis(
-                name: "yAxis",
-                opposedPosition: true,
-                interval: 1000,
-              )
-            ],
-            primaryXAxis: CategoryAxis(
-              interval: 1,
-              visibleMaximum: 10,
+          child: SizedBox(
+            height: MediaQuery.of(ctx).size.height * 0.28,
+            child: SfCartesianChart(
+              margin: EdgeInsets.all(0),
+              tooltipBehavior: TooltipBehavior(enable: true),
+              zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
+              axes: <ChartAxis>[
+                NumericAxis(
+                  name: "yAxis",
+                  opposedPosition: true,
+                  interval: 1000,
+                )
+              ],
+              primaryXAxis: CategoryAxis(
+                interval: 1,
+                visibleMaximum: 10,
+              ),
+              series: <CartesianSeries>[
+                isAlert2020Active
+                    ? ColumnSeries<MonthylData, String>(
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[0],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        color: Colors.red[900],
+                        name: 'usage2020',
+                        enableTooltip: true,
+                        yAxisName: 'yAxis',
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : ColumnSeries<MonthylData, String>(
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[0],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        color: Colors.grey[300],
+                        name: 'usage2020',
+                        enableTooltip: true,
+                        yAxisName: 'yAxis',
+                        yValueMapper: (MonthylData data, _) => data.data),
+                isAlert2021Active
+                    ? ColumnSeries<MonthylData, String>(
+                        enableTooltip: true,
+                        color: Colors.red,
+                        name: 'usage2021',
+                        yAxisName: 'yAxis',
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[1],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : ColumnSeries<MonthylData, String>(
+                        enableTooltip: true,
+                        color: Colors.grey[300],
+                        name: 'usage2021',
+                        yAxisName: 'yAxis',
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[1],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data),
+                isAlert2022Active
+                    ? ColumnSeries<MonthylData, String>(
+                        color: Colors.orange,
+                        name: "usage2022",
+                        yAxisName: 'yAxis',
+                        enableTooltip: true,
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[2],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : ColumnSeries<MonthylData, String>(
+                        color: Colors.grey[300],
+                        name: "usage2022",
+                        yAxisName: 'yAxis',
+                        enableTooltip: true,
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[2],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data),
+                isUsage2020Active
+                    ? LineSeries<MonthylData, String>(
+                        color: const Color.fromRGBO(13, 71, 161, 1),
+                        name: "alerts2020",
+                        enableTooltip: true,
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[3],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : LineSeries<MonthylData, String>(
+                        color: Colors.grey[300],
+                        name: "alerts2020",
+                        enableTooltip: true,
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[3],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data),
+                isUsage2021Active
+                    ? LineSeries<MonthylData, String>(
+                        color: Colors.yellow,
+                        name: "alerts2021",
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[4],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : LineSeries<MonthylData, String>(
+                        color: Colors.grey[300],
+                        name: "alerts2021",
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[4],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data),
+                isUsage2022Active
+                    ? LineSeries<MonthylData, String>(
+                        color: Colors.green,
+                        name: "alerts2022",
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[5],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data)
+                    : LineSeries<MonthylData, String>(
+                        color: Colors.green,
+                        name: "alerts2022",
+                        dataSource: Provider.of<ChartDataProvider>(ctx)
+                            .monthlyDataList[5],
+                        xValueMapper: (MonthylData data, _) =>
+                            data.date.day.toString(),
+                        yValueMapper: (MonthylData data, _) => data.data),
+              ],
             ),
-            series: <CartesianSeries>[
-              isAlert2020Active
-                  ? ColumnSeries<MonthylData, String>(
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[0],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      color: Colors.red[900],
-                      name: 'usage2020',
-                      enableTooltip: true,
-                      yAxisName: 'yAxis',
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : ColumnSeries<MonthylData, String>(
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[0],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      color: Colors.grey[300],
-                      name: 'usage2020',
-                      enableTooltip: true,
-                      yAxisName: 'yAxis',
-                      yValueMapper: (MonthylData data, _) => data.data),
-              isAlert2021Active
-                  ? ColumnSeries<MonthylData, String>(
-                      enableTooltip: true,
-                      color: Colors.red,
-                      name: 'usage2021',
-                      yAxisName: 'yAxis',
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[1],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : ColumnSeries<MonthylData, String>(
-                      enableTooltip: true,
-                      color: Colors.grey[300],
-                      name: 'usage2021',
-                      yAxisName: 'yAxis',
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[1],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data),
-              isAlert2022Active
-                  ? ColumnSeries<MonthylData, String>(
-                      color: Colors.orange,
-                      name: "usage2022",
-                      yAxisName: 'yAxis',
-                      enableTooltip: true,
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[2],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : ColumnSeries<MonthylData, String>(
-                      color: Colors.grey[300],
-                      name: "usage2022",
-                      yAxisName: 'yAxis',
-                      enableTooltip: true,
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[2],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data),
-              isUsage2020Active
-                  ? LineSeries<MonthylData, String>(
-                      color: const Color.fromRGBO(13, 71, 161, 1),
-                      name: "alerts2020",
-                      enableTooltip: true,
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[3],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : LineSeries<MonthylData, String>(
-                      color: Colors.grey[300],
-                      name: "alerts2020",
-                      enableTooltip: true,
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[3],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data),
-              isUsage2021Active
-                  ? LineSeries<MonthylData, String>(
-                      color: Colors.yellow,
-                      name: "alerts2021",
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[4],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : LineSeries<MonthylData, String>(
-                      color: Colors.grey[300],
-                      name: "alerts2021",
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[4],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data),
-              isUsage2022Active
-                  ? LineSeries<MonthylData, String>(
-                      color: Colors.green,
-                      name: "alerts2022",
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[5],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data)
-                  : LineSeries<MonthylData, String>(
-                      color: Colors.green,
-                      name: "alerts2022",
-                      dataSource: Provider.of<ChartDataProvider>(ctx)
-                          .monthlyDataList[5],
-                      xValueMapper: (MonthylData data, _) =>
-                          data.date.day.toString(),
-                      yValueMapper: (MonthylData data, _) => data.data),
-            ],
           ),
         ),
       ],
@@ -404,6 +409,7 @@ Widget yearlyChart(fun, ctx, setStatus) {
           ],
         ),
         SizedBox(
+          height: MediaQuery.of(ctx).size.height * 0.29,
           child: SfCartesianChart(
               onTooltipRender: ((tooltipArgs) => {
                     tappedItem = tooltipArgs.text!.split(' ')[0],
@@ -456,7 +462,7 @@ Widget yearlyChart(fun, ctx, setStatus) {
                         name: "usage2020",
                         color: Colors.grey[300],
                         enableTooltip: true,
-                        width: 1,
+                        width: 1, 
                         spacing: 0,
                         yAxisName: 'yAxis',
                         borderWidth: 300,

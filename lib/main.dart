@@ -8,7 +8,8 @@ import 'package:nudron/providers/userDataProvider.dart';
 import 'package:nudron/screens/SidebarScreens/account.dart';
 import 'package:nudron/screens/SidebarScreens/profile.dart';
 import 'package:nudron/screens/SidebarScreens/settings.dart';
-import 'package:nudron/screens/homepage.dart';
+import 'package:nudron/screens/dashboard.dart';
+import 'package:nudron/screens/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -32,9 +33,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Nudron',
         theme: CustomTheme().theme,
-        home: const MyHomePage(),
+        home: const HomePage(),
         routes: {
-          MyHomePage.routeName: (ctx) => const MyHomePage(),
+          HomePage.routeName: (ctx) => const HomePage(),
+          DashBoard.routeName : (ctx) => const DashBoard(),
           ProfilePage.routeName: (ctx) => const ProfilePage(),
           AccountPage.routeName: (ctx) => const AccountPage(),
           SettingsPage.routeName: (ctx) => const SettingsPage(),

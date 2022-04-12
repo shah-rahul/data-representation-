@@ -3,6 +3,8 @@ import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
+import 'package:nudron/widgets/level2/billing_history.dart';
+import 'package:nudron/widgets/level2/bottomBarBuilder.dart';
 import 'package:nudron/widgets/map_display.dart';
 import 'package:nudron/widgets/nudron_primary_chart.dart';
 import 'package:provider/provider.dart';
@@ -27,16 +29,15 @@ class _BottomCardState extends State<BottomCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5),
-      child: DefaultTabController(
+    return 
+       DefaultTabController(
         length: 3,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height: 10,
-              width: MediaQuery.of(context).size.width * 0.9,
+              height: 5,
+              width: MediaQuery.of(context).size.width ,
               decoration: BoxDecoration(
                   color: Colors.yellow[700],
                   borderRadius: const BorderRadius.only(
@@ -44,21 +45,19 @@ class _BottomCardState extends State<BottomCard> {
                       topRight: Radius.circular(5))),
             ),
             Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.9,
+              height: 30,
+              width: MediaQuery.of(context).size.width ,
               decoration: const BoxDecoration(
                   color: Colors.black87,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(5),
                       bottomRight: Radius.circular(5))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+         
                 child: TabBar(
                     unselectedLabelColor: Colors.white,
-                    indicatorPadding: const EdgeInsets.only(left: 5, right: 5),
                     indicator: BoxDecoration(
                         color: Colors.grey[600],
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(0)),
                     tabs: [
                       Tab(
                         child: Align(
@@ -73,54 +72,79 @@ class _BottomCardState extends State<BottomCard> {
                                       Provider.of<GlobalConfigProvider>(context)
                                               .selectedPage ==
                                           0
-                              ? Text("Device history")
-                              : Text("Billing history"),
+                              ? Text("Billing history", overflow: TextOverflow.fade  ,style:TextStyle(fontSize: 11) ,)
+                              : Text("Device history", overflow: TextOverflow.fade  ,style:TextStyle(fontSize: 11)) ,
                         ),
                       ),
                       Tab(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Chart"),
+                          
+                          child: Text("Chart",style:TextStyle(fontSize: 11) ,overflow:TextOverflow.fade,),
                         ),
                       ),
                       Tab(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Map"),
+                          child: Text("Map", style:TextStyle(fontSize: 11) ),
                         ),
                       ),
                     ]),
-              ),
+              
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.37,
+              width: MediaQuery.of(context).size.width * 0.97,
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    const FittedBox(
-                        fit: BoxFit.scaleDown, child: DeviceHistory()),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 5),
-                      child: Stack(
-                        children: [
-                          const CustombarChart(),
-                          Positioned(
-                            right: 10,
-                            bottom: 10,
-                            child: FloatingActionButton(
-                              backgroundColor: Colors.black,
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const ChartPage()));
-                              },
-                              child: const Icon(Icons.add, color: Colors.white),
-                            ),
-                          )
-                        ],
+                     FittedBox(
+                        fit: BoxFit.scaleDown, child:
+                         Provider.of<GlobalConfigProvider>(context)
+                                          .isLevelFour &&
+                                      Provider.of<GlobalConfigProvider>(context)
+                                              .selectedPage ==
+                                          1 ||
+                                  !Provider.of<GlobalConfigProvider>(context)
+                                          .isLevelFour &&
+                                      Provider.of<GlobalConfigProvider>(context)
+                                              .selectedPage ==
+                                          0
+                              ? Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  BillingHistory(),
+                                  BottombarBuilder(),
+                                ],
+                              ) : DeviceHistory(),
+                        
+                    
+                        ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: Stack(
+                          children: [
+                            const CustombarChart(),
+                            Positioned(
+                              right: 10,
+                              bottom: 10,
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.black,
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => const ChartPage()));
+                                },
+                                child: const Icon(Icons.add, color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
+                        width: MediaQuery.of(context).size.width ,
                         decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
@@ -135,7 +159,7 @@ class _BottomCardState extends State<BottomCard> {
                   ]),
             ),
           ],
-        ),
+      
       ),
     );
   }

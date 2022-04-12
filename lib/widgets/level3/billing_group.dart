@@ -14,6 +14,8 @@ class BillingGroup extends StatefulWidget {
   State<BillingGroup> createState() => _DeviceGroupState();
 }
 
+var SearchField = TextEditingController();
+
 ScrollController _scrollController = ScrollController();
 const dataTitle = ["Label", "Devices", "Alerts", "Dues"];
 
@@ -26,8 +28,8 @@ class _DeviceGroupState extends State<BillingGroup> {
       child: Column(
         children: [
           Container(
-            height: 10,
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: 5,
+            width: MediaQuery.of(context).size.width * 0.97,
             decoration: const BoxDecoration(
                 color: Colors.teal,
                 borderRadius: BorderRadius.only(
@@ -37,16 +39,91 @@ class _DeviceGroupState extends State<BillingGroup> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          "Billing",
+                          style: Theme.of(context).primaryTextTheme.headline3,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: TextFormField(
+                          cursorHeight: 15,
+                          style: TextStyle(color: Colors.black),
+                          controller: SearchField,
+                          decoration: InputDecoration(
+                            hintText: "Search",
+                            contentPadding: EdgeInsets.all(0),
+                            hintStyle:
+                                TextStyle(color: Colors.grey, fontSize: 15),
+                            prefixIcon: Icon(Icons.search, size: 20),
+                            labelStyle:
+                                Theme.of(context).primaryTextTheme.bodyText1,
+                            border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.grey, width: 01),
+                                borderRadius: BorderRadius.circular(5)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Name is required to continue';
+                            } else {
+                              return (null);
+                            }
+                          }),
+                    ),
+                  ],
+                ),
+                      Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            child: Padding(
+              padding: const EdgeInsets.only(top:8.0, bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(),
                     child: Text(
-                      "Billing",
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                      dataTitle[0],
+                      style: Theme.of(context).primaryTextTheme.headline4,
                     ),
                   ),
-                ),
-                const TableHeader(dataList: dataTitle),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 70),
+                    child: Text(
+                      dataTitle[1],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 60),
+                    child: Text(
+                      dataTitle[2],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 55),
+                    child: Text(
+                      dataTitle[3],
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
                 Expanded(
                     flex: 1,
                     child: ListView.builder(
@@ -68,8 +145,8 @@ class _DeviceGroupState extends State<BillingGroup> {
                     )),
               ],
             ),
-            height: MediaQuery.of(context).size.height * 0.38,
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.39,
+            width: MediaQuery.of(context).size.width *97,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(5),
