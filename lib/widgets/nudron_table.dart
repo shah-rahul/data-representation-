@@ -55,7 +55,7 @@ class NudronTable extends StatelessWidget {
           Container(
             padding:
                 isBillingData ? EdgeInsets.only(left: 16) : EdgeInsets.all(0),
-            width:isBillingData ? MediaQuery.of(context).size.width * 0.15 : MediaQuery.of(context).size.width * 0.4,
+            width:isBillingData ? MediaQuery.of(context).size.width * 0.20 : MediaQuery.of(context).size.width * 0.4,
             child: Text(
               data.comments.toString(),
               overflow: TextOverflow.ellipsis,

@@ -20,8 +20,20 @@ class UserDataProvider extends ChangeNotifier {
     countryCode: "loading",
     supportContact: "loading",
     deviceCount: 0,
+    refreshToken: "loading",
+    idToken: "loading",
   );
 
+  setAuthDetails(String refreshToken, String idToken) {
+    user.refreshToken = refreshToken;
+    user.idToken = idToken;
+    notifyListeners();
+  }
+
+  setRefreshToken(token) {
+    user.refreshToken = token;
+    notifyListeners();
+  }
   Future<void> userDataLoader() async {
     print("user data provider called");
     final String response = await rootBundle.loadString('assets/data.json');
@@ -34,8 +46,7 @@ class UserDataProvider extends ChangeNotifier {
     user.accountID = list[1][0];
     user.accountLabel = "owner";
     user.providerName = list[1][2];
-    user.validTill =
-        DateTime.fromMillisecondsSinceEpoch(list[1][3]).toString();
+    user.validTill = DateTime.fromMillisecondsSinceEpoch(list[1][3]).toString();
     user.address = list[1][4];
     user.providerPhone = list[1][6];
     user.providerEmail = list[1][5];

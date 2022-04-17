@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/apis/authApis.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/screens/SidebarScreens/account.dart';
 import 'package:nudron/screens/SidebarScreens/profile.dart';
@@ -12,7 +13,7 @@ class NudronDrawer extends StatefulWidget {
   @override
   State<NudronDrawer> createState() => _NudronDrawerState();
 }
-
+AuthApis apis = AuthApis();
 class _NudronDrawerState extends State<NudronDrawer> {
   @override
   Widget build(BuildContext context) {
@@ -166,6 +167,23 @@ class _NudronDrawerState extends State<NudronDrawer> {
               ],
             ),
             onTap: () {
+              // Update the state of the app.
+              // ...
+            },
+          ),
+          ListTile(
+            title: Row(
+              children: const [
+                Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                ),
+                SizedBox(width: 10),
+                Text('Test Button', style: TextStyle(color: Colors.red)),
+              ],
+            ),
+            onTap: () {
+              apis.tokenRefresher(context);
               // Update the state of the app.
               // ...
             },

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
@@ -34,6 +36,9 @@ class _MyHomePageState extends State<DashBoard>
   late PageController _firstController;
   @override
   void initState() {
+    Timer myTimer = Timer.periodic(Duration(minutes: 10), (Timer t) {
+       
+  });
     tabController = TabController(length: 3, vsync: this);
     _firstController = PageController(initialPage: 0);
     SystemChrome.setPreferredOrientations([
