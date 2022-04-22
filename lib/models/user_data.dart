@@ -13,6 +13,7 @@ class UserData {
   String countryCode;
   String supportContact;
   int deviceCount;
+  String accessToken;
   String refreshToken;
   String idToken;
 
@@ -31,6 +32,7 @@ class UserData {
     required this.countryCode,
     required this.supportContact,
     required this.deviceCount,
+    required this.accessToken,
     required this.refreshToken,
     required this.idToken,
   });

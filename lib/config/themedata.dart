@@ -53,11 +53,17 @@ class CustomTheme {
           color: const Color(0xff000000),
           fontWeight: FontWeight.w500,
         ),
+        headline5: GoogleFonts.roboto(
+          height: 1.2,
+          fontSize: 14,
+          color: Colors.grey[700],
+          fontWeight: FontWeight.w500,
+        ),
         overline: GoogleFonts.roboto(
           height: 1.2,
-          fontSize: 16,
+          fontSize: 14,
           color:  Colors.blue,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
         ),
         headline1: GoogleFonts.roboto(
           height: 1.2,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/apis/authApis.dart';
+import 'package:nudron/config/jwtDecoder.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
+import 'package:nudron/providers/userDataProvider.dart';
 import 'package:nudron/screens/SidebarScreens/account.dart';
 import 'package:nudron/screens/SidebarScreens/profile.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/SidebarScreens/settings.dart';
 
@@ -13,7 +16,9 @@ class NudronDrawer extends StatefulWidget {
   @override
   State<NudronDrawer> createState() => _NudronDrawerState();
 }
+
 AuthApis apis = AuthApis();
+
 class _NudronDrawerState extends State<NudronDrawer> {
   @override
   Widget build(BuildContext context) {
@@ -183,7 +188,9 @@ class _NudronDrawerState extends State<NudronDrawer> {
               ],
             ),
             onTap: () {
-              apis.tokenRefresher(context);
+              Provider.of<GlobalConfigProvider>(context, listen: false)
+                  .setLevelFour();
+              // returnRoute();
               // Update the state of the app.
               // ...
             },

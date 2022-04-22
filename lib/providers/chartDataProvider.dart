@@ -62,6 +62,7 @@ class ChartDataProvider extends ChangeNotifier {
   }
 
   void initCall() {
+    print('init data fx called');
     readYear2020();
     readYear2021();
     readYear2022();

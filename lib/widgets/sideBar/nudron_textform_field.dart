@@ -5,11 +5,13 @@ class NudronTextFieldBuilder extends StatefulWidget {
       {Key? key,
       required this.controller,
       this.isEnabled = true,
+      this.isObscure = false,
       required this.icon})
       : super(key: key);
   final TextEditingController controller;
   bool isEnabled;
   Icon icon;
+  bool isObscure;
   @override
   State<NudronTextFieldBuilder> createState() => _NudronTextFieldBuilderState();
 }
@@ -22,6 +24,8 @@ class _NudronTextFieldBuilderState extends State<NudronTextFieldBuilder> {
       child: TextFormField(
           style: TextStyle(color: Colors.black),
           controller: widget.controller,
+          obscureText: widget.isObscure,
+          
           decoration: InputDecoration(
             prefixIcon: widget.icon,
             contentPadding: const EdgeInsets.fromLTRB(22, 15, 17, 15),
@@ -37,7 +41,7 @@ class _NudronTextFieldBuilderState extends State<NudronTextFieldBuilder> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Name is required to continue';
+              return 'All fields are required';
             } else {
               return (null);
             }
