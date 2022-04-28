@@ -78,9 +78,11 @@ class _MyAppState extends State<MyApp> {
                   );
                   ;
                 case 2:
-                  return const NumberVerificationPage();
+                  return const NumberVerificationPage(
+                    number: "",
+                  );
                 case 3:
-                  return const SignUpPage();
+                  return const HomePage();
                 case 4:
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -101,7 +103,9 @@ class _MyAppState extends State<MyApp> {
                 email: " ",
               ),
           NumberVerificationPage.routeName: (ctx) =>
-              const NumberVerificationPage(),
+              const NumberVerificationPage(
+                number: "",
+              ),
         },
       ),
     );

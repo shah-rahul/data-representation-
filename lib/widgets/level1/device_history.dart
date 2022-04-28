@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/models/history_cell_model.dart';
+import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
+
+import '../../config/colorConfigFile.dart';
 
 class DeviceHistory extends StatefulWidget {
   const DeviceHistory({Key? key}) : super(key: key);
@@ -104,14 +107,47 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                 controller: _scrollController,
                 itemExtent: 35,
                 itemBuilder: (context, index) {
-                  if (index == (dataList.length)) {
+                  if (index == (dataList.length) &&
+                      !Provider.of<TableDataProvider>(context)
+                          .deviceHistoryDataLoadedCompletely) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  return NudronTable(
-                    data: dataList[index],
-                    index: index,
-                    isBillingData: false,
-                  );
+                  if (index == (dataList.length)) {
+                    return Column(
+                      children: [
+                        Expanded(child: Container()),
+                        Container(
+                          padding: EdgeInsets.only(top: 3, bottom: 3),
+                          height: 7,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Provider.of<GlobalConfigProvider>(context)
+                                            .isLevelFour &&
+                                        Provider.of<GlobalConfigProvider>(
+                                                    context)
+                                                .selectedPage ==
+                                            1 ||
+                                    !Provider.of<GlobalConfigProvider>(context)
+                                            .isLevelFour &&
+                                        Provider.of<GlobalConfigProvider>(
+                                                    context)
+                                                .selectedPage ==
+                                            0
+                                ? deviceColor
+                                : billingColor,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  if (dataList.length > index) {
+                    return NudronTable(
+                      data: dataList[index],
+                      index: index,
+                      isBillingData: false,
+                    );
+                  }
+                  return Container();
                 },
               )),
         ],

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:nudron/models/monthly_data_model.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
@@ -91,6 +93,111 @@ class _CustombarChartState extends State<CustombarChart> {
           : yearlyChart(notifyParent, context, setSelectionStatus),
     );
   }
+}
+
+String returnTooltipString(context, month) {
+  String tooltipString = "";
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .usage2020
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Usage 2020 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .usage2020
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .usage2021
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Usage 2021 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .usage2021
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .usage2022
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Usage 2022 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .usage2022
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .alerts2020
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Alerts 2020 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .alerts2020
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .alerts2021
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Alerts 2021 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .alerts2021
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+
+  if (Provider.of<ChartDataProvider>(context, listen: false)
+          .alerts2022
+          .where((element) => element.month == month)
+          .first
+          .data !=
+      0) {
+    tooltipString = tooltipString +
+        "Alerts 2022 : " +
+        Provider.of<ChartDataProvider>(context, listen: false)
+            .alerts2022
+            .where((element) => element.month == month)
+            .first
+            .data
+            .toString() +
+        "\n";
+  }
+
+  return tooltipString;
 }
 
 Widget monthlyChart(ctx, fun, setStatus) {
@@ -409,203 +516,227 @@ Widget yearlyChart(fun, ctx, setStatus) {
           ],
         ),
         SizedBox(
-          height: MediaQuery.of(ctx).size.height * 0.29,
-          child: SfCartesianChart(
-              onTooltipRender: ((tooltipArgs) => {
-                    tappedItem = tooltipArgs.text!.split(' ')[0],
-                  }),
-              selectionType: SelectionType.series,
-              tooltipBehavior: _tooltipBehavior,
-              primaryXAxis: CategoryAxis(
-                name: "",
-                labelsExtent: 100,
-                labelRotation: 15,
-                visibleMaximum: 6,
-                majorGridLines: const MajorGridLines(width: 0),
-              ),
-              primaryYAxis: NumericAxis(
-                labelsExtent: 30,
-                numberFormat: NumberFormat.compact(),
-                edgeLabelPlacement: EdgeLabelPlacement.shift,
-              ),
-              zoomPanBehavior: _zoomPanBehavior,
-              margin: EdgeInsets.all(0),
-              axes: <ChartAxis>[
-                NumericAxis(
-                  name: "yAxis",
-                  numberFormat: NumberFormat.compact(),
-                  opposedPosition: true,
-                  interval: 5000,
-                )
-              ],
-              series: <CartesianSeries>[
-                isAlert2020Active
-                    ? ColumnSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2020,
-                        name: "usage2020",
-                        color: Colors.red[900],
-                        enableTooltip: true,
-                        width: 1,
-                        spacing: 0,
-                        yAxisName: 'yAxis',
-                        borderWidth: 300,
-                        onPointDoubleTap: (ChartPointDetails details) {
-                          fun();
-                        },
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) => data.data)
-                    : ColumnSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2020,
-                        name: "usage2020",
-                        color: Colors.grey[300],
-                        enableTooltip: true,
-                        width: 1, 
-                        spacing: 0,
-                        yAxisName: 'yAxis',
-                        borderWidth: 300,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) => data.data),
-                isAlert2021Active
-                    ? ColumnSeries<ChartData, String>(
-                        width: 1,
-                        isVisibleInLegend: true,
-                        name: 'usage2021',
-                        spacing: 0,
-                        yAxisName: 'yAxis',
-                        enableTooltip: true,
-                        color: Colors.red,
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2021,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) => data.data)
-                    : ColumnSeries<ChartData, String>(
-                        width: 1,
-                        isVisibleInLegend: true,
-                        name: 'usage2021',
-                        spacing: 0,
-                        yAxisName: 'yAxis',
-                        enableTooltip: true,
-                        color: Colors.grey[300],
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2021,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) => data.data),
-                isAlert2022Active
-                    ? ColumnSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2022,
-                        isVisibleInLegend: true,
-                        color: Colors.orange,
-                        name: "usage2022",
-                        yAxisName: 'yAxis',
-                        enableTooltip: true,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data)
-                    : ColumnSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).alerts2022,
-                        isVisibleInLegend: true,
-                        color: Colors.grey[300],
-                        name: "usage2022",
-                        yAxisName: 'yAxis',
-                        enableTooltip: true,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data),
-                isUsage2020Active
-                    ? LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2020,
-                        color: const Color.fromRGBO(13, 71, 161, 1),
-                        name: "alerts2020",
-                        enableTooltip: true,
-                        isVisibleInLegend: true,
-                        emptyPointSettings:
-                            EmptyPointSettings(mode: EmptyPointMode.drop),
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data)
-                    : LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2020,
-                        color: Colors.grey[300],
-                        name: "alerts2020",
-                        enableTooltip: true,
-                        isVisibleInLegend: true,
-                        emptyPointSettings:
-                            EmptyPointSettings(mode: EmptyPointMode.drop),
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data),
-                isUsage2021Active
-                    ? LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2021,
-                        isVisibleInLegend: true,
-                        color: Colors.yellow,
-                        name: "alerts2021",
-                        emptyPointSettings: EmptyPointSettings(
-                          mode: EmptyPointMode.drop,
-                        ),
-                        enableTooltip: true,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data)
-                    : LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2021,
-                        isVisibleInLegend: true,
-                        color: Colors.grey[300],
-                        name: "alerts2021",
-                        emptyPointSettings: EmptyPointSettings(
-                          mode: EmptyPointMode.drop,
-                        ),
-                        enableTooltip: true,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data),
-                isUsage2022Active
-                    ? LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2022,
-                        isVisibleInLegend: true,
-                        enableTooltip: true,
-                        color: Colors.green,
-                        emptyPointSettings:
-                            EmptyPointSettings(mode: EmptyPointMode.drop),
-                        name: "alerts2022",
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data)
-                    : LineSeries<ChartData, String>(
-                        dataSource:
-                            Provider.of<ChartDataProvider>(ctx).usage2021,
-                        isVisibleInLegend: true,
-                        color: Colors.grey[300],
-                        name: "alerts2021",
-                        emptyPointSettings: EmptyPointSettings(
-                          mode: EmptyPointMode.drop,
-                        ),
-                        enableTooltip: true,
-                        xValueMapper: (ChartData data, _) =>
-                            data.month.toString(),
-                        yValueMapper: (ChartData data, _) =>
-                            data.data == 0 ? null : data.data),
-              ]),
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: RotatedBox(
+                  quarterTurns: 3,
+                  child:
+                      Text("Usage", style: TextStyle(color: Colors.black87))),
+            ),
+            SizedBox(
+              width: MediaQuery.of(ctx).size.width * 0.85,
+              height: MediaQuery.of(ctx).size.height * 0.28,
+              child: SfCartesianChart(
+                  onTooltipRender: ((tooltipArgs) => {
+                        tappedItem = tooltipArgs.text!.split(' ')[0],
+                        tooltipArgs.header = tooltipArgs.text!.split(' ')[0],
+                        tooltipArgs.text = returnTooltipString(
+                            ctx, tooltipArgs.text!.split(' ')[0]),
+                      }),
+                  selectionType: SelectionType.series,
+                  tooltipBehavior: _tooltipBehavior,
+                  primaryXAxis: CategoryAxis(
+                    name: "",
+                    labelsExtent: 100,
+                    labelRotation: 15,
+                    visibleMaximum: 6,
+                    majorGridLines: const MajorGridLines(width: 0),
+                  ),
+                  primaryYAxis: NumericAxis(
+                      labelsExtent: 32,
+                      numberFormat: NumberFormat.compact(locale: "en_In")),
+                  zoomPanBehavior: _zoomPanBehavior,
+                  margin: EdgeInsets.all(0),
+                  axes: <ChartAxis>[
+                    NumericAxis(
+                      name: "yAxis",
+                      numberFormat: NumberFormat.compact(),
+                      opposedPosition: true,
+                      interval: 5000,
+                    )
+                  ],
+                  series: <CartesianSeries>[
+                    isAlert2020Active
+                        ? ColumnSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2020,
+                            name: "usage2020",
+                            color: Colors.red[900],
+                            enableTooltip: true,
+                            width: 1,
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            borderWidth: 300,
+                            onPointDoubleTap: (ChartPointDetails details) {
+                              fun();
+                            },
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data)
+                        : ColumnSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2020,
+                            name: "usage2020",
+                            color: Colors.grey[300],
+                            enableTooltip: true,
+                            width: 1,
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            borderWidth: 300,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data),
+                    isAlert2021Active
+                        ? ColumnSeries<ChartData, String>(
+                            width: 1,
+                            isVisibleInLegend: true,
+                            name: 'usage2021',
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            color: Colors.red,
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2021,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data)
+                        : ColumnSeries<ChartData, String>(
+                            width: 1,
+                            isVisibleInLegend: true,
+                            name: 'usage2021',
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            color: Colors.grey[300],
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2021,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data),
+                    isAlert2022Active
+                        ? ColumnSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2022,
+                            isVisibleInLegend: true,
+                            color: Colors.orange,
+                            name: "usage2022",
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data)
+                        : ColumnSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2022,
+                            isVisibleInLegend: true,
+                            color: Colors.grey[300],
+                            name: "usage2022",
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data),
+                    isUsage2020Active
+                        ? LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2020,
+                            color: const Color.fromRGBO(13, 71, 161, 1),
+                            name: "alerts2020",
+                            enableTooltip: true,
+                            isVisibleInLegend: true,
+                            emptyPointSettings:
+                                EmptyPointSettings(mode: EmptyPointMode.drop),
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data)
+                        : LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2020,
+                            color: Colors.grey[300],
+                            name: "alerts2020",
+                            enableTooltip: true,
+                            isVisibleInLegend: true,
+                            emptyPointSettings:
+                                EmptyPointSettings(mode: EmptyPointMode.drop),
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data),
+                    isUsage2021Active
+                        ? LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2021,
+                            isVisibleInLegend: true,
+                            color: Colors.yellow,
+                            name: "alerts2021",
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.drop,
+                            ),
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data)
+                        : LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2021,
+                            isVisibleInLegend: true,
+                            color: Colors.grey[300],
+                            name: "alerts2021",
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.drop,
+                            ),
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data),
+                    isUsage2022Active
+                        ? LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2022,
+                            isVisibleInLegend: true,
+                            enableTooltip: true,
+                            color: Colors.green,
+                            emptyPointSettings:
+                                EmptyPointSettings(mode: EmptyPointMode.drop),
+                            name: "alerts2022",
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data)
+                        : LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2021,
+                            isVisibleInLegend: true,
+                            color: Colors.grey[300],
+                            name: "alerts2021",
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.drop,
+                            ),
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data),
+                  ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: RotatedBox(
+                  quarterTurns: 1,
+                  child:
+                      Text("Alerts", style: TextStyle(color: Colors.black87))),
+            ),
+          ],
         ),
       ],
     ),

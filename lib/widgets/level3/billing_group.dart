@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/billing_cell_data.dart';
 import 'package:nudron/models/history_cell_model.dart';
+import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
 import 'package:nudron/widgets/level2/billing_history_table.dart';
 import 'package:nudron/widgets/nudron_table.dart';
@@ -21,6 +23,25 @@ const dataTitle = ["Label", "Devices", "Alerts", "Dues"];
 
 class _DeviceGroupState extends State<BillingGroup> {
   @override
+  void initState() {
+    // TODO: implement initState
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+      }
+    });
+    super.initState();
+  }
+
+  _getMoreData() {
+    print("billing  group data refersher called");
+    Provider.of<TableDataProvider>(context, listen: false)
+        .billingDataRefresher();
+  }
+
+  int selectedIndex = 0;
+  @override
   Widget build(BuildContext context) {
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).billingGroupList;
@@ -31,7 +52,7 @@ class _DeviceGroupState extends State<BillingGroup> {
             height: 5,
             width: MediaQuery.of(context).size.width * 0.97,
             decoration: const BoxDecoration(
-                color: Colors.teal,
+                color: deviceColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ),
@@ -40,20 +61,25 @@ class _DeviceGroupState extends State<BillingGroup> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 5),
                       child: Center(
                         child: Text(
                           "Billing",
-                          style: Theme.of(context).primaryTextTheme.headline3,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .headline1!
+                              .copyWith(
+                                color: deviceColor,
+                              ),
                         ),
                       ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.6,
+                      width: MediaQuery.of(context).size.width * 0.7,
                       child: TextFormField(
                           cursorHeight: 15,
                           style: TextStyle(color: Colors.black),
@@ -85,45 +111,45 @@ class _DeviceGroupState extends State<BillingGroup> {
                     ),
                   ],
                 ),
-                      Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.only(top:8.0, bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(),
-                    child: Text(
-                      dataTitle[0],
-                      style: Theme.of(context).primaryTextTheme.headline4,
+                Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(),
+                          child: Text(
+                            dataTitle[0],
+                            style: Theme.of(context).primaryTextTheme.headline4,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 70),
+                          child: Text(
+                            dataTitle[1],
+                            style: Theme.of(context).primaryTextTheme.headline4,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 60),
+                          child: Text(
+                            dataTitle[2],
+                            style: Theme.of(context).primaryTextTheme.headline4,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 55),
+                          child: Text(
+                            dataTitle[3],
+                            style: Theme.of(context).primaryTextTheme.headline4,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 70),
-                    child: Text(
-                      dataTitle[1],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 60),
-                    child: Text(
-                      dataTitle[2],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 55),
-                    child: Text(
-                      dataTitle[3],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
                 Expanded(
                     flex: 1,
                     child: ListView.builder(
@@ -132,6 +158,46 @@ class _DeviceGroupState extends State<BillingGroup> {
                       controller: _scrollController,
                       itemExtent: 35,
                       itemBuilder: (context, index) {
+                        if (index == (dataList.length)) {
+                          return Column(
+                            children: [
+                              Expanded(child: Container()),
+                              Container(
+                                padding: EdgeInsets.only(top: 3, bottom: 3),
+                                height: 7,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Provider.of<GlobalConfigProvider>(
+                                                        context)
+                                                    .isLevelFour &&
+                                                Provider.of<GlobalConfigProvider>(
+                                                            context)
+                                                        .selectedPage ==
+                                                    1 ||
+                                            !Provider.of<GlobalConfigProvider>(
+                                                        context)
+                                                    .isLevelFour &&
+                                                Provider.of<GlobalConfigProvider>(
+                                                            context)
+                                                        .selectedPage ==
+                                                    0
+                                        ? deviceColor
+                                        : billingColor,
+                                  ),
+                              ),
+                            ],
+                          );
+                        }
+                        if (selectedIndex == index) {
+                          return NudronTable(
+                            isHilighted: true,
+                            hilightColor: deviceColor,
+                            data: dataList[index],
+                            index: index,
+                            isBillingData: true,
+                          );
+                        }
+
                         if (index == (dataList.length)) {
                           return const Center(
                               child: CircularProgressIndicator());
@@ -146,7 +212,7 @@ class _DeviceGroupState extends State<BillingGroup> {
               ],
             ),
             height: MediaQuery.of(context).size.height * 0.39,
-            width: MediaQuery.of(context).size.width *97,
+            width: MediaQuery.of(context).size.width * 97,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(5),

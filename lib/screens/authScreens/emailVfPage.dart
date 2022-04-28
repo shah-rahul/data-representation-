@@ -72,7 +72,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0),
                           child: Text(
-                              "Please enter your the verification code sent to your email address",
+                              "Please enter your the verification code sent to ${widget.email}",
                               style:
                                   Theme.of(context).primaryTextTheme.headline5),
                         ),

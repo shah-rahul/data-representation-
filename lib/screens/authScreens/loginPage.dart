@@ -90,7 +90,7 @@ class _SignupState extends State<Login> {
                                     .headline3),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
+                            padding: const EdgeInsets.only(left: 30.0, right: 30),
                             child: Text(
                                 "Enter Your Email and Password to access account.",
                                 style: Theme.of(context)

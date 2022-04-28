@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
@@ -36,7 +37,7 @@ class _BottomCardState extends State<LevelFourBottomCard> {
               height: 5,
               width: MediaQuery.of(context).size.width ,
               decoration: BoxDecoration(
-                  color: Colors.yellow[700],
+                  color: zonalColor,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(5),
                       topRight: Radius.circular(5))),

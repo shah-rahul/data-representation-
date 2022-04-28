@@ -5,7 +5,8 @@ import 'package:nudron/screens/home_page.dart';
 import 'package:nudron/widgets/sideBar/nudron_textform_field.dart';
 
 class NumberVerificationPage extends StatefulWidget {
-  const NumberVerificationPage({Key? key}) : super(key: key);
+  final String number;
+  const NumberVerificationPage({Key? key, required this.number}) : super(key: key);
   static const routeName = '/numberVerification';
 
   @override
@@ -66,7 +67,7 @@ class _NumberVerificationPageState extends State<NumberVerificationPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0),
                           child: Text(
-                              "Please enter your the verification code sent to your phone number",
+                              "Please enter your the verification code sent to ${widget.number}",
                               style:
                                   Theme.of(context).primaryTextTheme.headline5),
                         ),

@@ -62,7 +62,7 @@ class CustomTheme {
         overline: GoogleFonts.roboto(
           height: 1.2,
           fontSize: 14,
-          color:  Colors.blue,
+          color: Colors.blue,
           fontWeight: FontWeight.w400,
         ),
         headline1: GoogleFonts.roboto(

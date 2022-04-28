@@ -7,9 +7,13 @@ class NudronTable extends StatelessWidget {
       {Key? key,
       required this.isBillingData,
       required this.data,
+       this.isHilighted = false, 
+       this.hilightColor = Colors.white,
       required this.index})
       : super(key: key);
   final HistoryCellData data;
+ final bool isHilighted ;
+ final Color hilightColor ;
   final bool isBillingData;
   final int index;
 
@@ -17,45 +21,85 @@ class NudronTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: index % 2 == 0 ? Colors.grey[100] : Colors.white,
+        color: isHilighted
+            ? hilightColor.withOpacity(0.3)
+            : index % 2 == 0
+                ? Colors.grey[100]
+                : Colors.white,
       ),
       child: Row(
         mainAxisAlignment: isBillingData
             ? MainAxisAlignment.spaceBetween
             : MainAxisAlignment.spaceAround,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
-              data.date.toString(),
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyLarge,
-            ),
+
+          Row(
+            children: [
+                 isHilighted
+                  ? Container(
+                      width: MediaQuery.of(context).size.width * 0.02,
+                      color: hilightColor,
+                    )
+                  : Container(
+                      width: MediaQuery.of(context).size.width * 0.02,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.02,
+                  ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.15,
+                child: Text(
+                  data.date.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).primaryTextTheme.bodyLarge,
+                ),
+              ),
+            ],
           ),
           Container(
             padding:
                 isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.only(),
             width: MediaQuery.of(context).size.width * 0.15,
-            child: !isBillingData ? Alertbar(alert:data.alerts) : Text(
-              data.alerts.toString(),
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyLarge,
-            ),
+            child: !isBillingData
+                ? Alertbar(alert: data.alerts)
+                : Text(
+                    data.alerts.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).primaryTextTheme.bodyLarge,
+                  ),
           ),
-          Container(
-            padding:
-                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.all(0),
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
-              data.status.toString(),
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyLarge,
-            ),
-          ),
+          data.status == '0'
+              ? Container(
+                color: Colors.yellow,
+                  padding: isBillingData
+                      ? EdgeInsets.only(left: 30)
+                      : EdgeInsets.all(0),
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: Center(
+                    child: Text(
+                      "Open",
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).primaryTextTheme.bodyLarge,
+                    ),
+                  ),
+                )
+              : Container(
+                  padding: isBillingData
+                      ? EdgeInsets.only(left: 30)
+                      : EdgeInsets.all(0),
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: Text(
+                    data.status.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).primaryTextTheme.bodyLarge,
+                  ),
+                ),
           Container(
             padding:
                 isBillingData ? EdgeInsets.only(left: 16) : EdgeInsets.all(0),
-            width:isBillingData ? MediaQuery.of(context).size.width * 0.20 : MediaQuery.of(context).size.width * 0.4,
+            width: isBillingData
+                ? MediaQuery.of(context).size.width * 0.20
+                : MediaQuery.of(context).size.width * 0.4,
             child: Text(
               data.comments.toString(),
               overflow: TextOverflow.ellipsis,
