@@ -36,7 +36,67 @@ String toBinary(int n) {
   return binary;
 }
 
+openDialog(context, BillingCellData data) {
+  showDialog(
+      context: context,
+      builder: (context) => Dialog(
+            child: Container(
+              height: 200,
+              color: billingColor.withOpacity(0.3),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 40, bottom: 20, left: 20, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Device Id : ${data.date} ",
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                    Text(
+                      "Label : ${data.message} ",
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                    Text(
+                      "Alerts : ${data.amount} ",
+                      style: Theme.of(context).primaryTextTheme.headline4,
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: billingColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Center(
+                            child: Text(
+                          'close',
+                          style: Theme.of(context).primaryTextTheme.headline4,
+                        )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ));
+}
+
 class _DeviceGroupState extends State<DeviceList> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  setGlobalDeviceGroup(str) {
+    Provider.of<GlobalConfigProvider>(context, listen: false)
+        .setDeviceGroup(str);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<BillingCellData> dataList =
@@ -118,21 +178,21 @@ class _DeviceGroupState extends State<DeviceList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(),
+                          padding: const EdgeInsets.only(left: 20),
                           child: Text(
                             dataTitle[0],
                             style: Theme.of(context).primaryTextTheme.headline4,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 55),
+                          padding: const EdgeInsets.only(left: 65),
                           child: Text(
                             dataTitle[1],
                             style: Theme.of(context).primaryTextTheme.headline4,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 150),
+                          padding: const EdgeInsets.only(left: 120),
                           child: Text(
                             dataTitle[2],
                             style: Theme.of(context).primaryTextTheme.headline4,
@@ -152,6 +212,7 @@ class _DeviceGroupState extends State<DeviceList> {
                       itemBuilder: (context, index) {
                         if (index == selectedIndex) {
                           return BillingHistoryTable(
+                            boolIsbillingData: false,
                             data: dataList[index],
                             index: index,
                             isHilighted: true,
@@ -161,30 +222,30 @@ class _DeviceGroupState extends State<DeviceList> {
                         if (index == (dataList.length)) {
                           return Column(
                             children: [
-                              Expanded(child: Container()),
                               Container(
                                 padding: EdgeInsets.only(top: 3, bottom: 3),
-                                height: 7,
+                                height: 2,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
-                                    color: Provider.of<GlobalConfigProvider>(
-                                                        context)
-                                                    .isLevelFour &&
-                                                Provider.of<GlobalConfigProvider>(
-                                                            context)
-                                                        .selectedPage ==
-                                                    1 ||
-                                            !Provider.of<GlobalConfigProvider>(
-                                                        context)
-                                                    .isLevelFour &&
-                                                Provider.of<GlobalConfigProvider>(
-                                                            context)
-                                                        .selectedPage ==
-                                                    0
-                                        ? deviceColor
-                                        : billingColor,
-                                   ),
+                                  color: Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  1 ||
+                                          !Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  0
+                                      ? deviceColor
+                                      : billingColor,
+                                ),
                               ),
+                              Expanded(child: Container()),
                             ],
                           );
                         }
@@ -195,8 +256,20 @@ class _DeviceGroupState extends State<DeviceList> {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
-                        return BillingHistoryTable(
-                            data: dataList[index], index: index);
+                        return GestureDetector(
+                          onLongPress: () =>
+                              openDialog(context, dataList[index]),
+                          onTap: () => {
+                            setState(() {
+                              selectedIndex = index;
+                            }),
+                            setGlobalDeviceGroup(dataList[index].message)
+                          },
+                          child: BillingHistoryTable(
+                              boolIsbillingData: false,
+                              data: dataList[index],
+                              index: index),
+                        );
                       },
                     )),
               ],

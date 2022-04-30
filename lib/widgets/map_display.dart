@@ -32,7 +32,7 @@ class _MapContainerState extends State<MapContainer> {
   final Color _clusterColor = Colors.orange;
   final Color _clusterTextColor = Colors.white;
   final String _markerImageUrl =
-      'https://img.icons8.com/office/80/000000/marker.png';
+      'https://img.icons8.com/emoji/48/000000/blue-circle-emoji.png';
   final LatLng _center = const LatLng(
     19.06954050064087,
     72.82650232315063,
@@ -92,6 +92,7 @@ class _MapContainerState extends State<MapContainer> {
       _clusterManager,
       _currentZoom,
       _clusterColor,
+      
       _clusterTextColor,
       80,
     );

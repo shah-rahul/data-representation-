@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/widgets/level1/alertBarBuilder.dart';
 
@@ -7,13 +8,13 @@ class NudronTable extends StatelessWidget {
       {Key? key,
       required this.isBillingData,
       required this.data,
-       this.isHilighted = false, 
-       this.hilightColor = Colors.white,
+      this.isHilighted = false,
+      this.hilightColor = Colors.white,
       required this.index})
       : super(key: key);
   final HistoryCellData data;
- final bool isHilighted ;
- final Color hilightColor ;
+  final bool isHilighted;
+  final Color hilightColor;
   final bool isBillingData;
   final int index;
 
@@ -32,28 +33,36 @@ class NudronTable extends StatelessWidget {
             ? MainAxisAlignment.spaceBetween
             : MainAxisAlignment.spaceAround,
         children: [
-
           Row(
             children: [
-                 isHilighted
+              isHilighted
                   ? Container(
                       width: MediaQuery.of(context).size.width * 0.02,
                       color: hilightColor,
                     )
                   : Container(
                       width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.15,
-                child: Text(
-                  data.date.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).primaryTextTheme.bodyLarge,
-                ),
+                    ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.02,
               ),
+              isBillingData
+                  ? Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: Text(
+                        data.date.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
+                    )
+                  : Container(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      child: Text(
+                        data.date.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
+                    ),
             ],
           ),
           Container(
@@ -70,7 +79,11 @@ class NudronTable extends StatelessWidget {
           ),
           data.status == '0'
               ? Container(
-                color: Colors.yellow,
+                height: MediaQuery.of(context).size.height * 0.025,
+                  decoration: BoxDecoration(
+                    color: billingColor,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
                   padding: isBillingData
                       ? EdgeInsets.only(left: 30)
                       : EdgeInsets.all(0),

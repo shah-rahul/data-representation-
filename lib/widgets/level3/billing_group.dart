@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/billing_cell_data.dart';
 import 'package:nudron/models/history_cell_model.dart';
@@ -34,6 +35,11 @@ class _DeviceGroupState extends State<BillingGroup> {
     super.initState();
   }
 
+  setGlobalBillingGroup(str) {
+    Provider.of<GlobalConfigProvider>(context, listen: false)
+        .setSelectedBillingGroup(str);
+  }
+
   _getMoreData() {
     print("billing  group data refersher called");
     Provider.of<TableDataProvider>(context, listen: false)
@@ -41,6 +47,7 @@ class _DeviceGroupState extends State<BillingGroup> {
   }
 
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     List<HistoryCellData> dataList =
@@ -119,7 +126,7 @@ class _DeviceGroupState extends State<BillingGroup> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(),
+                          padding: const EdgeInsets.only(left: 10),
                           child: Text(
                             dataTitle[0],
                             style: Theme.of(context).primaryTextTheme.headline4,
@@ -133,14 +140,14 @@ class _DeviceGroupState extends State<BillingGroup> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 60),
+                          padding: const EdgeInsets.only(left: 50),
                           child: Text(
                             dataTitle[2],
                             style: Theme.of(context).primaryTextTheme.headline4,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 55),
+                          padding: const EdgeInsets.only(left: 50),
                           child: Text(
                             dataTitle[3],
                             style: Theme.of(context).primaryTextTheme.headline4,
@@ -161,30 +168,30 @@ class _DeviceGroupState extends State<BillingGroup> {
                         if (index == (dataList.length)) {
                           return Column(
                             children: [
-                              Expanded(child: Container()),
                               Container(
                                 padding: EdgeInsets.only(top: 3, bottom: 3),
-                                height: 7,
+                                height: 2,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
-                                    color: Provider.of<GlobalConfigProvider>(
-                                                        context)
-                                                    .isLevelFour &&
-                                                Provider.of<GlobalConfigProvider>(
-                                                            context)
-                                                        .selectedPage ==
-                                                    1 ||
-                                            !Provider.of<GlobalConfigProvider>(
-                                                        context)
-                                                    .isLevelFour &&
-                                                Provider.of<GlobalConfigProvider>(
-                                                            context)
-                                                        .selectedPage ==
-                                                    0
-                                        ? deviceColor
-                                        : billingColor,
-                                  ),
+                                  color: Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  1 ||
+                                          !Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  0
+                                      ? deviceColor
+                                      : billingColor,
+                                ),
                               ),
+                              Expanded(child: Container()),
                             ],
                           );
                         }
@@ -202,10 +209,29 @@ class _DeviceGroupState extends State<BillingGroup> {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
-                        return NudronTable(
-                          data: dataList[index],
-                          index: index,
-                          isBillingData: true,
+                        return GestureDetector(
+                          onLongPress: () => Fluttertoast.showToast(
+                            msg: "Label : ${dataList[index].date} \n"
+                                "Devices : ${dataList[index].alerts} \n"
+                                "Alerts : ${dataList[index].status} \n "
+                                "Dues: ${dataList[index].comments}"
+                                ,
+
+                            
+                            toastLength: Toast.LENGTH_SHORT, // length
+                            gravity: ToastGravity.CENTER,
+                          ),
+                          onTap: () => {
+                            setState(() {
+                              selectedIndex = index;
+                            }),
+                            setGlobalBillingGroup(dataList[index].date),
+                          },
+                          child: NudronTable(
+                            data: dataList[index],
+                            index: index,
+                            isBillingData: true,
+                          ),
                         );
                       },
                     )),

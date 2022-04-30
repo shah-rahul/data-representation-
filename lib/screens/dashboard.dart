@@ -56,6 +56,7 @@ class _MyHomePageState extends State<DashBoard>
       Provider.of<TableDataProvider>(context).deviceListLoader();
       Provider.of<TableDataProvider>(context).bllingDataLoader();
       Provider.of<UserDataProvider>(context).userDataLoader();
+      Provider.of<GlobalConfigProvider>(context).historyHeaderLoader();
     }
     loaded = true;
   }

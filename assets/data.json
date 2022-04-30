@@ -81,7 +81,7 @@
         1622592000000,
         "Some comment about why the alert was caused."
       ],
-      [18779, 4, 1622419200000, "Some comment about why the alert was caused."],
+      [18779, 4, "Some comment about why the alert was caused."],
       [18778, 8, 1622332800000, "Some comment about why the alert was caused."],
       [18777, 5, 1622332800000, "Some comment about why the alert was caused."],
       [

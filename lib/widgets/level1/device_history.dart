@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
+import 'package:nudron/widgets/level1/alertBarBuilder.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
@@ -51,15 +53,44 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       padding: const EdgeInsets.all(0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                "Device history",
-                style: Theme.of(context).primaryTextTheme.headline3,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Text(
+                      Provider.of<GlobalConfigProvider>(context).date,
+                      style: Theme.of(context).primaryTextTheme.headline5,
+                    ),
+                    Text(" | ", style: Theme.of(context).primaryTextTheme.headline5),
+                      Text(
+                      Provider.of<GlobalConfigProvider>(context).selectedDeviceType,
+                      style: Theme.of(context).primaryTextTheme.headline5,
+                    )
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Center(
+          //     child: Text(
+          //       Provider.of<GlobalConfigProvider>(context)
+          //                   .selectedDeviceGroup ==
+          //               "Device Group"
+          //           ? "Device History"
+          //           : Provider.of<GlobalConfigProvider>(context)
+          //               .selectedDeviceGroup,
+          //       style: Theme.of(context).primaryTextTheme.headline3!.copyWith(
+          //             color: billingColor,
+          //           ),
+          //     ),
+          //   ),
+          // ),
           Container(
             decoration: const BoxDecoration(color: Colors.white),
             child: Padding(
@@ -68,7 +99,7 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(),
+                    padding: const EdgeInsets.only(left: 15),
                     child: Text(
                       dataTitle[0],
                       style: Theme.of(context).primaryTextTheme.headline4,
@@ -115,10 +146,9 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                   if (index == (dataList.length)) {
                     return Column(
                       children: [
-                        Expanded(child: Container()),
                         Container(
                           padding: EdgeInsets.only(top: 3, bottom: 3),
-                          height: 7,
+                          height: 2,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             color: Provider.of<GlobalConfigProvider>(context)
@@ -137,14 +167,24 @@ class _DeviceHistoryState extends State<DeviceHistory> {
                                 : billingColor,
                           ),
                         ),
+                        Expanded(child: Container()),
                       ],
                     );
                   }
                   if (dataList.length > index) {
-                    return NudronTable(
-                      data: dataList[index],
-                      index: index,
-                      isBillingData: false,
+                    return GestureDetector(
+                      onLongPress: () => Fluttertoast.showToast(
+                        msg:
+                            "date: ${dataList[index].date} \nstatus: ${dataList[index].status} \ncomments: ${dataList[index].comments}",
+
+                        toastLength: Toast.LENGTH_SHORT, // length
+                        gravity: ToastGravity.CENTER, // location
+                      ),
+                      child: NudronTable(
+                        data: dataList[index],
+                        index: index,
+                        isBillingData: false,
+                      ),
                     );
                   }
                   return Container();

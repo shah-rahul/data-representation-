@@ -77,11 +77,10 @@ class TableDataProvider extends ChangeNotifier {
     final data = await json.decode(response) as Map;
     var list = data['data'][7];
     for (int i = 0; i < list.length; i++) {
-      final date = DateTime.fromMillisecondsSinceEpoch(list[i][0]);
-      final formattedDate = DateFormat("dd-MM-yy").format(date);
+      
       devicelist.add(
         BillingCellData(
-          date: formattedDate,
+          date: list[i][0].toString(),
           message: list[i][1].toString(),
           status: list[i][3].toString(),
           amount: list[i][2],
@@ -141,6 +140,7 @@ class TableDataProvider extends ChangeNotifier {
         ),
       );
     }
+    
     notifyListeners();
   }
 

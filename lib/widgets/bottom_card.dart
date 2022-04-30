@@ -81,13 +81,13 @@ class _BottomCardState extends State<BottomCard> {
                                           .selectedPage ==
                                       0
                           ? Text(
-                              "Billing history",
+                             "history",
                               overflow: TextOverflow.fade,
-                              style: TextStyle(fontSize: 11),
+                              style: TextStyle(fontSize: 13),
                             )
-                          : Text("Device history",
+                          : Text("history",
                               overflow: TextOverflow.fade,
-                              style: TextStyle(fontSize: 11)),
+                              style: TextStyle(fontSize: 13)),
                     ),
                   ),
                   Tab(
@@ -130,7 +130,7 @@ class _BottomCardState extends State<BottomCard> {
                             alignment: Alignment.bottomCenter,
                             children: [
                               BillingHistory(),
-                              BottombarBuilder(),
+                             
                             ],
                           )
                         : DeviceHistory(),

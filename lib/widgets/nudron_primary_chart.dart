@@ -90,29 +90,29 @@ class _CustombarChartState extends State<CustombarChart> {
       width: MediaQuery.of(context).size.width * 2.5,
       child: isMonthData
           ? monthlyChart(context, changeGraph, setSelectionStatus)
-          : yearlyChart(notifyParent, context, setSelectionStatus),
+          : singleYearChart(notifyParent, context, setSelectionStatus),
     );
   }
 }
 
 String returnTooltipString(context, month) {
   String tooltipString = "";
-  if (Provider.of<ChartDataProvider>(context, listen: false)
-          .usage2020
-          .where((element) => element.month == month)
-          .first
-          .data !=
-      0) {
-    tooltipString = tooltipString +
-        "Usage 2020 : " +
-        Provider.of<ChartDataProvider>(context, listen: false)
-            .usage2020
-            .where((element) => element.month == month)
-            .first
-            .data
-            .toString() +
-        "\n";
-  }
+  // if (Provider.of<ChartDataProvider>(context, listen: false)
+  //         .usage2020
+  //         .where((element) => element.month == month)
+  //         .first
+  //         .data !=
+  //     0) {
+  //   tooltipString = tooltipString +
+  //       "Usage 2020 : " +
+  //       Provider.of<ChartDataProvider>(context, listen: false)
+  //           .usage2020
+  //           .where((element) => element.month == month)
+  //           .first
+  //           .data
+  //           .toString() +
+  //       "\n";
+  // }
   if (Provider.of<ChartDataProvider>(context, listen: false)
           .usage2021
           .where((element) => element.month == month)
@@ -129,39 +129,39 @@ String returnTooltipString(context, month) {
             .toString() +
         "\n";
   }
-  if (Provider.of<ChartDataProvider>(context, listen: false)
-          .usage2022
-          .where((element) => element.month == month)
-          .first
-          .data !=
-      0) {
-    tooltipString = tooltipString +
-        "Usage 2022 : " +
-        Provider.of<ChartDataProvider>(context, listen: false)
-            .usage2022
-            .where((element) => element.month == month)
-            .first
-            .data
-            .toString() +
-        "\n";
-  }
+  // if (Provider.of<ChartDataProvider>(context, listen: false)
+  //         .usage2022
+  //         .where((element) => element.month == month)
+  //         .first
+  //         .data !=
+  //     0) {
+  //   tooltipString = tooltipString +
+  //       "Usage 2022 : " +
+  //       Provider.of<ChartDataProvider>(context, listen: false)
+  //           .usage2022
+  //           .where((element) => element.month == month)
+  //           .first
+  //           .data
+  //           .toString() +
+  //       "\n";
+  // }
 
-  if (Provider.of<ChartDataProvider>(context, listen: false)
-          .alerts2020
-          .where((element) => element.month == month)
-          .first
-          .data !=
-      0) {
-    tooltipString = tooltipString +
-        "Alerts 2020 : " +
-        Provider.of<ChartDataProvider>(context, listen: false)
-            .alerts2020
-            .where((element) => element.month == month)
-            .first
-            .data
-            .toString() +
-        "\n";
-  }
+  // if (Provider.of<ChartDataProvider>(context, listen: false)
+  //         .alerts2020
+  //         .where((element) => element.month == month)
+  //         .first
+  //         .data !=
+  //     0) {
+  //   tooltipString = tooltipString +
+  //       "Alerts 2020 : " +
+  //       Provider.of<ChartDataProvider>(context, listen: false)
+  //           .alerts2020
+  //           .where((element) => element.month == month)
+  //           .first
+  //           .data
+  //           .toString() +
+  //       "\n";
+  // }
 
   if (Provider.of<ChartDataProvider>(context, listen: false)
           .alerts2021
@@ -180,22 +180,22 @@ String returnTooltipString(context, month) {
         "\n";
   }
 
-  if (Provider.of<ChartDataProvider>(context, listen: false)
-          .alerts2022
-          .where((element) => element.month == month)
-          .first
-          .data !=
-      0) {
-    tooltipString = tooltipString +
-        "Alerts 2022 : " +
-        Provider.of<ChartDataProvider>(context, listen: false)
-            .alerts2022
-            .where((element) => element.month == month)
-            .first
-            .data
-            .toString() +
-        "\n";
-  }
+  // if (Provider.of<ChartDataProvider>(context, listen: false)
+  //         .alerts2022
+  //         .where((element) => element.month == month)
+  //         .first
+  //         .data !=
+  //     0) {
+  //   tooltipString = tooltipString +
+  //       "Alerts 2022 : " +
+  //       Provider.of<ChartDataProvider>(context, listen: false)
+  //           .alerts2022
+  //           .where((element) => element.month == month)
+  //           .first
+  //           .data
+  //           .toString() +
+  //       "\n";
+  // }
 
   return tooltipString;
 }
@@ -437,6 +437,173 @@ Widget monthlyChart(ctx, fun, setStatus) {
               ],
             ),
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget singleYearChart(fun, ctx, setStatus) {
+  return Container(
+    width: MediaQuery.of(ctx).size.width * 0.5,
+    decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(blurRadius: 10.0, color: Color.fromRGBO(0, 0, 0, 0.1))
+        ],
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5))),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        const Text(
+          "Mumbai trends",
+          style: TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+                onTap: () {
+                  setStatus("2021");
+                },
+                child: LegendBuilder(
+                    text: "Alerts 21",
+                    color: isAlert2021Active
+                        ? Colors.redAccent
+                        : Colors.grey[300])),
+                          GestureDetector(
+                onTap: () {
+                  setStatus("2021_usage");
+                },
+                child: LegendBuilder(
+                    text: "Usage 21",
+                    color:
+                        isUsage2021Active ? Colors.yellow : Colors.grey[300]))
+          ],
+        ),
+       
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: RotatedBox(
+                  quarterTurns: 3,
+                  child:
+                      Text("Usage", style: TextStyle(color: Colors.black87))),
+            ),
+            SizedBox(
+              width: MediaQuery.of(ctx).size.width * 0.85,
+              height: MediaQuery.of(ctx).size.height * 0.28,
+              child: SfCartesianChart(
+                  onTooltipRender: ((tooltipArgs) => {
+                        tappedItem = tooltipArgs.text!.split(' ')[0],
+                        tooltipArgs.header = tooltipArgs.text!.split(' ')[0],
+                        tooltipArgs.text = returnTooltipString(
+                            ctx, tooltipArgs.text!.split(' ')[0]),
+                      }),
+                  selectionType: SelectionType.series,
+                  tooltipBehavior: _tooltipBehavior,
+                  primaryXAxis: CategoryAxis(
+                    name: "",
+                    labelsExtent: 100,
+                    labelRotation: 15,
+                    visibleMaximum: 6,
+                    majorGridLines: const MajorGridLines(width: 0),
+                  ),
+                  
+                  primaryYAxis: NumericAxis(
+                      labelsExtent: 32,
+                      numberFormat: NumberFormat.compact(locale: "en_In")),
+                  zoomPanBehavior: _zoomPanBehavior,
+                  margin: EdgeInsets.all(0),
+                  axes: <ChartAxis>[
+                    NumericAxis(
+                      
+                      name: "yAxis",
+                      numberFormat: NumberFormat.compact(),
+                      opposedPosition: true,
+                      interval: 5000,
+                    )
+                  ],
+                  series: <CartesianSeries>[
+                    isAlert2021Active
+                        ? ColumnSeries<ChartData, String>(
+                            width: 0.5,
+                             onPointDoubleTap: (ChartPointDetails details) {
+                              fun();
+                            },
+                            isVisibleInLegend: true,
+                            name: 'usage2021',
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            color: Colors.red,
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2021,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data)
+                        : ColumnSeries<ChartData, String>(
+                            width: 0.5,
+                            isVisibleInLegend: true,
+                            name: 'usage2021',
+                            spacing: 0,
+                            yAxisName: 'yAxis',
+                            enableTooltip: true,
+                            color: Colors.grey[300],
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).alerts2021,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) => data.data),
+                    isUsage2021Active
+                        ? LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2021,
+                            isVisibleInLegend: true,
+                            color: Colors.yellow,
+                            name: "alerts2021",
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.drop,
+                            ),
+                            enableTooltip: true,
+                             onPointDoubleTap: (ChartPointDetails details) {
+                              fun();
+                            },
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data)
+                        : LineSeries<ChartData, String>(
+                            dataSource:
+                                Provider.of<ChartDataProvider>(ctx).usage2021,
+                            isVisibleInLegend: true,
+                            color: Colors.grey[300],
+                            name: "alerts2021",
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.drop,
+                            ),
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) =>
+                                data.month.toString(),
+                            yValueMapper: (ChartData data, _) =>
+                                data.data == 0 ? null : data.data),
+                  ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: RotatedBox(
+                  quarterTurns: 1,
+                  child:
+                      Text("Alerts", style: TextStyle(color: Colors.black87))),
+            ),
+          ],
         ),
       ],
     ),
