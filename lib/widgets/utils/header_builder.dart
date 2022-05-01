@@ -13,7 +13,7 @@ class TableHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 10),
               child: Text(
                 dataList[0],
                 style: Theme.of(context).primaryTextTheme.headline4,

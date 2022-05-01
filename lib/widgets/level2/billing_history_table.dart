@@ -40,45 +40,56 @@ class BillingHistoryTable extends StatelessWidget {
                     )
                   : Container(
                       width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: Text(
-                  data.date.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).primaryTextTheme.bodyLarge,
-                ),
+                    ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.02,
               ),
+              boolIsbillingData
+                  ? Container(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      child: Text(
+                        data.date.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
+                    )
+                  : Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: Text(
+                        data.date.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
+                    ),
             ],
           ),
-       boolIsbillingData ?   Container(
-            width: MediaQuery.of(context).size.width * 0.55,
-            child: Row(
-              children: [
-                Text(
-                  data.status.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).primaryTextTheme.bodyLarge,
+          boolIsbillingData
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Row(
+                    children: [
+                      Text(
+                        data.status.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
+                      data.message == "bill"
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Icon(Icons.download),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                )
+              : Container(
+                  width: MediaQuery.of(context).size.width * 0.35,
+                  child: Text(
+                    data.message.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).primaryTextTheme.bodyLarge,
+                  ),
                 ),
-                data.message  == "bill" ? Padding(
-                  padding: const EdgeInsets.only(left:5),
-                  child: Icon(Icons.download),
-                ) : Container(),
-              ],
-            ),
-          ) : Container(
-            width: MediaQuery.of(context).size.width * 0.35,
-            child: Text(
-              data.message.toString(),
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyLarge,
-            ),
-          )
-          
-          ,
           Container(
             width: MediaQuery.of(context).size.width * 0.1,
             child: Text(

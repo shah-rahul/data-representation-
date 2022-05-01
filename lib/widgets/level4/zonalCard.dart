@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/billing_cell_data.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
@@ -93,9 +94,20 @@ class _DeviceGroupState extends State<ZonalCard> {
                       controller: _scrollController,
                       itemExtent: 35,
                       itemBuilder: (context, index) {
-                        if (index == (dataList.length)) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                         if (index == (dataList.length)) {
+                          return Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 3, bottom: 3),
+                                height: 2,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: zonalColor,
+                                ),
+                              ),
+                              Expanded(child: Container()),
+                            ],
+                          );
                         }
                         return NudronTable(
                           data: dataList[index],

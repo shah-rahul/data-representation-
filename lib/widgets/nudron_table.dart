@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/widgets/level1/alertBarBuilder.dart';
+import 'package:nudron/widgets/sideBar/nudron_textform_withouticon.dart';
+
+import '../models/billing_cell_data.dart';
 
 class NudronTable extends StatelessWidget {
-  const NudronTable(
+  NudronTable(
       {Key? key,
       required this.isBillingData,
       required this.data,
@@ -17,6 +20,67 @@ class NudronTable extends StatelessWidget {
   final Color hilightColor;
   final bool isBillingData;
   final int index;
+
+  final TextEditingController _controller = TextEditingController();
+  openDialog(context, HistoryCellData data) {
+    showDialog(
+        context: context,
+        builder: (context) => Dialog(
+              child: Container(
+                height: 150,
+                color: billingColor.withOpacity(0.3),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 20, right: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  
+                    children: [
+                      NudronTextFieldBuilderWithoutIcon(
+                          controller: _controller, text: "Add new comment"),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                child: Center(child: Icon(Icons.check)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                child:
+                                    Center(child: Icon(Icons.cancel_outlined)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,21 +142,24 @@ class NudronTable extends StatelessWidget {
                   ),
           ),
           data.status == '0'
-              ? Container(
-                height: MediaQuery.of(context).size.height * 0.025,
-                  decoration: BoxDecoration(
-                    color: billingColor,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  padding: isBillingData
-                      ? EdgeInsets.only(left: 30)
-                      : EdgeInsets.all(0),
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: Center(
-                    child: Text(
-                      "Open",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).primaryTextTheme.bodyLarge,
+              ? GestureDetector(
+                  onTap: (() => openDialog(context, data)),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.025,
+                    decoration: BoxDecoration(
+                      color: billingColor,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    padding: isBillingData
+                        ? EdgeInsets.only(left: 30)
+                        : EdgeInsets.all(0),
+                    width: MediaQuery.of(context).size.width * 0.15,
+                    child: Center(
+                      child: Text(
+                        "Open",
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
+                      ),
                     ),
                   ),
                 )

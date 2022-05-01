@@ -29,6 +29,24 @@ const dataTitle = [
 bool show = false;
 
 class _DeviceGroupState extends State<BillingHistory> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+      }
+    });
+    super.initState();
+  }
+
+  _getMoreData() {
+    print("billing  group data refersher called");
+    Provider.of<TableDataProvider>(context, listen: false)
+        .billingHistoryDataRefresher();
+  }
+
   void whatIsTapped(int index) {
     print('what is tapped called');
     if (index == 1) {
@@ -112,14 +130,14 @@ class _DeviceGroupState extends State<BillingHistory> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 80),
+                    padding: const EdgeInsets.only(left: 60),
                     child: Text(
                       dataTitle[1],
                       style: Theme.of(context).primaryTextTheme.headline4,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 110),
+                    padding: const EdgeInsets.only(left: 130),
                     child: Text(
                       dataTitle[2],
                       style: Theme.of(context).primaryTextTheme.headline4,
@@ -137,9 +155,36 @@ class _DeviceGroupState extends State<BillingHistory> {
                 controller: _scrollController,
                 itemExtent: 35,
                 itemBuilder: (context, index) {
-                  if (index == (dataList.length)) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+                if (index == (dataList.length)) {
+                          return Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 3, bottom: 3),
+                                height: 2,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  1 ||
+                                          !Provider.of<GlobalConfigProvider>(
+                                                      context)
+                                                  .isLevelFour &&
+                                              Provider.of<GlobalConfigProvider>(
+                                                          context)
+                                                      .selectedPage ==
+                                                  0
+                                      ? deviceColor
+                                      : billingColor,
+                                ),
+                              ),
+                              Expanded(child: Container()),
+                            ],
+                          );
+                        }
                   return GestureDetector(
                     onLongPress: () => Fluttertoast.showToast(
                       msg: "Date : ${dataList[index].date} \n"
