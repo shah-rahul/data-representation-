@@ -8,7 +8,7 @@ import '../providers/userDataProvider.dart';
 
 class AuthApis {
   var url = Uri.parse("https://cognito-idp.ap-south-1.amazonaws.com/");
-
+//login api
   Future<int> login(email, password, context) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var header = {
@@ -38,6 +38,9 @@ class AuthApis {
           'IdToken', data['AuthenticationResult']['IdToken']);
       _preferences.setString(
           'Accesstoken', data['AuthenticationResult']['AccessToken']);
+    } else {
+      print(res.statusCode);
+      print(res.body);
     }
     print(Provider.of<UserDataProvider>(context, listen: false)
         .user
@@ -46,7 +49,7 @@ class AuthApis {
         Provider.of<UserDataProvider>(context, listen: false).user.accessToken);
     return res.statusCode;
   }
-
+//signup api
   Future<int> signUp(name, email, pass, phone, atCode, context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -71,13 +74,13 @@ class AuthApis {
       body: json.encode(loginObj),
     );
     if (res.statusCode == 200) {
+      prefs.setString(atCode, email);
       login(email, pass, context);
-      prefs.setString(email, atCode);
     }
     print(res.body);
     return res.statusCode;
   }
-
+//email vf code api
   Future<int> emailVerification(email, code, context) async {
     SharedPreferences  prefs = await SharedPreferences.getInstance();
     String atCode = prefs.getString(email) as String;
@@ -103,6 +106,7 @@ class AuthApis {
 
     return res.statusCode;
   }
+  //portal api
 
   portalApi(reqType, context) async {
     String auth = "Bearer " +
@@ -115,7 +119,7 @@ class AuthApis {
 
     var res = await http.post(url, headers: header, body: reqType);
   }
-
+// send otp api
   Future<int> phoneVerificationInitiator(context) async {
     var header = {
       "x-amz-target":
@@ -135,7 +139,7 @@ class AuthApis {
     );
     return res.statusCode;
   }
-
+//confirm otp api
   Future<int> phoneVerificationConfirmation(context, code) async {
     var header = {
       "x-amz-target": "AWSCognitoIdentityProviderService.VerifyUserAttribute",
@@ -157,7 +161,7 @@ class AuthApis {
 
     return res.statusCode;
   }
-
+//refresher token api
   Future<int> tokenRefresher(context) async {
     var header = {
       "x-amz-target": "AWSCognitoIdentityProviderService.InitiateAuth",

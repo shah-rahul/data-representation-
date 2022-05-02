@@ -34,7 +34,6 @@ class NudronTable extends StatelessWidget {
                       top: 10, bottom: 10, left: 20, right: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  
                     children: [
                       NudronTextFieldBuilderWithoutIcon(
                           controller: _controller, text: "Add new comment"),
@@ -131,7 +130,7 @@ class NudronTable extends StatelessWidget {
           ),
           Container(
             padding:
-                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.only(),
+                isBillingData ? EdgeInsets.only(left: 00) : EdgeInsets.only(),
             width: MediaQuery.of(context).size.width * 0.15,
             child: !isBillingData
                 ? Alertbar(alert: data.alerts)
@@ -151,7 +150,7 @@ class NudronTable extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     padding: isBillingData
-                        ? EdgeInsets.only(left: 30)
+                        ? EdgeInsets.only(left: 00)
                         : EdgeInsets.all(0),
                     width: MediaQuery.of(context).size.width * 0.15,
                     child: Center(
@@ -165,24 +164,27 @@ class NudronTable extends StatelessWidget {
                 )
               : Container(
                   padding: isBillingData
-                      ? EdgeInsets.only(left: 30)
+                      ? EdgeInsets.only(left: 00)
                       : EdgeInsets.all(0),
                   width: MediaQuery.of(context).size.width * 0.15,
                   child: Text(
                     data.status.toString(),
                     overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.left,
+
                     style: Theme.of(context).primaryTextTheme.bodyLarge,
                   ),
                 ),
           Container(
             padding:
-                isBillingData ? EdgeInsets.only(left: 16) : EdgeInsets.all(0),
+                isBillingData ? EdgeInsets.only(left: 30) : EdgeInsets.all(0),
             width: isBillingData
-                ? MediaQuery.of(context).size.width * 0.20
+                ? MediaQuery.of(context).size.width * 0.3
                 : MediaQuery.of(context).size.width * 0.4,
             child: Text(
               data.comments.toString(),
               overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
               style: Theme.of(context).primaryTextTheme.bodyLarge,
             ),
           )

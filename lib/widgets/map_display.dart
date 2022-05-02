@@ -139,6 +139,7 @@ class _MapContainerState extends State<MapContainer> {
       width: MediaQuery.of(context).size.width * 0.8,
       child: Stack(
         children: <Widget>[
+          
           // Google Map widget
           Opacity(
             opacity: _isMapLoading ? 0 : 1,

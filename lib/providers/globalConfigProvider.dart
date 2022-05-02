@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class GlobalConfigProvider extends ChangeNotifier {
-  bool isLevelFour = false;
+  bool isLevelFour = true;
+  bool isBillingSelected = false;
   int selectedPage = 0;
   String selectedBillingGroup = "Billing History";
   String selectedDeviceGroup = "Device Group";

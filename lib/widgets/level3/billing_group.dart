@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nudron/config/colorConfigFile.dart';
+import 'package:nudron/models/billingGroupDataProvider.dart';
 import 'package:nudron/models/billing_cell_data.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
@@ -9,6 +10,8 @@ import 'package:nudron/widgets/level2/billing_history_table.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class BillingGroup extends StatefulWidget {
   const BillingGroup({Key? key}) : super(key: key);
@@ -17,24 +20,15 @@ class BillingGroup extends StatefulWidget {
   State<BillingGroup> createState() => _DeviceGroupState();
 }
 
+final DataGridController _dataGridController = DataGridController();
+
 var SearchField = TextEditingController();
 
 ScrollController _scrollController = ScrollController();
 const dataTitle = ["Label", "Devices", "Alerts", "Dues"];
 
 class _DeviceGroupState extends State<BillingGroup> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getMoreData();
-      }
-    });
-    super.initState();
-  }
-
+  List<HistoryCellData> dataList = [];
   setGlobalBillingGroup(str) {
     Provider.of<GlobalConfigProvider>(context, listen: false)
         .setSelectedBillingGroup(str);
@@ -47,8 +41,22 @@ class _DeviceGroupState extends State<BillingGroup> {
   }
 
   int selectedIndex = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    dataList =
+        Provider.of<TableDataProvider>(context, listen: false).billingGroupList;
+    super.initState();
+  }
 
   @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    _dataGridController.selectedIndex = 0;
+    _dataGridController.selectedRow =
+        BillingGroupDataProvider(billingGroupData: dataList).rows[0];
+  }
+
   Widget build(BuildContext context) {
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).billingGroupList;
@@ -118,58 +126,104 @@ class _DeviceGroupState extends State<BillingGroup> {
                     ),
                   ],
                 ),
-                Container(
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            dataTitle[0],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 70),
-                          child: Text(
-                            dataTitle[1],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Text(
-                            dataTitle[2],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Text(
-                            dataTitle[3],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
+                SfDataGridTheme(
+                  data: SfDataGridThemeData(
+                    selectionColor: deviceColor.withOpacity(0.5),
+                  ),
+                  child: Expanded(
+                    child: SfDataGrid(
+                      horizontalScrollPhysics: NeverScrollableScrollPhysics(),
+                      columnWidthMode: ColumnWidthMode.fitByColumnName,
+                      isScrollbarAlwaysShown: false,
+                      rowHeight: 32,
+                      controller: _dataGridController,
+                      selectionMode: SelectionMode.single,
+                      source: BillingGroupDataProvider(
+                        billingGroupData: dataList,
+                      ),
+                      loadMoreViewBuilder: (BuildContext context, LoadMoreRows loadMoreRows) {
+        Future<String> loadRows() async {
+          // Call the loadMoreRows function to call the
+          // DataGridSource.handleLoadMoreRows method. So, additional
+          // rows can be added from handleLoadMoreRows method.
+          await _getMoreData();
+          return Future<String>.value('Completed');
+        }
+
+        return FutureBuilder<String>(
+            initialData: 'loading',
+            future: loadRows(),
+            builder: (context, snapShot) {
+              if (snapShot.data == 'loading') {
+                return Container(
+                    height: 60.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: BorderDirectional(
+                            top: BorderSide(
+                                width: 1.0,
+                                color: Color.fromRGBO(0, 0, 0, 0.26)))),
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.deepPurple)));
+              } else {
+                return SizedBox.fromSize(size: Size.zero);
+              }
+            });
+      },
+                      columns: <GridColumn>[
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            columnName: 'label',
+                            label: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Label',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            columnName: 'devices',
+                            label: Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Devices',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            columnName: 'alerts',
+                            label: Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Alerts',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            columnName: 'dues',
+                            label: Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Dues',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
                       ],
                     ),
                   ),
                 ),
-                Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      primary: false,
-                      itemCount: dataList.length + 1,
-                      controller: _scrollController,
-                      itemExtent: 35,
-                      itemBuilder: (context, index) {
-                        if (index == (dataList.length)) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 3, bottom: 3),
+                
+                Provider.of<TableDataProvider>(context).billingGroupDataLoadedCompletely ?  Container(
+                                padding: EdgeInsets.only(top: 5, bottom: 3),
                                 height: 2,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
@@ -190,51 +244,7 @@ class _DeviceGroupState extends State<BillingGroup> {
                                       ? deviceColor
                                       : billingColor,
                                 ),
-                              ),
-                              Expanded(child: Container()),
-                            ],
-                          );
-                        }
-                        if (selectedIndex == index) {
-                          return NudronTable(
-                            isHilighted: true,
-                            hilightColor: deviceColor,
-                            data: dataList[index],
-                            index: index,
-                            isBillingData: true,
-                          );
-                        }
-
-                        if (index == (dataList.length)) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        return GestureDetector(
-                          onLongPress: () => Fluttertoast.showToast(
-                            msg: "Label : ${dataList[index].date} \n"
-                                "Devices : ${dataList[index].alerts} \n"
-                                "Alerts : ${dataList[index].status} \n "
-                                "Dues: ${dataList[index].comments}"
-                                ,
-
-                            
-                            toastLength: Toast.LENGTH_SHORT, // length
-                            gravity: ToastGravity.CENTER,
-                          ),
-                          onTap: () => {
-                            setState(() {
-                              selectedIndex = index;
-                            }),
-                            setGlobalBillingGroup(dataList[index].date),
-                          },
-                          child: NudronTable(
-                            data: dataList[index],
-                            index: index,
-                            isBillingData: true,
-                          ),
-                        );
-                      },
-                    )),
+                              ) : Container(),
               ],
             ),
             height: MediaQuery.of(context).size.height * 0.39,

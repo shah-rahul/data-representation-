@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/billing_cell_data.dart';
+import 'package:nudron/models/deviceHistoryDataProvider.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
@@ -11,6 +12,8 @@ import 'package:nudron/widgets/level2/bottomBarBuilder.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class BillingHistory extends StatefulWidget {
   const BillingHistory({Key? key}) : super(key: key);
@@ -27,6 +30,8 @@ const dataTitle = [
   "Amount",
 ];
 bool show = false;
+final DataGridController _dataGridController = DataGridController();
+
 
 class _DeviceGroupState extends State<BillingHistory> {
   @override
@@ -95,7 +100,7 @@ class _DeviceGroupState extends State<BillingHistory> {
           //                   .selectedBillingGroup,
           //           style:
           //               Theme.of(context).primaryTextTheme.headline3!.copyWith(
-          //                     color: deviceColor,
+          //                     color: billingColor,
           //                   ),
           //         ),
           //       ),
@@ -147,60 +152,7 @@ class _DeviceGroupState extends State<BillingHistory> {
               ),
             ),
           ),
-          Expanded(
-              flex: 1,
-              child: ListView.builder(
-                primary: false,
-                itemCount: dataList.length + 1,
-                controller: _scrollController,
-                itemExtent: 35,
-                itemBuilder: (context, index) {
-                if (index == (dataList.length)) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 3, bottom: 3),
-                                height: 2,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Provider.of<GlobalConfigProvider>(
-                                                      context)
-                                                  .isLevelFour &&
-                                              Provider.of<GlobalConfigProvider>(
-                                                          context)
-                                                      .selectedPage ==
-                                                  1 ||
-                                          !Provider.of<GlobalConfigProvider>(
-                                                      context)
-                                                  .isLevelFour &&
-                                              Provider.of<GlobalConfigProvider>(
-                                                          context)
-                                                      .selectedPage ==
-                                                  0
-                                      ? deviceColor
-                                      : billingColor,
-                                ),
-                              ),
-                              Expanded(child: Container()),
-                            ],
-                          );
-                        }
-                  return GestureDetector(
-                    onLongPress: () => Fluttertoast.showToast(
-                      msg: "Date : ${dataList[index].date} \n"
-                          "Description : ${dataList[index].status} \n"
-                          "Amount : ${dataList[index].amount} \n ",
-
-                      toastLength: Toast.LENGTH_SHORT, // length
-                      gravity: ToastGravity.CENTER,
-                    ),
-                    child: BillingHistoryTable(
-                        boolIsbillingData: true,
-                        data: dataList[index],
-                        index: index),
-                  );
-                },
-              )),
+         
         ],
       ),
       height: MediaQuery.of(context).size.height * 0.38,

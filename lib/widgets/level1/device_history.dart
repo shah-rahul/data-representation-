@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nudron/models/deviceHistoryDataProvider.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
@@ -7,6 +8,8 @@ import 'package:nudron/widgets/level1/alertBarBuilder.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../config/colorConfigFile.dart';
 
@@ -18,6 +21,7 @@ class DeviceHistory extends StatefulWidget {
 }
 
 ScrollController _scrollController = ScrollController();
+DataGridController _dataGridController = DataGridController();
 int _currentMax = 10;
 
 const dataTitle = [
@@ -38,6 +42,13 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       }
     });
   }
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    _dataGridController.selectedIndex = 0;
+
+  }
+  
 
   _getMoreData() {
     print("CALLED");
@@ -50,147 +61,96 @@ class _DeviceHistoryState extends State<DeviceHistory> {
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).historyDataList;
     return Container(
-      padding: const EdgeInsets.all(0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Text(
-                      Provider.of<GlobalConfigProvider>(context).date,
-                      style: Theme.of(context).primaryTextTheme.headline5,
-                    ),
-                    Text(" | ", style: Theme.of(context).primaryTextTheme.headline5),
-                      Text(
-                      Provider.of<GlobalConfigProvider>(context).selectedDeviceType,
-                      style: Theme.of(context).primaryTextTheme.headline5,
-                    )
-                  ],
-                ),
-              ),
+      child: SfDataGridTheme(
+        data: SfDataGridThemeData(
+          selectionColor: billingColor.withOpacity(0.5),
+        ),
+        child: Expanded(
+          child: SfDataGrid(
+            horizontalScrollPhysics: NeverScrollableScrollPhysics(),
+            columnWidthMode: ColumnWidthMode.fitByColumnName,
+            isScrollbarAlwaysShown: false,
+            rowHeight: 32,
+            controller: _dataGridController,
+            selectionMode: SelectionMode.single,
+            source: DeviceHistorydataProvider(
+              billingGroupData: dataList,
+            ),
+            loadMoreViewBuilder:
+                (BuildContext context, LoadMoreRows loadMoreRows) {
+              Future<String> loadRows() async {
+                // Call the loadMoreRows function to call the
+                // DataGridSource.handleLoadMoreRows method. So, additional
+                // rows can be added from handleLoadMoreRows method.
+                await _getMoreData();
+                return Future<String>.value('Completed');
+              }
+
+              return FutureBuilder<String>(
+                  initialData: 'loading',
+                  future: loadRows(),
+                  builder: (context, snapShot) {
+                    if (snapShot.data == 'loading') {
+                      return Container(
+                          height: 60.0,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: BorderDirectional(
+                                  top: BorderSide(
+                                      width: 1.0,
+                                      color: Color.fromRGBO(0, 0, 0, 0.26)))),
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation(Colors.deepPurple)));
+                    } else {
+                      return SizedBox.fromSize(size: Size.zero);
+                    }
+                  });
+            },
+            columns: <GridColumn>[
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.18,
+                  columnName: 'date',
+                  label: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Date',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.16,
+                  columnName: 'alerts',
+                  label: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Alerts',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  columnName: 'status',
+                  label: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Status',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+              GridColumn(
+                  
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  columnName: 'Comments',
+                  label: Container(
+                    margin: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Comments',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
             ],
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Center(
-          //     child: Text(
-          //       Provider.of<GlobalConfigProvider>(context)
-          //                   .selectedDeviceGroup ==
-          //               "Device Group"
-          //           ? "Device History"
-          //           : Provider.of<GlobalConfigProvider>(context)
-          //               .selectedDeviceGroup,
-          //       style: Theme.of(context).primaryTextTheme.headline3!.copyWith(
-          //             color: billingColor,
-          //           ),
-          //     ),
-          //   ),
-          // ),
-          Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      dataTitle[0],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 35),
-                    child: Text(
-                      dataTitle[1],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Text(
-                      dataTitle[2],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Text(
-                      dataTitle[3],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 1,
-              child: ListView.builder(
-                primary: false,
-                itemCount: dataList.length + 1,
-                controller: _scrollController,
-                itemExtent: 35,
-                itemBuilder: (context, index) {
-                  if (index == (dataList.length) &&
-                      !Provider.of<TableDataProvider>(context)
-                          .deviceHistoryDataLoadedCompletely) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (index == (dataList.length)) {
-                    return Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 3, bottom: 3),
-                          height: 2,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Provider.of<GlobalConfigProvider>(context)
-                                            .isLevelFour &&
-                                        Provider.of<GlobalConfigProvider>(
-                                                    context)
-                                                .selectedPage ==
-                                            1 ||
-                                    !Provider.of<GlobalConfigProvider>(context)
-                                            .isLevelFour &&
-                                        Provider.of<GlobalConfigProvider>(
-                                                    context)
-                                                .selectedPage ==
-                                            0
-                                ? deviceColor
-                                : billingColor,
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                      ],
-                    );
-                  }
-                  if (dataList.length > index) {
-                    return GestureDetector(
-                      onLongPress: () => Fluttertoast.showToast(
-                        msg:
-                            "date: ${dataList[index].date} \nstatus: ${dataList[index].status} \ncomments: ${dataList[index].comments}",
-
-                        toastLength: Toast.LENGTH_SHORT, // length
-                        gravity: ToastGravity.CENTER, // location
-                      ),
-                      child: NudronTable(
-                        data: dataList[index],
-                        index: index,
-                        isBillingData: false,
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              )),
-        ],
+        ),
       ),
       height: MediaQuery.of(context).size.height * 0.38,
       width: MediaQuery.of(context).size.width,

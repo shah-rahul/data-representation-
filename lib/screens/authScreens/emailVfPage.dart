@@ -100,7 +100,9 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                             print("Sign up click");
                           },
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              verifyMail();
+                            },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * 0.07,

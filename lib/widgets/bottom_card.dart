@@ -4,6 +4,8 @@ import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
+import 'package:nudron/widgets/level1/deviceListInfoContainer.dart';
+import 'package:nudron/widgets/level2/billingHistoryInfoContainer.dart';
 import 'package:nudron/widgets/level2/billing_history.dart';
 import 'package:nudron/widgets/level2/bottomBarBuilder.dart';
 import 'package:nudron/widgets/map_display.dart';
@@ -31,7 +33,7 @@ class _BottomCardState extends State<BottomCard> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -81,11 +83,11 @@ class _BottomCardState extends State<BottomCard> {
                                           .selectedPage ==
                                       0
                           ? Text(
-                             "history",
+                             "History",
                               overflow: TextOverflow.fade,
                               style: TextStyle(fontSize: 13),
                             )
-                          : Text("history",
+                          : Text("History",
                               overflow: TextOverflow.fade,
                               style: TextStyle(fontSize: 13)),
                     ),
@@ -104,6 +106,12 @@ class _BottomCardState extends State<BottomCard> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text("Map", style: TextStyle(fontSize: 11)),
+                    ),
+                  ),
+                    Tab(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text("Info", style: TextStyle(fontSize: 11)),
                     ),
                   ),
                 ]),
@@ -171,6 +179,27 @@ class _BottomCardState extends State<BottomCard> {
                               bottomLeft: Radius.circular(5),
                               bottomRight: Radius.circular(5))),
                       child: MapContainer()),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Provider.of<GlobalConfigProvider>(context)
+                                    .isLevelFour &&
+                                Provider.of<GlobalConfigProvider>(context)
+                                        .selectedPage ==
+                                    1 ||
+                            !Provider.of<GlobalConfigProvider>(context)
+                                    .isLevelFour &&
+                                Provider.of<GlobalConfigProvider>(context)
+                                        .selectedPage ==
+                                    0
+                        ? Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              BillingHistoryInfoContainer(),
+                             
+                            ],
+                          )
+                        : DeviceLisInfoContainer(),
+                  ),
                 ]),
           ),
         ],
