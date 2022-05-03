@@ -136,7 +136,7 @@ class _MapContainerState extends State<MapContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width ,
       child: Stack(
         children: <Widget>[
           
@@ -144,10 +144,7 @@ class _MapContainerState extends State<MapContainer> {
           Opacity(
             opacity: _isMapLoading ? 0 : 1,
             child: GoogleMap(
-              mapToolbarEnabled: true,
               zoomGesturesEnabled: true,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
               zoomControlsEnabled: true,
               initialCameraPosition: CameraPosition(
                 target: _center,

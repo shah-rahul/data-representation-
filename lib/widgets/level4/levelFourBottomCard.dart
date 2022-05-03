@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
@@ -17,12 +18,14 @@ class LevelFourBottomCard extends StatefulWidget {
 
 class _BottomCardState extends State<LevelFourBottomCard> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<ChartDataProvider>(context).initCall();
-  }
+  
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   Provider.of<ChartDataProvider>(context).initCall();
+  // }
 
   GeoHasher geoHasher = GeoHasher();
+  
 
   @override
   Widget build(BuildContext context) {

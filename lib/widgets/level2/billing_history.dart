@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nudron/config/colorConfigFile.dart';
+import 'package:nudron/models/billingHistoryDataProvider.dart';
 import 'package:nudron/models/billing_cell_data.dart';
 import 'package:nudron/models/deviceHistoryDataProvider.dart';
 import 'package:nudron/models/history_cell_model.dart';
@@ -32,19 +33,9 @@ const dataTitle = [
 bool show = false;
 final DataGridController _dataGridController = DataGridController();
 
-
 class _DeviceGroupState extends State<BillingHistory> {
   @override
-  void initState() {
-    // TODO: implement initState
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getMoreData();
-      }
-    });
-    super.initState();
-  }
+ 
 
   _getMoreData() {
     print("billing  group data refersher called");
@@ -82,78 +73,52 @@ class _DeviceGroupState extends State<BillingHistory> {
     List<BillingCellData> dataList =
         Provider.of<TableDataProvider>(context).billingDatalist;
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.all(2.0),
-          //       child: Center(
-          //         child: Text(
-          //           Provider.of<GlobalConfigProvider>(context)
-          //                       .selectedBillingGroup ==
-          //                   "Billing History"
-          //               ? "Billing History"
-          //               : Provider.of<GlobalConfigProvider>(context)
-          //                   .selectedBillingGroup,
-          //           style:
-          //               Theme.of(context).primaryTextTheme.headline3!.copyWith(
-          //                     color: billingColor,
-          //                   ),
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.all(2.0),
-          //       child: BottombarBuilder(fun: whatIsTapped),
-          //     ),
-          //   ],
-          // ),
-          // show
-          //     ? Padding(
-          //         padding: const EdgeInsets.all(5.0),
-          //         child: Text(
-          //           toBeShown,
-          //           style: Theme.of(context).primaryTextTheme.headline5,
-          //         ),
-          //       )
-          //     : Container(),
-          Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      dataTitle[0],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 60),
-                    child: Text(
-                      dataTitle[1],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 130),
-                    child: Text(
-                      dataTitle[2],
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      child: SfDataGridTheme(
+        data: SfDataGridThemeData(
+          selectionColor: deviceColor.withOpacity(0.5),
+        ),
+        child: Expanded(
+          child: SfDataGrid(
+            horizontalScrollPhysics: NeverScrollableScrollPhysics(),
+            columnWidthMode: ColumnWidthMode.fitByColumnName,
+            isScrollbarAlwaysShown: false,
+            rowHeight: 32,
+            controller: _dataGridController,
+            selectionMode: SelectionMode.single,
+            source: (BillingHistoryDataProvider(
+              billingGroupData: dataList,
+            )),
+            columns: <GridColumn>[
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  columnName: 'date',
+                  label: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Date',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  columnName: 'description',
+                  label: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Description',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+              GridColumn(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  columnName: 'amount',
+                  label: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Amount',
+                        style: Theme.of(context).primaryTextTheme.headline4,
+                      ))),
+            ],
           ),
-         
-        ],
+        ),
       ),
       height: MediaQuery.of(context).size.height * 0.38,
       width: MediaQuery.of(context).size.width * 1,

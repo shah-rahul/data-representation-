@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nudron/config/colorConfigFile.dart';
 import 'package:nudron/models/billing_cell_data.dart';
+import 'package:nudron/models/deviceListDataProvider.dart';
 import 'package:nudron/models/history_cell_model.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/providers/tableDataProvider.dart';
@@ -8,6 +9,8 @@ import 'package:nudron/widgets/level2/billing_history_table.dart';
 import 'package:nudron/widgets/nudron_table.dart';
 import 'package:nudron/widgets/utils/header_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DeviceList extends StatefulWidget {
   const DeviceList({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class DeviceList extends StatefulWidget {
 var SearchField = TextEditingController();
 
 ScrollController _scrollController = ScrollController();
+DataGridController _dataGridController = DataGridController();
 const dataTitle = [
   "Device ID",
   "Label",
@@ -86,11 +90,7 @@ openDialog(context, BillingCellData data) {
 }
 
 class _DeviceGroupState extends State<DeviceList> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+ 
 
   setGlobalDeviceGroup(str) {
     Provider.of<GlobalConfigProvider>(context, listen: false)
@@ -170,108 +170,61 @@ class _DeviceGroupState extends State<DeviceList> {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.only(),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            dataTitle[0],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 65),
-                          child: Text(
-                            dataTitle[1],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 120),
-                          child: Text(
-                            dataTitle[2],
-                            style: Theme.of(context).primaryTextTheme.headline4,
-                          ),
-                        ),
+               
+                 SfDataGridTheme(
+                  data: SfDataGridThemeData(
+                    selectionColor: billingColor.withOpacity(0.5),
+                  ),
+                  child: Expanded(
+                    child: SfDataGrid(
+                      horizontalScrollPhysics: NeverScrollableScrollPhysics(),
+                      columnWidthMode: ColumnWidthMode.fitByColumnName,
+                      isScrollbarAlwaysShown: false,
+                      rowHeight: 32,
+                      controller: _dataGridController,
+                      selectionMode: SelectionMode.single,
+                      source: DeviceListDataProvider(
+                        billingGroupData: dataList,
+                      ),
+                      columns: <GridColumn>[
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            columnName: 'label',
+                            label: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Label',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            columnName: 'devices',
+                            label: Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Devices',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            columnName: 'alerts',
+                            label: Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Alerts',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
+                     
                       ],
                     ),
                   ),
                 ),
-                Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      primary: false,
-                      itemCount: dataList.length + 1,
-                      controller: _scrollController,
-                      itemExtent: 35,
-                      itemBuilder: (context, index) {
-                        if (index == selectedIndex) {
-                          return BillingHistoryTable(
-                            boolIsbillingData: false,
-                            data: dataList[index],
-                            index: index,
-                            isHilighted: true,
-                            hilightColor: billingColor,
-                          );
-                        }
-                        if (index == (dataList.length)) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 3, bottom: 3),
-                                height: 2,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Provider.of<GlobalConfigProvider>(
-                                                      context)
-                                                  .isLevelFour &&
-                                              Provider.of<GlobalConfigProvider>(
-                                                          context)
-                                                      .selectedPage ==
-                                                  1 ||
-                                          !Provider.of<GlobalConfigProvider>(
-                                                      context)
-                                                  .isLevelFour &&
-                                              Provider.of<GlobalConfigProvider>(
-                                                          context)
-                                                      .selectedPage ==
-                                                  0
-                                      ? deviceColor
-                                      : billingColor,
-                                ),
-                              ),
-                              Expanded(child: Container()),
-                            ],
-                          );
-                        }
-                        if (index == (dataList.length) &&
-                            Provider.of<TableDataProvider>(context)
-                                    .deviceListDataLoadedCompletely ==
-                                false) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        return GestureDetector(
-                          onLongPress: () =>
-                              openDialog(context, dataList[index]),
-                          onTap: () => {
-                            setState(() {
-                              selectedIndex = index;
-                            }),
-                            setGlobalDeviceGroup(dataList[index].message)
-                          },
-                          child: BillingHistoryTable(
-                              boolIsbillingData: false,
-                              data: dataList[index],
-                              index: index),
-                        );
-                      },
-                    )),
               ],
             ),
             height: MediaQuery.of(context).size.height * 0.39,

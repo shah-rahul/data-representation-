@@ -31,6 +31,8 @@ bool isUsage2020Active = true;
 bool isUsage2021Active = true;
 bool isUsage2022Active = true;
 
+
+
 class _CustombarChartState extends State<CustombarChart> {
   @override
   void initState() {
@@ -42,9 +44,17 @@ class _CustombarChartState extends State<CustombarChart> {
     );
     _tooltipBehavior = TooltipBehavior(
       enable: true,
+      canShowMarker: false,
+      format: 'point.x : point.y',
+      shared: true,
+      tooltipPosition: TooltipPosition.pointer,
     );
     _monthTooltipBehavior = TooltipBehavior(
       enable: true,
+      canShowMarker: false,
+      format: 'point.x : point.y',
+      shared: true,
+      tooltipPosition: TooltipPosition.pointer,
     );
   }
 
@@ -101,19 +111,23 @@ class _CustombarChartState extends State<CustombarChart> {
 
 String returnMonthlyToolTipString(context, day) {
   print(day);
-var monthList1 = Provider.of<ChartDataProvider>(context, listen: false).monthlyDataList[1];
+  var monthList1 =
+      Provider.of<ChartDataProvider>(context, listen: false).monthlyDataList[1];
   String tooltipString = " ";
-var monthList2 = Provider.of<ChartDataProvider>(context, listen: false).monthlyDataList[4];
- 
-  monthList1.where((element) => element.date.day == int.parse(day)).forEach((element) {
+  var monthList2 =
+      Provider.of<ChartDataProvider>(context, listen: false).monthlyDataList[4];
+
+  monthList1
+      .where((element) => element.date.day == int.parse(day))
+      .forEach((element) {
     print(element.data);
-    tooltipString =
-       "Alerts: " + "${element.data}\n";
+    tooltipString = "Alerts: " + "${element.data}\n";
   });
-  monthList2.where((element) => element.date.day == int.parse(day)).forEach((element) {
+  monthList2
+      .where((element) => element.date.day == int.parse(day))
+      .forEach((element) {
     print(element.data);
-    tooltipString =tooltipString +
-        "Usage :${element.data}\n";
+    tooltipString = tooltipString + "Usage :${element.data}\n";
   });
   return tooltipString;
 }
@@ -288,7 +302,8 @@ Widget monthlyChart(ctx, fun, setStatus) {
             child: SfCartesianChart(
               onTooltipRender: ((tooltipArgs) => {
                     print(tooltipArgs.text!.split(' ')[0]),
-                    tooltipArgs.header = tooltipArgs.text!.split(' ')[0] + " " + tappedItem,
+                    tooltipArgs.header =
+                        tooltipArgs.text!.split(' ')[0] + " " + tappedItem,
                     tooltipArgs.text = returnMonthlyToolTipString(
                         ctx, tooltipArgs.text!.split(' ')[0]),
                   }),
@@ -413,6 +428,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
               width: MediaQuery.of(ctx).size.width * 0.85,
               height: MediaQuery.of(ctx).size.height * 0.28,
               child: SfCartesianChart(
+                  tooltipBehavior: _tooltipBehavior,
                   onTooltipRender: ((tooltipArgs) => {
                         tappedItem = tooltipArgs.text!.split(' ')[0],
                         tooltipArgs.header = tooltipArgs.text!.split(' ')[0],
@@ -420,7 +436,6 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             ctx, tooltipArgs.text!.split(' ')[0]),
                       }),
                   selectionType: SelectionType.series,
-                  tooltipBehavior: _tooltipBehavior,
                   primaryXAxis: CategoryAxis(
                     name: "",
                     labelsExtent: 100,
@@ -452,7 +467,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             name: 'usage2021',
                             spacing: 0,
                             yAxisName: 'yAxis',
-                            enableTooltip: true,
+                            // enableTooltip: true,
                             color: Colors.red,
                             dataSource:
                                 Provider.of<ChartDataProvider>(ctx).alerts2021,
@@ -465,7 +480,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             name: 'usage2021',
                             spacing: 0,
                             yAxisName: 'yAxis',
-                            enableTooltip: true,
+                            // enableTooltip: true,
                             color: Colors.grey[300],
                             dataSource:
                                 Provider.of<ChartDataProvider>(ctx).alerts2021,
@@ -482,7 +497,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             emptyPointSettings: EmptyPointSettings(
                               mode: EmptyPointMode.drop,
                             ),
-                            enableTooltip: true,
+                            // enableTooltip: true,
                             onPointDoubleTap: (ChartPointDetails details) {
                               fun();
                             },
@@ -499,7 +514,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             emptyPointSettings: EmptyPointSettings(
                               mode: EmptyPointMode.drop,
                             ),
-                            enableTooltip: true,
+                            // enableTooltip: true,
                             xValueMapper: (ChartData data, _) =>
                                 data.month.toString(),
                             yValueMapper: (ChartData data, _) =>

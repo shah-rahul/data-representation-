@@ -301,11 +301,10 @@ class ChartDataProvider extends ChangeNotifier {
     readYear2020();
     readYear2021();
     readYear2022();
-    // readAfterYearlyData();
-    // readBeforeYearlyData();
-  }
+   }
 
   Future<void> readYear2020() async {
+    print('read year 2020 called');
     final String response =
         await rootBundle.loadString('assets/yearlyData.json');
     final data = await json.decode(response) as List;
@@ -442,9 +441,11 @@ class ChartDataProvider extends ChangeNotifier {
     alerts2020.add(ChartData(month: monthArr[9], data: october1));
     alerts2020.add(ChartData(month: monthArr[10], data: november1));
     alerts2020.add(ChartData(month: monthArr[11], data: december1));
+    notifyListeners();
   }
 
   Future<void> readYear2021() async {
+    print('read year 2021 called');
     final String response =
         await rootBundle.loadString('assets/yearlyData.json');
     final data = await json.decode(response) as List;
@@ -581,9 +582,11 @@ class ChartDataProvider extends ChangeNotifier {
     alerts2021.add(ChartData(month: monthArr[9], data: october1));
     alerts2021.add(ChartData(month: monthArr[10], data: november1));
     alerts2021.add(ChartData(month: monthArr[11], data: december1));
+    notifyListeners();
   }
 
   Future<void> readYear2022() async {
+    print('read year 2022 called');
     final String response =
         await rootBundle.loadString('assets/yearlyData.json');
     final data = await json.decode(response) as List;
@@ -720,5 +723,6 @@ class ChartDataProvider extends ChangeNotifier {
     alerts2022.add(ChartData(month: monthArr[9], data: october1));
     alerts2022.add(ChartData(month: monthArr[10], data: november1));
     alerts2022.add(ChartData(month: monthArr[11], data: december1));
+    notifyListeners();
   }
 }

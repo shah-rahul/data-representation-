@@ -18,6 +18,8 @@ import 'package:nudron/widgets/utils/dotDecotaror.dart';
 import 'package:nudron/widgets/utils/dotIndicator.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/chartDataProvider.dart';
+
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
   static const String routeName = "/dashBoard";
@@ -49,23 +51,27 @@ class _MyHomePageState extends State<DashBoard>
 
   void initLoader() {
     if (!loaded) {
-      Provider.of<MapDataProvider>(context).mapLoader();
-      Provider.of<TableDataProvider>(context).billingHistoryDataLoader();
-      Provider.of<TableDataProvider>(context).zonalDataLoader();
-      Provider.of<TableDataProvider>(context).deviceHistoryDataLoader();
-      Provider.of<TableDataProvider>(context).deviceListLoader();
-      Provider.of<TableDataProvider>(context).bllingDataLoader();
-      Provider.of<UserDataProvider>(context).userDataLoader();
-      Provider.of<GlobalConfigProvider>(context).historyHeaderLoader();
+      Provider.of<MapDataProvider>(context, listen: false).mapLoader();
+      Provider.of<TableDataProvider>(context, listen: false).billingHistoryDataLoader();
+      Provider.of<TableDataProvider>(context, listen: false).zonalDataLoader();
+      Provider.of<TableDataProvider>(context, listen: false).deviceHistoryDataLoader();
+      Provider.of<TableDataProvider>(context, listen: false).deviceListLoader();
+      Provider.of<TableDataProvider>(context, listen: false).bllingDataLoader();
+      Provider.of<UserDataProvider>(context, listen: false).userDataLoader();
+      Provider.of<GlobalConfigProvider>(context, listen: false).historyHeaderLoader();
+    Provider.of<ChartDataProvider>(context).initCall();
+
     }
     loaded = true;
   }
+
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    initLoader();
+     initLoader();
+   
   }
 
   @override

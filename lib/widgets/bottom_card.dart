@@ -4,6 +4,7 @@ import 'package:nudron/config/geoQueries.dart';
 import 'package:nudron/providers/chartDataProvider.dart';
 import 'package:nudron/providers/globalConfigProvider.dart';
 import 'package:nudron/screens/chart_page.dart';
+import 'package:nudron/screens/map_page.dart';
 import 'package:nudron/widgets/level1/deviceListInfoContainer.dart';
 import 'package:nudron/widgets/level2/billingHistoryInfoContainer.dart';
 import 'package:nudron/widgets/level2/billing_history.dart';
@@ -23,10 +24,10 @@ class BottomCard extends StatefulWidget {
 
 class _BottomCardState extends State<BottomCard> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<ChartDataProvider>(context).initCall();
-  }
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   Provider.of<ChartDataProvider>(context).initCall();
+  // }
 
   GeoHasher geoHasher = GeoHasher();
 
@@ -83,7 +84,7 @@ class _BottomCardState extends State<BottomCard> {
                                           .selectedPage ==
                                       0
                           ? Text(
-                             "History",
+                              "History",
                               overflow: TextOverflow.fade,
                               style: TextStyle(fontSize: 13),
                             )
@@ -108,7 +109,7 @@ class _BottomCardState extends State<BottomCard> {
                       child: Text("Map", style: TextStyle(fontSize: 11)),
                     ),
                   ),
-                    Tab(
+                  Tab(
                     child: Align(
                       alignment: Alignment.center,
                       child: Text("Info", style: TextStyle(fontSize: 11)),
@@ -138,7 +139,6 @@ class _BottomCardState extends State<BottomCard> {
                             alignment: Alignment.bottomCenter,
                             children: [
                               BillingHistory(),
-                             
                             ],
                           )
                         : DeviceHistory(),
@@ -166,19 +166,35 @@ class _BottomCardState extends State<BottomCard> {
                       ),
                     ),
                   ),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10.0,
-                                color: Color.fromRGBO(0, 0, 0, 0.1))
-                          ],
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
-                      child: MapContainer()),
+                  Stack(
+                    children: [
+                      Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 10.0,
+                                    color: Color.fromRGBO(0, 0, 0, 0.1))
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  bottomRight: Radius.circular(5))),
+                          child: MapContainer()),
+                      Positioned(
+                          right: 10,
+                          bottom: 10,
+                          child: FloatingActionButton(
+                            onPressed: (() {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MapPage()),
+                              );
+                            }),
+                          ))
+                    ],
+                  ),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Provider.of<GlobalConfigProvider>(context)
@@ -195,7 +211,6 @@ class _BottomCardState extends State<BottomCard> {
                             alignment: Alignment.bottomCenter,
                             children: [
                               BillingHistoryInfoContainer(),
-                             
                             ],
                           )
                         : DeviceLisInfoContainer(),
