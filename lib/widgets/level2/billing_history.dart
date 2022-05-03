@@ -33,7 +33,7 @@ const dataTitle = [
 bool show = false;
 final DataGridController _dataGridController = DataGridController();
 
-class _DeviceGroupState extends State<BillingHistory> {
+class _DeviceGroupState extends State<BillingHistory> with AutomaticKeepAliveClientMixin<BillingHistory> {
   @override
  
 
@@ -67,9 +67,17 @@ class _DeviceGroupState extends State<BillingHistory> {
       });
     }
   }
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+   if(mounted && _dataGridController.selectedIndex != 0) {
+     _dataGridController.selectedIndex = 0;
+   }
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     List<BillingCellData> dataList =
         Provider.of<TableDataProvider>(context).billingDatalist;
     return Container(
@@ -132,4 +140,6 @@ class _DeviceGroupState extends State<BillingHistory> {
       ),
     );
   }
+   @override
+  bool get wantKeepAlive => true;
 }

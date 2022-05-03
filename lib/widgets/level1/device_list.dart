@@ -89,16 +89,23 @@ openDialog(context, BillingCellData data) {
           ));
 }
 
-class _DeviceGroupState extends State<DeviceList> {
- 
-
+class _DeviceGroupState extends State<DeviceList> with AutomaticKeepAliveClientMixin<DeviceList> {
   setGlobalDeviceGroup(str) {
     Provider.of<GlobalConfigProvider>(context, listen: false)
         .setDeviceGroup(str);
   }
 
   @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted && _dataGridController.selectedIndex != 0) {
+      _dataGridController.selectedIndex = 0;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     List<BillingCellData> dataList =
         Provider.of<TableDataProvider>(context).devicelist;
     return Flexible(
@@ -170,8 +177,7 @@ class _DeviceGroupState extends State<DeviceList> {
                     ],
                   ),
                 ),
-               
-                 SfDataGridTheme(
+                SfDataGridTheme(
                   data: SfDataGridThemeData(
                     selectionColor: billingColor.withOpacity(0.5),
                   ),
@@ -220,11 +226,21 @@ class _DeviceGroupState extends State<DeviceList> {
                                       .primaryTextTheme
                                       .headline4,
                                 ))),
-                     
                       ],
                     ),
                   ),
                 ),
+                 Provider.of<TableDataProvider>(context)
+                  .deviceListDataLoadedCompletely && mounted
+              ? Container(
+                  padding: EdgeInsets.only(top: 5, bottom: 3),
+                  height: 2,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: billingColor,
+                  ),
+                )
+              : Container(),
               ],
             ),
             height: MediaQuery.of(context).size.height * 0.39,
@@ -243,4 +259,7 @@ class _DeviceGroupState extends State<DeviceList> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

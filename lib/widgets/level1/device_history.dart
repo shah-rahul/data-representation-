@@ -32,16 +32,24 @@ const dataTitle = [
 ];
 double offset = 0.0;
 
-class _DeviceHistoryState extends State<DeviceHistory> {
+class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveClientMixin<DeviceHistory> {
   _getMoreData() {
     print("CALLED");
     Provider.of<TableDataProvider>(context, listen: false)
         .deviceHistoryDataRefresher();
   }
 
-  
   @override
-  Widget build(BuildContext context) {
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted && _dataGridController.selectedIndex != 0) {
+      _dataGridController.selectedIndex = 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {  
+    super.build(context);
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).historyDataList;
     return Container(
@@ -172,4 +180,6 @@ class _DeviceHistoryState extends State<DeviceHistory> {
       ),
     );
   }
+     @override
+  bool get wantKeepAlive => true;
 }

@@ -27,7 +27,8 @@ var SearchField = TextEditingController();
 ScrollController _scrollController = ScrollController();
 const dataTitle = ["Label", "Devices", "Alerts", "Dues"];
 
-class _DeviceGroupState extends State<BillingGroup> {
+class _DeviceGroupState extends State<BillingGroup>
+    with AutomaticKeepAliveClientMixin<BillingGroup> {
   List<HistoryCellData> dataList = [];
   setGlobalBillingGroup(str) {
     Provider.of<GlobalConfigProvider>(context, listen: false)
@@ -40,9 +41,17 @@ class _DeviceGroupState extends State<BillingGroup> {
         .billingDataRefresher();
   }
 
-  int selectedIndex = 0;
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted && _dataGridController.selectedIndex != 0) {
+      _dataGridController.selectedIndex = 0;
+    }
+  }
 
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).billingGroupList;
     return Flexible(
@@ -210,7 +219,8 @@ class _DeviceGroupState extends State<BillingGroup> {
                   ),
                 ),
                 Provider.of<TableDataProvider>(context)
-                        .billingGroupDataLoadedCompletely
+                            .billingGroupDataLoadedCompletely &&
+                        mounted
                     ? Container(
                         padding: EdgeInsets.only(top: 5, bottom: 3),
                         height: 2,
@@ -249,4 +259,7 @@ class _DeviceGroupState extends State<BillingGroup> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

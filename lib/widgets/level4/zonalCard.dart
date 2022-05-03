@@ -25,12 +25,20 @@ var SearchField = TextEditingController();
 ScrollController _scrollController = ScrollController();
 DataGridController _dataGridController = DataGridController();
 
-class _DeviceGroupState extends State<ZonalCard> {
-  List<HistoryCellData> dataList = [];
- 
- 
-@override
+class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMixin<ZonalCard> {
+  changeSelectionStatus() {
+    _dataGridController.selectedIndex = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      if (mounted && _dataGridController.selectedIndex != 0) {
+        changeSelectionStatus();
+      }
+    });
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).zonalDataList;
     return Flexible(
@@ -175,8 +183,18 @@ class _DeviceGroupState extends State<ZonalCard> {
               color: Theme.of(context).cardColor,
             ),
           ),
+          Container(
+                  padding: EdgeInsets.only(top: 5, bottom: 3),
+                  height: 2,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: zonalColor,
+                  ),
+                )
         ],
       ),
     );
   }
+    @override
+  bool get wantKeepAlive => true;
 }
