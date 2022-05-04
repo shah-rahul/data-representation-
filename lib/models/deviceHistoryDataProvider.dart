@@ -33,12 +33,14 @@ class DeviceHistorydataProvider extends DataGridSource {
           return Container(
             alignment: (dataGridCell.columnName == 'date')
                 ? Alignment.centerLeft
-                : Alignment.centerRight,
+                : (dataGridCell.columnName == 'date')
+                    ? Alignment.centerRight
+                    : Alignment.center,
             child: dataGridCell.columnName == 'alerts'
                 ? Alertbar(alert: dataGridCell.value)
-                : dataGridCell.columnName == "status" && dataGridCell.value == "0"
+                : dataGridCell.columnName == "status" &&
+                        dataGridCell.value == "0"
                     ? Container(
-                    
                         height: 20,
                         decoration: BoxDecoration(
                           color: billingColor,
@@ -58,9 +60,12 @@ class DeviceHistorydataProvider extends DataGridSource {
                         ),
                       )
                     : Container(
-                       padding: dataGridCell.columnName == 'comments' ? EdgeInsets.only(left: 22) :EdgeInsets.all(0),
-                      child: Text(
+                        padding: dataGridCell.columnName == 'comments'
+                            ? EdgeInsets.only(left: 20)
+                            : EdgeInsets.all(0),
+                        child: Text(
                           dataGridCell.value.toString(),
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                             height: 1.2,
                             fontSize: 14,
@@ -68,7 +73,7 @@ class DeviceHistorydataProvider extends DataGridSource {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                    ),
+                      ),
           );
         }).toList());
   }

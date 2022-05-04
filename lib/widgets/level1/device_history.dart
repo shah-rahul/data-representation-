@@ -32,7 +32,8 @@ const dataTitle = [
 ];
 double offset = 0.0;
 
-class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveClientMixin<DeviceHistory> {
+class _DeviceHistoryState extends State<DeviceHistory>
+    with AutomaticKeepAliveClientMixin<DeviceHistory> {
   _getMoreData() {
     print("CALLED");
     Provider.of<TableDataProvider>(context, listen: false)
@@ -48,7 +49,7 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
   }
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     super.build(context);
     List<HistoryCellData> dataList =
         Provider.of<TableDataProvider>(context).historyDataList;
@@ -64,12 +65,14 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
                 horizontalScrollPhysics: NeverScrollableScrollPhysics(),
                 columnWidthMode: ColumnWidthMode.fitByColumnName,
                 isScrollbarAlwaysShown: false,
+                headerRowHeight: MediaQuery.of(context).size.height * 0.04,
                 rowHeight: 40,
                 controller: _dataGridController,
                 selectionMode: SelectionMode.single,
                 source: DeviceHistorydataProvider(
                   billingGroupData: dataList,
                 ),
+                gridLinesVisibility: GridLinesVisibility.both,
                 loadMoreViewBuilder:
                     (BuildContext context, LoadMoreRows loadMoreRows) {
                   Future<String> loadRows() async {
@@ -106,7 +109,7 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
                 },
                 columns: <GridColumn>[
                   GridColumn(
-                      width: MediaQuery.of(context).size.width * 0.18,
+                      width: MediaQuery.of(context).size.width * 0.15,
                       columnName: 'date',
                       label: Container(
                           alignment: Alignment.centerLeft,
@@ -115,10 +118,10 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
                             style: Theme.of(context).primaryTextTheme.headline4,
                           ))),
                   GridColumn(
-                      width: MediaQuery.of(context).size.width * 0.16,
+                      width: MediaQuery.of(context).size.width * 0.15,
                       columnName: 'alerts',
                       label: Container(
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.center,
                           child: Text(
                             'Alerts',
                             style: Theme.of(context).primaryTextTheme.headline4,
@@ -127,13 +130,13 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
                       width: MediaQuery.of(context).size.width * 0.15,
                       columnName: 'status',
                       label: Container(
-                          alignment: Alignment.centerRight,
+                          alignment: Alignment.center,
                           child: Text(
                             'Status',
                             style: Theme.of(context).primaryTextTheme.headline4,
                           ))),
                   GridColumn(
-                      width: MediaQuery.of(context).size.width * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.55,
                       columnName: 'Comments',
                       label: Container(
                           margin: EdgeInsets.only(left: 10),
@@ -180,6 +183,7 @@ class _DeviceHistoryState extends State<DeviceHistory> with AutomaticKeepAliveCl
       ),
     );
   }
-     @override
+
+  @override
   bool get wantKeepAlive => true;
 }

@@ -187,17 +187,30 @@ class _DeviceGroupState extends State<DeviceList> with AutomaticKeepAliveClientM
                       columnWidthMode: ColumnWidthMode.fitByColumnName,
                       isScrollbarAlwaysShown: false,
                       rowHeight: 32,
+                      headerRowHeight: MediaQuery.of(context).size.height * 0.04 ,
                       controller: _dataGridController,
                       selectionMode: SelectionMode.single,
                       source: DeviceListDataProvider(
                         billingGroupData: dataList,
                       ),
+                      gridLinesVisibility: GridLinesVisibility.both,
                       columns: <GridColumn>[
+                        GridColumn(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            columnName: 'Device ID',
+                            label: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Device ID',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline4,
+                                ))),
                         GridColumn(
                             width: MediaQuery.of(context).size.width * 0.4,
                             columnName: 'label',
                             label: Container(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'Label',
                                   style: Theme.of(context)
@@ -205,18 +218,7 @@ class _DeviceGroupState extends State<DeviceList> with AutomaticKeepAliveClientM
                                       .headline4,
                                 ))),
                         GridColumn(
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            columnName: 'devices',
-                            label: Container(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'Devices',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline4,
-                                ))),
-                        GridColumn(
-                            width: MediaQuery.of(context).size.width * 0.2,
+                            width: MediaQuery.of(context).size.width * 0.24,
                             columnName: 'alerts',
                             label: Container(
                                 alignment: Alignment.centerRight,

@@ -130,11 +130,14 @@ class _DeviceGroupState extends State<BillingGroup>
                       columnWidthMode: ColumnWidthMode.fitByColumnName,
                       isScrollbarAlwaysShown: false,
                       rowHeight: 32,
+                      headerRowHeight:
+                          MediaQuery.of(context).size.height * 0.04,
                       controller: _dataGridController,
                       selectionMode: SelectionMode.single,
                       source: BillingGroupDataProvider(
                         billingGroupData: dataList,
                       ),
+                      gridLinesVisibility: GridLinesVisibility.both,
                       loadMoreViewBuilder:
                           (BuildContext context, LoadMoreRows loadMoreRows) {
                         Future<String> loadRows() async {
@@ -185,7 +188,7 @@ class _DeviceGroupState extends State<BillingGroup>
                             width: MediaQuery.of(context).size.width * 0.2,
                             columnName: 'devices',
                             label: Container(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'Devices',
                                   style: Theme.of(context)
@@ -196,7 +199,7 @@ class _DeviceGroupState extends State<BillingGroup>
                             width: MediaQuery.of(context).size.width * 0.15,
                             columnName: 'alerts',
                             label: Container(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'Alerts',
                                   style: Theme.of(context)

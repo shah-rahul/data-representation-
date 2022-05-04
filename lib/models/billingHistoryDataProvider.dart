@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class BillingHistoryDataProvider extends DataGridSource {
-  BillingHistoryDataProvider({required List<BillingCellData> billingGroupData}) {
+  BillingHistoryDataProvider(
+      {required List<BillingCellData> billingGroupData}) {
     _billingGroupData = billingGroupData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<String>(columnName: 'date', value: e.date),
@@ -21,24 +22,27 @@ class BillingHistoryDataProvider extends DataGridSource {
   @override
   List<DataGridRow> get rows => _billingGroupData;
   DataGridRowAdapter? buildRow(DataGridRow row) {
-
-    
     return DataGridRowAdapter(
-      color: effectiveRows.indexOf(row) %2 == 0 ? Colors.white : Colors.grey[100],
+        color: effectiveRows.indexOf(row) % 2 == 0
+            ? Colors.white
+            : Colors.grey[100],
         cells: row.getCells().map<Widget>((dataGridCell) {
-       
-      return Container(
-        alignment: (dataGridCell.columnName == 'date' ||dataGridCell.columnName == 'description' ) ? Alignment.centerLeft :Alignment.centerRight ,
-        child: Text(
-          dataGridCell.value.toString(),
-          style: GoogleFonts.roboto(
-            height: 1.2,
-            fontSize: 14,
-            color: const Color(0xff000000),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      );
-    }).toList());
+          return Container(
+            alignment: (dataGridCell.columnName == 'date' ||
+                    dataGridCell.columnName == 'description')
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                height: 1.2,
+                fontSize: 14,
+                color: const Color(0xff000000),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }).toList());
   }
 }

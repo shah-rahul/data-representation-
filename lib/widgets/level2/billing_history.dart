@@ -91,14 +91,17 @@ class _DeviceGroupState extends State<BillingHistory> with AutomaticKeepAliveCli
             columnWidthMode: ColumnWidthMode.fitByColumnName,
             isScrollbarAlwaysShown: false,
             rowHeight: 32,
+            headerRowHeight:
+                MediaQuery.of(context).size.height * 0.04,
             controller: _dataGridController,
             selectionMode: SelectionMode.single,
             source: (BillingHistoryDataProvider(
               billingGroupData: dataList,
             )),
+            gridLinesVisibility: GridLinesVisibility.both,
             columns: <GridColumn>[
               GridColumn(
-                  width: MediaQuery.of(context).size.width * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.2,
                   columnName: 'date',
                   label: Container(
                       alignment: Alignment.centerLeft,
@@ -107,7 +110,7 @@ class _DeviceGroupState extends State<BillingHistory> with AutomaticKeepAliveCli
                         style: Theme.of(context).primaryTextTheme.headline4,
                       ))),
               GridColumn(
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   columnName: 'description',
                   label: Container(
                       alignment: Alignment.centerLeft,

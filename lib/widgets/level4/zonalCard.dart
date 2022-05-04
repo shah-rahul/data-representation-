@@ -25,7 +25,8 @@ var SearchField = TextEditingController();
 ScrollController _scrollController = ScrollController();
 DataGridController _dataGridController = DataGridController();
 
-class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMixin<ZonalCard> {
+class _DeviceGroupState extends State<ZonalCard>
+    with AutomaticKeepAliveClientMixin<ZonalCard> {
   changeSelectionStatus() {
     _dataGridController.selectedIndex = 0;
   }
@@ -115,11 +116,14 @@ class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMi
                       columnWidthMode: ColumnWidthMode.fitByColumnName,
                       isScrollbarAlwaysShown: false,
                       rowHeight: 32,
+                      headerRowHeight:
+                          MediaQuery.of(context).size.height * 0.04,
                       controller: _dataGridController,
                       selectionMode: SelectionMode.single,
                       source: ZonalDataProvider(
                         billingGroupData: dataList,
                       ),
+                      gridLinesVisibility: GridLinesVisibility.both,
                       columns: <GridColumn>[
                         GridColumn(
                             width: MediaQuery.of(context).size.width * 0.3,
@@ -136,7 +140,7 @@ class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMi
                             width: MediaQuery.of(context).size.width * 0.2,
                             columnName: 'devices',
                             label: Container(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'Devices',
                                   style: Theme.of(context)
@@ -144,10 +148,10 @@ class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMi
                                       .headline4,
                                 ))),
                         GridColumn(
-                            width: MediaQuery.of(context).size.width * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.17,
                             columnName: 'alerts',
                             label: Container(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'Alerts',
                                   style: Theme.of(context)
@@ -184,17 +188,18 @@ class _DeviceGroupState extends State<ZonalCard> with AutomaticKeepAliveClientMi
             ),
           ),
           Container(
-                  padding: EdgeInsets.only(top: 5, bottom: 3),
-                  height: 2,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: zonalColor,
-                  ),
-                )
+            padding: EdgeInsets.only(top: 5, bottom: 3),
+            height: 2,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: zonalColor,
+            ),
+          )
         ],
       ),
     );
   }
-    @override
+
+  @override
   bool get wantKeepAlive => true;
 }

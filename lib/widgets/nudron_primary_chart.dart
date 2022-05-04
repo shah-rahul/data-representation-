@@ -45,12 +45,14 @@ class _CustombarChartState extends State<CustombarChart> {
     _tooltipBehavior = TooltipBehavior(
       enable: true,
       canShowMarker: false,
+      header:  "",
       format: 'point.x : point.y',
       shared: true,
       tooltipPosition: TooltipPosition.pointer,
     );
     _monthTooltipBehavior = TooltipBehavior(
       enable: true,
+      header:  "",
       canShowMarker: false,
       format: 'point.x : point.y',
       shared: true,
@@ -127,7 +129,7 @@ String returnMonthlyToolTipString(context, day) {
       .where((element) => element.date.day == int.parse(day))
       .forEach((element) {
     print(element.data);
-    tooltipString = tooltipString + "Usage :${element.data}\n";
+    tooltipString = tooltipString + "Usage :${element.data}";
   });
   return tooltipString;
 }
@@ -213,8 +215,8 @@ String returnTooltipString(context, month) {
             .where((element) => element.month == month)
             .first
             .data
-            .toString() +
-        "\n";
+            .toString() ;
+        // "\n";
   }
 
   // if (Provider.of<ChartDataProvider>(context, listen: false)
@@ -302,8 +304,7 @@ Widget monthlyChart(ctx, fun, setStatus) {
             child: SfCartesianChart(
               onTooltipRender: ((tooltipArgs) => {
                     print(tooltipArgs.text!.split(' ')[0]),
-                    tooltipArgs.header =
-                        tooltipArgs.text!.split(' ')[0] + " " + tappedItem,
+                
                     tooltipArgs.text = returnMonthlyToolTipString(
                         ctx, tooltipArgs.text!.split(' ')[0]),
                   }),
@@ -431,7 +432,8 @@ Widget singleYearChart(fun, ctx, setStatus) {
                   tooltipBehavior: _tooltipBehavior,
                   onTooltipRender: ((tooltipArgs) => {
                         tappedItem = tooltipArgs.text!.split(' ')[0],
-                        tooltipArgs.header = tooltipArgs.text!.split(' ')[0],
+                      
+                      
                         tooltipArgs.text = returnTooltipString(
                             ctx, tooltipArgs.text!.split(' ')[0]),
                       }),

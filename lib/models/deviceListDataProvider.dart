@@ -28,7 +28,7 @@ class DeviceListDataProvider extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
        
       return Container(
-        alignment: (dataGridCell.columnName == 'deviceid') ? Alignment.centerLeft :Alignment.centerRight ,
+        alignment: (dataGridCell.columnName == 'deviceid')  ||(dataGridCell.columnName == 'label')  ? Alignment.centerLeft :Alignment.centerRight ,
         child: Text(
           dataGridCell.value.toString(),
           style: GoogleFonts.roboto(

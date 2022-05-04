@@ -21,24 +21,28 @@ class BillingGroupDataProvider extends DataGridSource {
   @override
   List<DataGridRow> get rows => _billingGroupData;
   DataGridRowAdapter? buildRow(DataGridRow row) {
-
-    
     return DataGridRowAdapter(
-      color: effectiveRows.indexOf(row) %2 == 0 ? Colors.white : Colors.grey[100],
+        color: effectiveRows.indexOf(row) % 2 == 0
+            ? Colors.white
+            : Colors.grey[100],
         cells: row.getCells().map<Widget>((dataGridCell) {
-       
-      return Container(
-        alignment: (dataGridCell.columnName == 'label') ? Alignment.centerLeft :Alignment.centerRight ,
-        child: Text(
-          dataGridCell.value.toString(),
-          style: GoogleFonts.roboto(
-            height: 1.2,
-            fontSize: 14,
-            color: const Color(0xff000000),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      );
-    }).toList());
+          return Container(
+            alignment: (dataGridCell.columnName == 'label')
+                ? Alignment.centerLeft
+                : (dataGridCell.columnName == 'dues')
+                    ? Alignment.centerRight
+                    : Alignment.center,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                height: 1.2,
+                fontSize: 14,
+                color: const Color(0xff000000),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }).toList());
   }
 }
