@@ -31,8 +31,6 @@ bool isUsage2020Active = true;
 bool isUsage2021Active = true;
 bool isUsage2022Active = true;
 
-
-
 class _CustombarChartState extends State<CustombarChart> {
   @override
   void initState() {
@@ -45,14 +43,14 @@ class _CustombarChartState extends State<CustombarChart> {
     _tooltipBehavior = TooltipBehavior(
       enable: true,
       canShowMarker: false,
-      header:  "",
+      header: "",
       format: 'point.x : point.y',
       shared: true,
       tooltipPosition: TooltipPosition.pointer,
     );
     _monthTooltipBehavior = TooltipBehavior(
       enable: true,
-      header:  "",
+      header: "",
       canShowMarker: false,
       format: 'point.x : point.y',
       shared: true,
@@ -60,10 +58,43 @@ class _CustombarChartState extends State<CustombarChart> {
     );
   }
 
-  void notifyParent() {
+  //switch case function to return month string with the index provided
+  String getMonth(int index) {
+    switch (index) {
+      case 0:
+        return "January";
+      case 1:
+        return "February";
+      case 2:
+        return "March";
+      case 3:
+        return "April";
+      case 4:
+        return "May";
+      case 5:
+        return "June";
+      case 6:
+        return "July";
+      case 7:
+        return "August";
+      case 8:
+        return "September";
+      case 9:
+        return "October";
+      case 10:
+        return "November";
+      case 11:
+        return "December";
+      default:
+        return "";
+    }
+  }
+
+  void notifyParent(index) {
+    String month = getMonth(index);
+
     isMonthData = !isMonthData;
-    Provider.of<ChartDataProvider>(context, listen: false)
-        .cleanData(tappedItem);
+    Provider.of<ChartDataProvider>(context, listen: false).cleanData(month);
   }
 
   void changeGraph() {
@@ -106,7 +137,7 @@ class _CustombarChartState extends State<CustombarChart> {
       width: MediaQuery.of(context).size.width * 2.5,
       child: isMonthData
           ? monthlyChart(context, changeGraph, setSelectionStatus)
-          : singleYearChart(notifyParent, context, setSelectionStatus),
+          : yearlyChart(notifyParent, context, setSelectionStatus),
     );
   }
 }
@@ -215,8 +246,8 @@ String returnTooltipString(context, month) {
             .where((element) => element.month == month)
             .first
             .data
-            .toString() ;
-        // "\n";
+            .toString();
+    // "\n";
   }
 
   // if (Provider.of<ChartDataProvider>(context, listen: false)
@@ -304,7 +335,6 @@ Widget monthlyChart(ctx, fun, setStatus) {
             child: SfCartesianChart(
               onTooltipRender: ((tooltipArgs) => {
                     print(tooltipArgs.text!.split(' ')[0]),
-                
                     tooltipArgs.text = returnMonthlyToolTipString(
                         ctx, tooltipArgs.text!.split(' ')[0]),
                   }),
@@ -432,8 +462,6 @@ Widget singleYearChart(fun, ctx, setStatus) {
                   tooltipBehavior: _tooltipBehavior,
                   onTooltipRender: ((tooltipArgs) => {
                         tappedItem = tooltipArgs.text!.split(' ')[0],
-                      
-                      
                         tooltipArgs.text = returnTooltipString(
                             ctx, tooltipArgs.text!.split(' ')[0]),
                       }),
@@ -463,12 +491,13 @@ Widget singleYearChart(fun, ctx, setStatus) {
                         ? ColumnSeries<ChartData, String>(
                             width: 0.5,
                             onPointDoubleTap: (ChartPointDetails details) {
-                              fun();
+                              fun(details.pointIndex);
                             },
                             isVisibleInLegend: true,
                             name: 'usage2021',
                             spacing: 0,
                             yAxisName: 'yAxis',
+
                             // enableTooltip: true,
                             color: Colors.red,
                             dataSource:
@@ -501,7 +530,7 @@ Widget singleYearChart(fun, ctx, setStatus) {
                             ),
                             // enableTooltip: true,
                             onPointDoubleTap: (ChartPointDetails details) {
-                              fun();
+                              fun(details.pointIndex);
                             },
                             xValueMapper: (ChartData data, _) =>
                                 data.month.toString(),
@@ -658,6 +687,20 @@ Widget singleMonthYearlyChart(ctx, fun, setStatus) {
   );
 }
 
+Widget dummyChart(ctx) {
+  return Container(
+      child: SfCartesianChart(
+          primaryXAxis: DateTimeAxis(),
+          // Enables the legend
+          legend: Legend(isVisible: true),
+          series: <LineSeries>[
+        LineSeries<ChartData, String>(
+            dataSource: Provider.of<ChartDataProvider>(ctx).alerts2020,
+            xValueMapper: (ChartData data, _) => data.month,
+            yValueMapper: (ChartData data, _) => data.data)
+      ]));
+}
+
 Widget yearlyChart(fun, ctx, setStatus) {
   return Container(
     width: MediaQuery.of(ctx).size.width * 0.5,
@@ -756,7 +799,7 @@ Widget yearlyChart(fun, ctx, setStatus) {
                   selectionType: SelectionType.series,
                   tooltipBehavior: _tooltipBehavior,
                   primaryXAxis: CategoryAxis(
-                    name: "",
+                    name: "yaxis",
                     labelsExtent: 100,
                     labelRotation: 15,
                     visibleMaximum: 6,
@@ -785,10 +828,11 @@ Widget yearlyChart(fun, ctx, setStatus) {
                             enableTooltip: true,
                             width: 1,
                             spacing: 0,
+                            isVisibleInLegend: true,
                             yAxisName: 'yAxis',
                             borderWidth: 300,
                             onPointDoubleTap: (ChartPointDetails details) {
-                              fun();
+                              fun(details.pointIndex);
                             },
                             xValueMapper: (ChartData data, _) =>
                                 data.month.toString(),
@@ -815,6 +859,9 @@ Widget yearlyChart(fun, ctx, setStatus) {
                             yAxisName: 'yAxis',
                             enableTooltip: true,
                             color: Colors.red,
+                            onPointDoubleTap: (ChartPointDetails details) {
+                              fun(details.pointIndex);
+                            },
                             dataSource:
                                 Provider.of<ChartDataProvider>(ctx).alerts2021,
                             xValueMapper: (ChartData data, _) =>
@@ -865,6 +912,10 @@ Widget yearlyChart(fun, ctx, setStatus) {
                             color: const Color.fromRGBO(13, 71, 161, 1),
                             name: "alerts2020",
                             enableTooltip: true,
+                            onPointDoubleTap: (ChartPointDetails details) {
+                              print(details.pointIndex);
+                              // fun();
+                            },
                             isVisibleInLegend: true,
                             emptyPointSettings:
                                 EmptyPointSettings(mode: EmptyPointMode.drop),
@@ -892,6 +943,10 @@ Widget yearlyChart(fun, ctx, setStatus) {
                             isVisibleInLegend: true,
                             color: Colors.yellow,
                             name: "alerts2021",
+                            onPointDoubleTap: (ChartPointDetails details) {
+                              print(details.pointIndex);
+                              // fun();
+                            },
                             emptyPointSettings: EmptyPointSettings(
                               mode: EmptyPointMode.drop,
                             ),
