@@ -28,7 +28,7 @@ class CustomTheme {
       primaryColorLight: const Color(0xff222222),
       primaryColorDark: Colors.black,
       // ignore: deprecated_member_use
-      accentColor: accentColor,
+      // accentColor: accentColor,
       cardColor: Colors.white,
       highlightColor: Colors.grey[600],
       scaffoldBackgroundColor: Colors.grey[100],

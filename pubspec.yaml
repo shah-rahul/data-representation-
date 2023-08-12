@@ -29,14 +29,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^2.3.1
+  google_fonts: ^5.1.0
   google_maps_flutter: ^2.1.1
   provider: ^6.0.2
   fluster: ^1.2.0
   google_maps_cluster_manager: ^3.0.0+1
   flutter_cache_manager: ^3.3.0
   shared_preferences: ^2.0.13
-  http: ^0.13.4
+  http: ^1.0.0
   fluttertoast: ^8.0.9
   syncfusion_flutter_core: ^20.1.51
   syncfusion_flutter_datagrid: ^20.1.51
@@ -71,12 +71,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - yearlyData.json
-    - mapData.json
-    - historyData.json
-    - data.json
-    - map_style.txt
-    - login.jpeg
+    - assets/yearlyData.json
+    - assets/mapData.json
+    - assets/historyData.json
+    - assets/data.json
+    - assets/map_style.txt
+    - assets/login.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

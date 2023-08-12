@@ -71,16 +71,13 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               switch (snapshot.data) {
                 case 0:
-                  return Login();
+                  return HomePage();
                 case 1:
-                  return EmailVerificationPage(
-                    email: email,
-                  );
+                  return HomePage();
+
                   ;
                 case 2:
-                  return const NumberVerificationPage(
-                    number: "",
-                  );
+                  return const HomePage();
                 case 3:
                   return const HomePage();
                 case 4:
